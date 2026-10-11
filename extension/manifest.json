@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "StudentDesk AIUB — Modern UI",
   "short_name": "StudentDesk AIUB",
-  "version": "3.9.6",
+  "version": "3.9.7",
   "description": "Unofficial: modern, fast app-style design for the AIUB Student Portal. Your portal data never leaves your browser.",
   "icons": {
     "16": "icons/16.png",

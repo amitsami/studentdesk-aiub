@@ -394,3 +394,23 @@ html.ap .login-form { animation: none !important; }
 #pp-app .pp-view.pp-vclassic { zoom: 1; }   /* classic pages scale their own text */
 #pp-app .pp-view #ap-panel.ap-inline { zoom: calc(1 / var(--ap-font-scale)); }
 #pp-app .pp-rvmiss { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 4px 2px 12px; }
+
+/* ===== v3.9.7: phone — rock-steady tab bar + smoother, faster scrolling ===== */
+/* The app now scrolls inside .pp-scroll on phones too (not the whole page). The browser toolbar no longer
+   collapses / expands while scrolling, so the bottom tab bar stays exactly in place. */
+@media (max-width: 900px) {
+  html.pp-on, html.pp-on body { overflow: hidden !important; height: 100% !important; overscroll-behavior: none; }
+  #pp-app { position: fixed !important; inset: 0 !important; height: 100%; display: flex !important; flex-direction: column; touch-action: manipulation; }
+  #pp-app .pp-main { display: flex !important; flex-direction: column; flex: 1 1 auto; min-height: 0; min-width: 0; }
+  #pp-app .pp-top { position: relative; flex: none; }
+  #pp-app .pp-scroll { flex: 1 1 auto; min-height: 0; overflow-x: hidden !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain;
+    contain: layout paint !important; scroll-behavior: auto; padding-bottom: calc(108px + env(safe-area-inset-bottom)) !important; }
+  #pp-app .pp-tabbar { position: fixed; transform: translate3d(0,0,0); -webkit-transform: translate3d(0,0,0); backface-visibility: hidden; contain: layout paint style; will-change: transform; }
+  #pp-app .pp-frame { height: calc(100% - 4px); min-height: calc(100dvh - 200px); }
+  /* cheaper paint while scrolling */
+  #pp-app .pp-hero .pp-next::after { animation: none !important; display: none; }
+  #pp-app .pp-view .pp-item { animation: none !important; }
+  #pp-app .pp-card, #pp-app .pp-item, #pp-app .pp-stat { transition: none !important; }
+  #pp-app .pp-view { animation-duration: .12s !important; }
+  #pp-app .pp-tabbar .pp-pill, #pp-app .pp-pill { transition: left .28s cubic-bezier(.2,.8,.2,1), width .28s cubic-bezier(.2,.8,.2,1) !important; }
+}

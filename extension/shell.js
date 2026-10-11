@@ -363,7 +363,7 @@
     var i = 0; (function next() { if (i >= jobs.length) return; var j = jobs[i++]; whenIdle(function () { bg(j).then(next, next); }, i === 1 ? 1200 : 350, i === 1 ? 5000 : 1800); })();
   }
   var MQ_PHONE = window.matchMedia ? matchMedia("(max-width: 900px)") : { matches: false };
-  function scTop(v) { var el = MQ_PHONE.matches ? (document.scrollingElement || document.documentElement) : scroller; if (v == null) return el.scrollTop; if (MQ_PHONE.matches) window.scrollTo(0, v); else el.scrollTop = v; }
+  function scTop(v) { if (!scroller) return 0; if (v == null) return scroller.scrollTop; scroller.scrollTop = v; }   // phone + PC: the app scrolls inside .pp-scroll (fixed tab bar never moves)
   var lastHash = null;
   function go(h) { if (location.hash === h) { route(); return; } location.hash = h; checkNav(); }
   function checkNav() { if (location.hash !== lastHash) route(); }
@@ -1424,10 +1424,10 @@
   /* ---------- What's new + update check ----------
      Reads the public file update.json from the GitHub repo (nothing is sent) at most every 6 hours.
      When a newer version exists, More shows the new features and a GitHub update link. */
-  var PP_VER = "3.9.6";
+  var PP_VER = "3.9.7";
   var PP_NEW = [
-    "The GitHub project is now github.com/amitsami/studentdesk-aiub, with new download file names",
-    "Updates keep working for everyone, nothing to do on your side"
+    "Phone: the bottom tab bar now stays perfectly still while you scroll",
+    "Phone: smoother, faster scrolling and quicker taps"
   ];
   var GH_REPO = "https://github.com/amitsami/studentdesk-aiub",
       UPD_URL = "https://raw.githubusercontent.com/amitsami/studentdesk-aiub/main/update.json",
