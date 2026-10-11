@@ -1427,7 +1427,8 @@
   var PP_VER = "3.9.7";
   var PP_NEW = [
     "Phone: the bottom tab bar now stays perfectly still while you scroll",
-    "Phone: smoother, faster scrolling and quicker taps"
+    "Phone: smoother, faster scrolling and quicker taps",
+    "Phone: the tab bar sits a little lower, closer to the screen edge"
   ];
   var GH_REPO = "https://github.com/amitsami/studentdesk-aiub",
       UPD_URL = "https://raw.githubusercontent.com/amitsami/studentdesk-aiub/main/update.json",

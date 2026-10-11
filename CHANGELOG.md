@@ -3,6 +3,7 @@
 ## 3.9.7 - Smoother phone app
 - Phone: the bottom tab bar now stays perfectly still while you scroll
 - Phone: smoother, faster scrolling and quicker taps
+- Phone: the tab bar sits a little lower, closer to the screen edge
 
 ## 3.9.6 - New GitHub home
 - The GitHub project is now github.com/amitsami/studentdesk-aiub, with new download file names

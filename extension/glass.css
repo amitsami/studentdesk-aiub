@@ -404,13 +404,16 @@ html.ap .login-form { animation: none !important; }
   #pp-app .pp-main { display: flex !important; flex-direction: column; flex: 1 1 auto; min-height: 0; min-width: 0; }
   #pp-app .pp-top { position: relative; flex: none; }
   #pp-app .pp-scroll { flex: 1 1 auto; min-height: 0; overflow-x: hidden !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain;
-    contain: layout paint !important; scroll-behavior: auto; padding-bottom: calc(108px + env(safe-area-inset-bottom)) !important; }
-  #pp-app .pp-tabbar { position: fixed; transform: translate3d(0,0,0); -webkit-transform: translate3d(0,0,0); backface-visibility: hidden; contain: layout paint style; will-change: transform; }
+    contain: layout paint !important; scroll-behavior: auto; padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px) * .5) !important; will-change: scroll-position; scrollbar-width: none; }
+  #pp-app .pp-scroll::-webkit-scrollbar { display: none; }
+  #pp-app .pp-tabbar { position: fixed; bottom: calc(4px + env(safe-area-inset-bottom, 0px) * .5) !important; transform: translate3d(0,0,0); -webkit-transform: translate3d(0,0,0); backface-visibility: hidden; contain: layout paint style; will-change: transform; }
   #pp-app .pp-frame { height: calc(100% - 4px); min-height: calc(100dvh - 200px); }
   /* cheaper paint while scrolling */
   #pp-app .pp-hero .pp-next::after { animation: none !important; display: none; }
   #pp-app .pp-view .pp-item { animation: none !important; }
   #pp-app .pp-card, #pp-app .pp-item, #pp-app .pp-stat { transition: none !important; }
-  #pp-app .pp-view { animation-duration: .12s !important; }
+  #pp-app .pp-view, #pp-app .pp-view > * { animation: none !important; }   /* instant page switch */
+  #pp-app .pp-tabbar a, #pp-app .pp-tabbar a svg.i, #pp-app .pp-tabbar a.on svg.i { transition: color .12s !important; transform: none !important; animation: none !important; }
+  #pp-app .pp-tabbar a:active { transform: scale(.94) !important; transition: transform .08s !important; }
   #pp-app .pp-tabbar .pp-pill, #pp-app .pp-pill { transition: left .28s cubic-bezier(.2,.8,.2,1), width .28s cubic-bezier(.2,.8,.2,1) !important; }
 }
