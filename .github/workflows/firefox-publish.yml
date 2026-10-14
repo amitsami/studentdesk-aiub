@@ -1,0 +1,67 @@
+name: Publish Firefox update
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "extension/**"
+      - "scripts/pack.js"
+      - "scripts/firefox-publish-check.js"
+      - "scripts/firefox-publish-check.test.js"
+      - ".github/workflows/firefox-publish.yml"
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firefox-store-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'amitsami/studentdesk-aiub'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Test publishing safeguards
+        run: node --test scripts/firefox-publish-check.test.js
+      - name: Check credentials and whether this version is new
+        id: version
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: node scripts/firefox-publish-check.js
+      - name: Build the Firefox-specific package
+        if: steps.version.outputs.submit == 'true'
+        run: |
+          node scripts/pack.js
+          mkdir -p firefox-dist
+          unzip -q store-dist/StudentDesk-AIUB-firefox.zip -d firefox-dist
+      - name: Install Mozilla publishing CLI
+        if: steps.version.outputs.submit == 'true'
+        run: npm install --global web-ext@10.7.0 --no-audit --no-fund
+      - name: Validate Firefox package
+        if: steps.version.outputs.submit == 'true'
+        run: web-ext lint --source-dir firefox-dist
+      - name: Submit to the existing public Firefox listing
+        if: steps.version.outputs.submit == 'true'
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: |
+          web-ext sign \
+            --source-dir firefox-dist \
+            --channel listed \
+            --amo-metadata store-dist/firefox-metadata.json \
+            --approval-timeout 0
+          echo "Submitted to Mozilla. This does NOT mean approved or distributed yet." >> "$GITHUB_STEP_SUMMARY"
