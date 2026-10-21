@@ -319,7 +319,7 @@
     window.addEventListener("hashchange", checkNav);
     window.addEventListener("popstate", checkNav);
     setInterval(checkNav, 300);
-    var rzW = innerWidth, rzT; window.addEventListener("resize", function () { clearTimeout(rzT); rzT = setTimeout(function () { if (innerWidth === rzW) return; rzW = innerWidth; movePill(); }, 150); });
+    var rzW = innerWidth, rzT; window.addEventListener("resize", function () { clearTimeout(rzT); rzT = setTimeout(function () { if (innerWidth === rzW) return; rzW = innerWidth; movePill(); refreshQuickActions(); }, 150); });
     syncThemeIcon();
     if (!/^#\//.test(location.hash)) history.replaceState(null, "", "#/" + (API.get().startPage || "home"));
     route();
@@ -335,7 +335,7 @@
   function toast(m) { var t = $("#pp-toast", app); t.textContent = m; t.classList.add("on"); clearTimeout(t._t); t._t = setTimeout(function () { t.classList.remove("on"); }, 2200); }
   function movePill() {
     var bar = $(".pp-tabbar", app); if (!bar) return; var on = $("a.on", bar), pill = $(".pp-pill", bar);
-    if (!on) { pill.style.width = "0"; return; } pill.style.left = on.offsetLeft + "px"; pill.style.width = on.offsetWidth + "px";
+    if (!on) { pill.style.width = "0"; return; } pill.style.left = "0"; pill.style.transform = "translate3d(" + on.offsetLeft + "px,0,0)"; pill.style.width = on.offsetWidth + "px";
   }
   function setHead(h, s, right) { topH.textContent = h; topS.innerHTML = s || ""; topR.innerHTML = right || ""; }
   function skeleton(n) { var h = ""; for (var i = 0; i < (n || 3); i++) h += '<div class="pp-sk" style="height:' + (i ? 90 : 150) + 'px;margin-bottom:14px"></div>'; return '<div class="pp-view">' + h + "</div>"; }
@@ -344,18 +344,8 @@
     return '<div class="pp-view"><div class="pp-card pp-empty"><span class="pp-em">😕</span><h3 style="justify-content:center">Couldn’t load</h3><p>' + esc(err && err.message || "Unknown error") + '</p><button class="pp-btn pri" data-act="refresh">Try again</button> <a class="pp-btn" href="#/classic?u=' + encodeURIComponent(location.pathname + location.search) + '">Classic view</a></div></div>';
   }
   var current = "", renderId = 0;
-  /* ---------- micro animations: number count-up ---------- */
-  function animate() {
-    if (MQ_PHONE.matches || root.getAttribute("data-ap-anim") === "0" || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
-    $$(".pp-view:not(.pp-quiet) .pp-stat b, .pp-view:not(.pp-quiet) .pp-count", app).forEach(function (b) {
-      var t = b.textContent, m = /^([^\d-]*)(-?[\d,]*\.?\d+)(.*)$/.exec(t); if (!m) return;
-      var end = parseFloat(m[2].replace(/,/g, "")), dec = (m[2].split(".")[1] || "").length, comma = m[2].indexOf(",") >= 0; if (!isFinite(end) || end === 0) return;
-      var t0 = performance.now(), D = 700;
-      (function step(now) { var k = Math.min(1, (now - t0) / D), e = 1 - Math.pow(1 - k, 3), v = end * e;
-        var str = comma ? v.toLocaleString("en-IN", { minimumFractionDigits: dec, maximumFractionDigits: dec }) : v.toFixed(dec);
-        b.textContent = m[1] + str + m[3]; if (k < 1) requestAnimationFrame(step); else b.textContent = t; })(t0);
-    });
-  }
+  /* Numbers render immediately: avoid per-frame text/layout work. */
+  function animate() {}
   /* ---------- background prefetch (one request at a time, so the portal server is never stressed) ---------- */
   function prefetch() {
     var jobs = [function () { return D.home && D.home(); }, function () { return D.reg && D.reg(); }, function () { return D.curr && D.curr(); }, function () { return D.sem && D.sem(); }, function () { return D.acc && D.acc(); }, function () { return noticePage(1); }, function () { return notiLoad(); }, function () { return mailIds(); }, function () { return examLoad(); }, function () { return regStatus(); }, function () { return rvCfg() ? rvList() : null; }, function () { return D.profile && D.profile(); }];
@@ -363,6 +353,8 @@
     var i = 0; (function next() { if (i >= jobs.length) return; var j = jobs[i++]; whenIdle(function () { bg(j).then(next, next); }, i === 1 ? 1200 : 350, i === 1 ? 5000 : 1800); })();
   }
   var MQ_PHONE = window.matchMedia ? matchMedia("(max-width: 900px)") : { matches: false };
+  var MQ_TOUCH = window.matchMedia ? matchMedia("(hover: none) and (pointer: coarse)") : { matches: false };
+  [MQ_PHONE, MQ_TOUCH].forEach(function (mq) { if (mq.addEventListener) mq.addEventListener("change", refreshQuickActions); });
   function scTop(v) { if (!scroller) return 0; if (v == null) return scroller.scrollTop; scroller.scrollTop = v; }   // phone + PC: the app scrolls inside .pp-scroll (fixed tab bar never moves)
   var lastHash = null;
   function go(h) { if (location.hash === h) { route(); return; } location.hash = h; checkNav(); }
@@ -375,9 +367,7 @@
   ["touchstart", "pointerdown", "wheel", "keydown"].forEach(function (ev) { window.addEventListener(ev, function () { lastInput = Date.now(); }, { capture: true, passive: true }); });
   function swap(html, after) {
     var doIt = function () { scroller.innerHTML = html; if (after) after(); };
-    if (document.startViewTransition && !MQ_PHONE.matches && root.getAttribute("data-ap-anim") !== "0" && !swap.busy) {
-      swap.busy = true; var t = document.startViewTransition(doIt); t.finished.then(function () { swap.busy = false; }, function () { swap.busy = false; });
-    } else doIt();
+    doIt();
   }
   function route(force, silent) {
     lastHash = location.hash;
@@ -439,7 +429,7 @@
         '<div class="pp-grid pp-g-21"><div class="pp-card pp-hero"><h2>' + esc(greet()) + ", " + esc(FIRST) + "</h2><p>" + sub + "</p>" +
           '<div class="pp-next pp-tick">' + ic("clock") + '<div class="pp-nl"></div><div class="pp-cd"></div></div>' +
           regBtnHtml(reg) + rvHeroBtn() + "</div>" +
-          '<div class="pp-card"><h3>Quick actions</h3><div class="pp-quick">' + q.map(function (x, i) { return '<a href="#/' + x[0] + '" data-qi="' + i + '"' + (x[3] ? ' data-r="' + x[3] + '"' : "") + '><span class="pp-qi">' + ic(x[1]) + "</span>" + x[2] + "</a>"; }).join("") + "</div></div></div>" +
+          '<div class="pp-card"><h3>Quick actions</h3><div class="pp-quick">' + quickActionsHtml() + "</div></div></div>" +
         (examUpcoming().length ? '<div class="pp-card pp-examcard"><h3>📝 Exam routine is out<a class="pp-more" href="#/schedule?view=exams">All exams →</a></h3><div class="pp-list">' + examRows(examUpcoming(), 3) + "</div></div>" : "") +
         '<div class="pp-card pp-wxcard"><h3>Campus weather<span class="pp-more" style="color:var(--ap-muted)">AIUB · Kuratoli, Dhaka</span></h3><div id="pp-wx">' + (peek("wx") ? wxCard(peek("wx")) : '<div class="pp-sk" style="height:120px"></div>') + "</div></div>" +
         '<div class="pp-grid pp-g2"><div class="pp-card"><h3>Today · ' + DAYFULL[todayKey()] + '<a class="pp-more" href="#/schedule">Routine →</a></h3>' + todayHtml + "</div>" +
@@ -451,7 +441,7 @@
   VIEWS.home.after = function () { tick(); wxPaint(); updBar(); whenIdle(function () { updGet().then(function () { paintBadges(); updBar(); }, function () {}); }, 1500, 8000);
     whenIdle(function () { regStatus().then(function () { var b = $(".pp-regbtn", app); if (b && current === "home") b.outerHTML = regBtnHtml(peek("reg")); }, function () {}); }, 600, 3000);
     if (rvCfg() && Date.now() - rvAt > 60e3) whenIdle(function () { rvList().then(function () { var c = $(".pp-rvhome", app); if (c && current === "home") { c.outerHTML = rvHeroBtn(); rvPics(); } }, function () {}); }, 600, 3000);
-    var qa = quickActions(); $$(".pp-quick a[data-qi]", app).forEach(function (a) { var x = qa[+a.getAttribute("data-qi")]; if (x && x[4]) a.__pre = x[4]; });
+    wireQuickActions();
     var box = $("#pp-hnot", app); if (!box) return;
     if (!box.children.length) box.innerHTML = '<div class="pp-sk" style="height:56px"></div><div class="pp-sk" style="height:56px"></div>';
     noticePage(1).then(function (d) { var b = $("#pp-hnot", app); if (b) b.innerHTML = noticeRows(d.items.slice(0, 4)) || '<div class="pp-empty">No notices</div>'; paintBadges(); }, function () { var b = $("#pp-hnot", app); if (b && !b.querySelector(".pp-item")) b.innerHTML = '<div class="pp-empty">Couldn’t reach aiub.edu</div>'; });
@@ -1041,16 +1031,29 @@
         function (e) { if (prev) localStorage.setItem(RV_CFG_KEY, prev); else localStorage.removeItem(RV_CFG_KEY); sv.disabled = false; sv.textContent = "Save & test"; toast("Couldn’t connect: " + e.message); }); };
   }
   /* ---------- quick actions: only things NOT already in the tab bar / sidebar ---------- */
+  function isCoursesResult(name) { return /^COURSES?(?:AND)?RESULTS?$/.test(norm(name)); }
+  function coursesResultHref() {
+    var href = null;
+    MENU.some(function (g) { return g.items.some(function (it) { if (isCoursesResult(it.t) && it.h) { href = it.h; return true; } }); });
+    return href;
+  }
+  function quickActionsHtml() {
+    return quickActions().map(function (x, i) { return '<a href="#/' + x[0] + '" data-qi="' + i + '"' + (x[3] ? ' data-r="' + x[3] + '"' : '') + '><span class="pp-qi">' + ic(x[1]) + '</span>' + x[2] + '</a>'; }).join('');
+  }
+  function wireQuickActions() { var qa = quickActions(); $$(".pp-quick a[data-qi]", app).forEach(function (a) { var x = qa[+a.getAttribute("data-qi")]; if (x && x[4]) a.__pre = x[4]; }); }
+  function refreshQuickActions() { var box = $(".pp-quick", app); if (current === "home" && box) { box.innerHTML = quickActionsHtml(); wireQuickActions(); } }
   function quickActions() {
-    var phone = MQ_PHONE.matches, q = [];
+    var phone = MQ_PHONE.matches || MQ_TOUCH.matches, q = [], resultHref = coursesResultHref();
+    var resultAction = resultHref ? ["classic?u=" + encodeURIComponent(resultHref), "book", "Courses &amp; Result"] : null;
     if (phone) q.push(["grades", "award", "Grades", "grades"], ["finance", "wallet", "Payments", "finance"], ["mail", "mail", "Mail", "mail"]);
     q.push(["schedule", "coffee", "Free time", "", function () { schedState.view = "free"; }]);
     if (!phone) q.push(["schedule", "grid", "Week view", "", function () { schedState.view = "week"; }]);
     q.push(["courses", "spark", "Offered for me", "", function () { courseState.tab = "offered"; }]);
     q.push(["grades", "calc", "CGPA calculator", "", function () { setTimeout(function () { var c = $("#pp-calc", app); if (c) c.scrollIntoView({ block: "start", behavior: "smooth" }); }, 350); }]);
-    q.push(["mail", "cloud", "Outlook", "", function () { mailState.tab = "outlook"; }]);
+    if (phone && resultAction) q.push(resultAction);
+    else q.push(["mail", "cloud", "Outlook", "", function () { mailState.tab = "outlook"; }]);
     if (L("Drop Application")) q.push(["classic?u=" + encodeURIComponent(L("Drop Application")), "minus", "Drop course"]);
-    if (!phone) { if (L("Search Book")) q.push(["classic?u=" + encodeURIComponent(L("Search Book")), "lib", "Library"]); q.push(["classic?u=" + encodeURIComponent(L("Change Password") || "/Student/Credential/ChangePassword"), "key", "Password"]); }
+    if (!phone) { if (L("Search Book")) q.push(["classic?u=" + encodeURIComponent(L("Search Book")), "lib", "Library"]); if (resultAction) q.push(resultAction); }
     return q.slice(0, 8);
   }
 
@@ -1424,11 +1427,14 @@
   /* ---------- What's new + update check ----------
      Reads the public file update.json from the GitHub repo (nothing is sent) at most every 6 hours.
      When a newer version exists, More shows the new features and a GitHub update link. */
-  var PP_VER = "3.9.7";
+  var PP_VER = "3.9.8";
   var PP_NEW = [
-    "Phone: the bottom tab bar now stays perfectly still while you scroll",
-    "Phone: smoother, faster scrolling and quicker taps",
-    "Phone: the tab bar sits a little lower, closer to the screen edge"
+    "Courses & Result moved from More \u2192 Academics to Home \u2192 Quick actions.",
+    "PC: Courses & Result replaces Password; Change password remains in More \u2192 Account.",
+    "Phone and tablet: Courses & Result replaces Outlook; Outlook remains in Mail.",
+    "Lighter page changes, immediate result numbers, and transform-based bottom navigation highlighting.",
+    "Quick actions adapt when the screen size changes; the existing footer position is preserved.",
+    "Windows PC: install directly from Microsoft Edge Add-ons. The in-app update log includes a clickable store link; no ZIP or Developer mode needed."
   ];
   var GH_REPO = "https://github.com/amitsami/studentdesk-aiub",
       UPD_URL = "https://raw.githubusercontent.com/amitsami/studentdesk-aiub/main/update.json",
@@ -1474,7 +1480,8 @@
       (!d && st ? '<p class="pp-note" style="margin:0 0 10px">Updates install automatically from <b>' + esc(st) + "</b>.</p>" : "") +
       (d && !st ? '<p class="pp-note" style="margin:0 0 10px">' + (us ? "Tap <b>Update now</b>. Tampermonkey opens the new version, then tap <b>Update</b> / <b>Install</b>." : "Download the new extension zip, replace the files in your StudentDesk folder, then click <b>Reload</b> on the extensions page.") + "</p>" : "") +
       '<div class="pp-row" style="gap:8px;flex-wrap:wrap">' + (d && !st ? '<a class="pp-btn pri sm" href="' + esc(link) + '" target="_blank" rel="noopener">' + ic("refresh") + (us ? " Update now" : " Download update") + "</a>" : "") +
-      '<a class="pp-btn sm" href="' + GH_REPO + '/releases/latest" target="_blank" rel="noopener">' + ic("github") + " View on GitHub</a></div></div>";
+      '<a class="pp-btn sm" href="' + GH_REPO + '/releases/latest" target="_blank" rel="noopener">' + ic("github") + " View on GitHub</a></div>" +
+      '<p class="pp-note" style="margin:12px 0 0">Windows PC: install StudentDesk AIUB directly from <a href="https://microsoftedge.microsoft.com/addons/detail/studentdesk-aiub-%E2%80%94-modern/meogjhmphdkglfabjonfjbdjlfpcpbpa" target="_blank" rel="noopener noreferrer">Microsoft Edge Add-ons</a>. No ZIP or Developer mode needed. The store delivers the version currently approved by Microsoft.</p></div>';
   }
   /* Home banner: "Update available" (until updated; "Later" hides it for a day) or, once, "Updated to vX". */
   function updBarHtml() {
@@ -1509,7 +1516,7 @@
         '<div class="pp-grid pp-g3" style="margin:0">' + keys.filter(function (k) { return fl[k]; }).map(function (k) { return '<div class="pp-item"><div class="pp-t"><small>' + esc(k) + "</small>" + (k === "CGPA" ? cgB(esc(fl[k]), "b") : "<b" + (/Contact|Email/.test(k) ? ' class="ap-private"' : "") + ">" + esc(fl[k]) + "</b>") + "</div></div>"; }).join("") + "</div></div>" + updCard() +
         '<a class="pp-card pp-facard" href="#/reviews" data-r="reviews"><span class="pp-qi">' + ic("star") + '</span><div class="pp-t"><b>Faculty review</b><small>Rate your faculty anonymously · see everyone’s reviews</small></div>' + ic("back", "flip") + "</a>" +
         '<a class="pp-card pp-facard" href="#/faculty"><span class="pp-qi">' + ic("user") + '</span><div class="pp-t"><b>Faculty list</b><small>Find any AIUB faculty — room, email, department, research interests</small></div>' + ic("back", "flip") + "</a>" +
-        '<div class="pp-grid pp-g3">' + MENU.map(function (g) { return '<div class="pp-card"><h3>' + ic(GROUP_IC[g.g] || "grid") + " " + esc(g.g) + '</h3><div class="pp-list">' + g.items.map(function (it) { return '<a class="pp-item" style="padding:10px 12px" href="' + classic(it.h) + '"><div class="pp-t"><b style="font-size:13.5px">' + esc(it.t) + "</b></div>" + ic("back", "flip") + "</a>"; }).join("") + "</div></div>"; }).join("") +
+        '<div class="pp-grid pp-g3">' + MENU.map(function (g) { return '<div class="pp-card"><h3>' + ic(GROUP_IC[g.g] || "grid") + " " + esc(g.g) + '</h3><div class="pp-list">' + g.items.filter(function (it) { return g.g !== "Academics" || !isCoursesResult(it.t); }).map(function (it) { return '<a class="pp-item" style="padding:10px 12px" href="' + classic(it.h) + '"><div class="pp-t"><b style="font-size:13.5px">' + esc(it.t) + "</b></div>" + ic("back", "flip") + "</a>"; }).join("") + "</div></div>"; }).join("") +
         '<div class="pp-card"><h3>' + ic("lock") + ' Account</h3><div class="pp-list"><a class="pp-item" href="#/settings"><div class="pp-t"><b>Settings & theme</b></div></a><a class="pp-item" href="' + classic(L("Change Password") || "/Student/Credential/ChangePassword") + '"><div class="pp-t"><b>Change password</b></div></a>' +
         '<a class="pp-item" href="' + classic(location.pathname + location.search) + '"><div class="pp-t"><b>Classic portal view</b><small>Original portal layout</small></div></a><a class="pp-item" href="/Login/Logout" id="pp-logout" style="color:#ef4444"><div class="pp-t"><b>Log out</b></div>' + ic("out") + "</a></div></div></div></div>" +
         '<div class="pp-card pp-dev"><h3>' + ic("user") + ' Developer info</h3><div class="pp-row" style="gap:14px;align-items:center"><span class="pp-avatar" style="width:52px;height:52px;font-size:18px">AS</span><div class="pp-t" style="flex:1;min-width:0"><b style="font-size:16px">Amit Hasan Sami</b><small>Developer of StudentDesk AIUB</small></div></div>' +

@@ -1,11 +1,14 @@
 {
-  "version": "3.9.7",
-  "date": "2026-10-11",
-  "title": "Smoother phone app",
+  "version": "3.9.8",
+  "date": "2026-10-21",
+  "title": "Quick actions, smoother navigation and Microsoft Edge Add-ons",
   "notes": [
-    "Phone: the bottom tab bar now stays perfectly still while you scroll",
-    "Phone: smoother, faster scrolling and quicker taps",
-    "Phone: the tab bar sits a little lower, closer to the screen edge"
+    "Courses & Result moved from More → Academics to Home → Quick actions.",
+    "PC: Courses & Result replaces Password; Change password remains in More → Account.",
+    "Phone and tablet: Courses & Result replaces Outlook; Outlook remains in Mail.",
+    "Lighter page changes, immediate result numbers, and transform-based bottom navigation highlighting.",
+    "Quick actions adapt when the screen size changes; the existing footer position is preserved.",
+    "Windows PC: install directly from Microsoft Edge Add-ons. The in-app update log includes a clickable store link; no ZIP or Developer mode needed."
   ],
   "release": "https://github.com/amitsami/studentdesk-aiub/releases/latest"
 }

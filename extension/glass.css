@@ -417,3 +417,18 @@ html.ap .login-form { animation: none !important; }
   #pp-app .pp-tabbar a:active { transform: scale(.94) !important; transition: transform .08s !important; }
   #pp-app .pp-tabbar .pp-pill, #pp-app .pp-pill { transition: left .28s cubic-bezier(.2,.8,.2,1), width .28s cubic-bezier(.2,.8,.2,1) !important; }
 }
+
+/* v3.9.8: lighter navigation; preserve existing footer geometry. */
+#pp-app .pp-quick a { min-height:88px; min-width:0; white-space:normal; }
+#pp-app .pp-pill { transition:transform .18s ease,width .18s ease !important; }
+#pp-app .pp-view { animation:lg-fade .16s ease-out both !important; }
+#pp-app .pp-view > * { animation:none !important; }
+@media (max-width:900px), (hover:none) and (pointer:coarse) {
+  #pp-app .pp-view, #pp-app .pp-view > * { animation:none !important; }
+  #pp-app .pp-tabbar .pp-pill { transition:transform .18s ease,width .18s ease !important; }
+}
+@media (prefers-reduced-motion:reduce) {
+  #pp-app .pp-view, #pp-app .pp-view > * { animation:none !important; }
+  #pp-app .pp-pill { transition:none !important; }
+}
+#pp-app[data-ap-anim="0"] .pp-pill { transition:none !important; }

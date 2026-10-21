@@ -4,6 +4,8 @@ Fast, modern app-style UI for the [AIUB Student Portal](https://portal.aiub.edu)
 
 **[Install the userscript](https://raw.githubusercontent.com/amitsami/studentdesk-aiub/main/userscript/StudentDesk-AIUB.user.js)** · **[Download the latest release](https://github.com/amitsami/studentdesk-aiub/releases/latest)** · **[Install guide](docs/INSTALL.md)**
 
+**Windows PC (Microsoft Edge):** [Install from Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/studentdesk-aiub-%E2%80%94-modern/meogjhmphdkglfabjonfjbdjlfpcpbpa). Click **Get → Add extension**. No ZIP or Developer mode needed. The store delivers the version currently approved by Microsoft.
+
 ## Contents
 
 - [Screenshots](#screenshots)

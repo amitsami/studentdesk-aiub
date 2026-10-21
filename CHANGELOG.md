@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.9.8 - Quick actions, smoother navigation and Microsoft Edge Add-ons
+- Courses & Result moved from More → Academics to Home → Quick actions.
+- PC: Courses & Result replaces Password; Change password remains in More → Account.
+- Phone and tablet: Courses & Result replaces Outlook; Outlook remains in Mail.
+- Lighter page changes, immediate result numbers, and transform-based bottom navigation highlighting.
+- Quick actions adapt when the screen size changes; the existing footer position is preserved.
+- Windows PC: install directly from Microsoft Edge Add-ons. The in-app update log includes a clickable store link; no ZIP or Developer mode needed.
+
 ## 3.9.7 - Smoother phone app
 - Phone: the bottom tab bar now stays perfectly still while you scroll
 - Phone: smoother, faster scrolling and quicker taps
