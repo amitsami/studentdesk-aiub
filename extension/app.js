@@ -4,7 +4,7 @@
   "use strict";
   if (window.__aiubPlus) return; window.__aiubPlus = true;
   var KEY = "aiubPlus.settings.v1";
-  var DEF = { app: true, startPage: "home", mode: "light", accent: "#3b82f6", bg: "aurora", v: 3, blur: 22, scale: 100, anim: true, trans: true, compact: false, radius: 18, grades: true, privacy: false };
+  var DEF = { app: true, startPage: "home", mode: "light", accent: "#3b82f6", bg: "aurora", v: 3, blur: 22, scale: 100, anim: true, trans: true, compact: false, radius: 18, grades: true, privacy: false, performance: false };
   var PRESETS = ["#3b82f6", "#8b5cf6", "#ec4899", "#f43f5e", "#f97316", "#eab308", "#10b981", "#06b6d4", "#64748b"];
   var S = load();
   var root = document.documentElement;
@@ -28,11 +28,16 @@
     root.setAttribute("data-ap-mode", dark ? "dark" : "light");
     root.setAttribute("data-ap-bg", S.bg);
     root.setAttribute("data-ap-anim", S.anim ? "1" : "0");
+    root.setAttribute("data-ap-performance", S.performance ? "1" : "0");
     root.setAttribute("data-ap-compact", S.compact ? "1" : "0");
     root.setAttribute("data-ap-privacy", S.privacy ? "1" : "0");
     var rgb = hexToRgb(S.accent), hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
     var rgb2 = hslToRgb(hsl[0] + 38, Math.min(1, hsl[1] * 1.05), Math.min(.65, Math.max(.45, hsl[2])));
     var st = root.style;
+    var actionRgb = rgb.slice();
+    function actionLuma(v) { var c = v.map(function (n) { n /= 255; return n <= .04045 ? n / 12.92 : Math.pow((n + .055) / 1.055, 2.4); }); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; }
+    while (actionLuma(actionRgb) > .175) actionRgb = actionRgb.map(function (n) { return Math.floor(n * .92); });
+    st.setProperty("--ap-action", "rgb(" + actionRgb.join(",") + ")");
     st.setProperty("--ap-accent", S.accent);
     st.setProperty("--ap-accent-rgb", rgb.join(","));
     st.setProperty("--ap-accent2", "rgb(" + rgb2.join(",") + ")");
@@ -124,7 +129,7 @@
     var form = document.getElementById("loginForm");
     if (!form) return;
     root.classList.add("ap-login");
-    try { [localStorage, sessionStorage].forEach(function (st) { Object.keys(st).forEach(function (k) { if (k.indexOf("pp.c.") === 0) st.removeItem(k); }); }); } catch (e) {}  // signed out: forget cached portal data
+    try { [localStorage, sessionStorage].forEach(function (st) { Object.keys(st).forEach(function (k) { if (k.indexOf("pp.c.") === 0 || k.indexOf("pp.reminded.") === 0) st.removeItem(k); }); }); } catch (e) {}  // signed out: forget cached portal data
     var u = document.getElementById("username"), pw = document.getElementById("password");
     if (u && !u.parentNode.querySelector(".ap-ico")) u.insertAdjacentHTML("beforebegin", ICON.user);
     if (pw && !pw.parentNode.querySelector(".ap-ico")) {
@@ -156,8 +161,10 @@
 
   /* ---- smooth page transitions ---- */
   function transitions() {
+    var leavingTimer;
+    function leaving() { root.classList.add("ap-leaving"); clearTimeout(leavingTimer); leavingTimer = setTimeout(function () { root.classList.remove("ap-leaving"); }, 1600); }
     document.addEventListener("click", function (e) {
-      if (!S.trans || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (S.performance || !S.trans || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       var a = e.target.closest && e.target.closest("a[href]"); if (!a) return;
       var href = a.getAttribute("href") || "";
       if (!href || href.charAt(0) === "#" || /^(javascript|mailto|tel):/i.test(href)) return;
@@ -166,16 +173,16 @@
       var url; try { url = new URL(a.href, location.href); } catch (x) { return; }
       if (url.origin !== location.origin) return;
       if (url.pathname === location.pathname && url.search === location.search && url.hash) return;
-      root.classList.add("ap-leaving");   // no artificial delay — navigate instantly
+      leaving();   // no artificial delay; restore if an AJAX page or download stays open
     }, false);
-    document.addEventListener("submit", function () { if (S.trans) setTimeout(function () { root.classList.add("ap-leaving"); }, 0); }, false);
+    document.addEventListener("submit", function (e) { if (!S.performance && S.trans) setTimeout(function () { if (!e.defaultPrevented) leaving(); }, 0); }, false);
     window.addEventListener("pageshow", function () { root.classList.remove("ap-leaving"); });
   }
 
   /* ---- ripple on buttons ---- */
   function ripple() {
     document.addEventListener("pointerdown", function (e) {
-      if (!S.anim || e.pointerType !== "mouse") return;
+      if (S.performance || !S.anim || e.pointerType !== "mouse") return;
       var b = e.target.closest && e.target.closest(".btn, #ap-fab"); if (!b) return;
       var r = b.getBoundingClientRect(), d = Math.max(r.width, r.height), s = document.createElement("span");
       s.className = "ap-ripple"; s.style.cssText = "width:" + d + "px;height:" + d + "px;left:" + (e.clientX - r.left - d / 2) + "px;top:" + (e.clientY - r.top - d / 2) + "px";

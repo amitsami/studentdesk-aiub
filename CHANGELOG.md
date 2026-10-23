@@ -1,12 +1,30 @@
 # Changelog
 
+## 3.9.9 - Workspace tools and Liquid Glass
+- Safari-specific nonpersistent background page, native public-page requests and bounded runtime responses fix the public notice transport compatibility path.
+- portable bounded DOCX/PPTX decoder and native ArrayBuffer attachment reads replace Safari-sensitive stream APIs.
+- Rebuilt Notices: dedicated in-app bulletin, search, pagination and sanitized article details. A temporary offscreen official-site bridge supports compatible userscript managers; the full website is never displayed inside Notices. No third-party proxy.
+- Portal Mail uses absolute same-origin JSON requests with session validation, readable recovery and persistent Outlook access.
+- New Focus interface: gradient header with a light content deck, navigation groups, launchpad shortcuts, file workspace and short reduced-motion-aware transitions. Off-day calendar remains red.
+- Customize and reorder Home quick actions separately for desktop and touch devices.
+- Optional class and exam reminders while the portal tab is open; optional desktop notifications.
+- Export the current routine as PNG, print/Save as PDF, or an 8-week calendar file.
+- Liquid Glass header with glossy edges and a readable frosted surface on scroll in light/dark themes; solid fallback in Performance mode.
+- Phone rendering avoids stacked blur and repeated card animations; navigation uses one brief opacity fade. Footer position is unchanged.
+- Data freshness badges distinguish cached data and offline snapshots.
+- Preview teacher attachments in memory: PDF, images, plain text, and text-only DOCX/PPTX, with download fallback.
+- Bounded retries for temporary read failures; failed refresh keeps saved data and clearly labels it.
+- Notices stay usable when one page fails, with Retry and official-site fallback.
+- Added developer Facebook profile.
+- Portal login and server-side captcha validation remain unchanged.
+
 ## 3.9.8 - Quick actions, smoother navigation and Microsoft Edge Add-ons
 - Courses & Result moved from More → Academics to Home → Quick actions.
 - PC: Courses & Result replaces Password; Change password remains in More → Account.
 - Phone and tablet: Courses & Result replaces Outlook; Outlook remains in Mail.
 - Lighter page changes, immediate result numbers, and transform-based bottom navigation highlighting.
 - Quick actions adapt when the screen size changes; the existing footer position is preserved.
-- Windows PC: install directly from Microsoft Edge Add-ons. The in-app update log includes a clickable store link; no ZIP or Developer mode needed.
+- Windows PC: install StudentDesk AIUB directly from Microsoft Edge Add-ons. The in-app update log now includes a clickable store link; no ZIP extraction or Developer mode is needed.
 
 ## 3.9.7 - Smoother phone app
 - Phone: the bottom tab bar now stays perfectly still while you scroll

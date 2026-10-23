@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "StudentDesk AIUB \u2014 Modern UI",
   "short_name": "StudentDesk AIUB",
-  "version": "3.9.8",
+  "version": "3.9.9",
   "description": "Unofficial: modern, fast app-style design for the AIUB Student Portal. Your portal data never leaves your browser.",
   "icons": {
     "16": "icons/16.png",
@@ -20,19 +20,24 @@
         "glass.css"
       ],
       "js": [
+        "zip-inflate.js",
         "app.js",
         "shell.js"
       ],
       "run_at": "document_start",
       "all_frames": true
+    },
+    {
+      "matches": [
+        "https://www.aiub.edu/*"
+      ],
+      "js": [
+        "public-reader.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
     }
   ],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "aiub-portal-plus@student.local",
-      "strict_min_version": "109.0"
-    }
-  },
   "host_permissions": [
     "https://www.aiub.edu/*",
     "https://api.open-meteo.com/*"
@@ -41,7 +46,14 @@
     "service_worker": "bg.js",
     "scripts": [
       "bg.js"
-    ]
+    ],
+    "preferred_environment": "document"
   },
-  "homepage_url": "https://github.com/amitsami/studentdesk-aiub"
+  "homepage_url": "https://github.com/amitsami/studentdesk-aiub",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "aiub-portal-plus@student.local",
+      "strict_min_version": "140.0"
+    }
+  }
 }

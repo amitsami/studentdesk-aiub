@@ -24,3 +24,11 @@ pack("StudentDesk-AIUB-firefox.zip", (m) => {
     data_collection_permissions: { required: ["none"] } }, gecko_android: { strict_min_version: "142.0" } };
   return m;
 });
+
+// Safari: avoid service-worker lifecycle differences in temporary folder installs.
+pack("StudentDesk-AIUB-safari.zip", (m) => {
+  m.name = "StudentDesk AIUB — Safari Fix 1";
+  m.background = { scripts: ["bg.js"], persistent: false, preferred_environment: "document" };
+  m.browser_specific_settings = { safari: { strict_min_version: "15.4" } };
+  return m;
+});

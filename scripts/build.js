@@ -27,6 +27,7 @@ const header = [
   "// @updateURL    " + RAW,
   "// @downloadURL  " + RAW,
   "// @match        https://portal.aiub.edu/*",
+  "// @match        https://www.aiub.edu/*",
   "// @run-at       document-start",
   "// @grant        GM_xmlhttpRequest",
   "// @grant        GM.xmlHttpRequest",
@@ -63,7 +64,7 @@ const style =
   JSON.stringify(css) +
   ";(document.head||document.documentElement).appendChild(s);})();";
 
-const out = [header, style, ext("app.js"), ext("shell.js")].join("\n");
+const out = [header, '(function(){if(location.hostname === "www.aiub.edu"){', ext("public-reader.js"), 'return;}', style, ext("zip-inflate.js"), ext("app.js"), ext("shell.js"), '}());'].join("\n");
 const dest = path.join(root, "userscript", "StudentDesk-AIUB.user.js");
 fs.writeFileSync(dest, out);
 // Compatibility copy: older installs check this path for updates. Remove after everyone has updated.

@@ -6,6 +6,16 @@ Fast, modern app-style UI for the [AIUB Student Portal](https://portal.aiub.edu)
 
 **Windows PC (Microsoft Edge):** [Install from Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/studentdesk-aiub-%E2%80%94-modern/meogjhmphdkglfabjonfjbdjlfpcpbpa). Click **Get → Add extension**. No ZIP or Developer mode needed. The store delivers the version currently approved by Microsoft.
 
+## v3.9.9 highlights
+
+- Liquid Glass header with readable light/dark scroll states and a low-cost Performance mode.
+- Native Notices bulletin, loaded-notice search, older pages and in-app article reader.
+- Safari-specific temporary extension package with a nonpersistent background and bounded public-page requests.
+- In-browser teacher-file previews: PDF, images and text; DOCX/PPTX are text-only previews, with original-download fallback.
+- Customizable quick actions, opt-in class/exam reminders, and routine export.
+
+Safari compatibility was fixture-tested; a real authenticated Safari account was not available for verification. Store delivery still depends on Mozilla/Microsoft approval. Login and captcha validation are unchanged.
+
 ## Contents
 
 - [Screenshots](#screenshots)

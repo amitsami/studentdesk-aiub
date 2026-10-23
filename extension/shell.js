@@ -87,15 +87,22 @@
   function cacheGet(k) { var v = cacheRaw(k); return v && Date.now() - v.t < 10 * 60e3 ? v.d : null; }
   function cacheSet(k, d) { delete pkMemo[k]; try { STORE.setItem("pp.c." + k, JSON.stringify({ t: Date.now(), d: d })); } catch (e) {} if (TRK_BY_KEY[k]) { mem[k] = d; schedPaint(); } }
   var inflight = {};
+  var requestWarnings = {};
+  function networkError(e) { return e && (e.name === "TypeError" || e.name === "AbortError" || /load failed|failed to fetch|network|timeout|responding|HTTP (408|502|503|504)/i.test(e.message || "")); }
+  function retryRead(fn) { return Promise.resolve().then(fn).catch(function (e) { if (!networkError(e) || navigator.onLine === false) throw e; return new Promise(function (r) { setTimeout(r, 650); }).then(fn); }); }
   function getDoc(url) {
     if (inflight[url]) return inflight[url];
-    var ctl = window.AbortController ? new AbortController() : null, to = setTimeout(function () { if (ctl) ctl.abort(); }, 25000);
-    var pr = fetch(url, { credentials: "include", signal: ctl ? ctl.signal : undefined }).then(function (r) {
-      if (!r.ok || /\/Login|portal\.aiub\.edu\/?$/i.test(r.url) && !/Student/.test(r.url)) throw new Error("SESSION");
-      return r.text();
-    }).then(function (h) { var d = new DOMParser().parseFromString(h, "text/html"); if (d.getElementById("loginForm")) throw new Error("SESSION"); return d; })
-      .catch(function (e) { if (e && e.name === "AbortError") throw new Error("The portal is responding slowly — please try again"); throw e; });
-    pr.then(done, done); function done() { clearTimeout(to); delete inflight[url]; }
+    var attempt = function () {
+      var ctl = window.AbortController ? new AbortController() : null, to = setTimeout(function () { if (ctl) ctl.abort(); }, 12000);
+      return fetch(url, { credentials: "include", signal: ctl ? ctl.signal : undefined }).then(function (r) {
+        if (/\/Login(?:\/|\?|$)/i.test(r.url) || (r.url && /^https:\/\/portal\.aiub\.edu\/?(?:\?.*)?$/i.test(r.url))) throw new Error("SESSION");
+        if (r.status === 401) throw new Error("SESSION");
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.text();
+      }).then(function (h) { var d = new DOMParser().parseFromString(h, "text/html"); if (d.getElementById("loginForm")) throw new Error("SESSION"); return d; }).finally(function () { clearTimeout(to); });
+    };
+    var pr = retryRead(attempt).catch(function (e) { if (e && e.name === "AbortError") throw new Error("The portal is responding slowly — please try again"); throw e; });
+    pr.then(done, done); function done() { delete inflight[url]; }
     return (inflight[url] = pr);
   }
   function load(key, url, parser, force) {
@@ -103,14 +110,19 @@
     if (!force && mem[key]) return Promise.resolve(mem[key]);
     // the page we are already on: read it straight from the open document (no network)
     if (!force && !mem[key] && samePage(url)) { var lv = parser(document); mem[key] = lv; cacheSet(key, lv); return Promise.resolve(lv); }
-    var fresh = function () { return getDoc(url).then(function (d) { var v = parser(d); mem[key] = v; cacheSet(key, v); return v; }); };
+    var fresh = function () { return getDoc(url).then(function (d) { var v = parser(d); delete requestWarnings[key]; mem[key] = v; cacheSet(key, v); return v; }); };
     var raw = !force && cacheRaw(key);
     if (raw && raw.d) {
       mem[key] = raw.d;
-      if (Date.now() - raw.t > 10 * 60e3 && !load.busy[key]) load.busy[key] = bg(fresh).then(function () { delete load.busy[key]; if (!document.hidden) softRefresh(); }, function () { delete load.busy[key]; }); if (0) fresh().then(function () { if (!document.hidden) softRefresh(); }, function () {});   // show old instantly, update silently
+      if (Date.now() - raw.t > 10 * 60e3 && !load.busy[key]) load.busy[key] = bg(fresh).then(function () { delete load.busy[key]; if (!document.hidden) softRefresh(); }, function (e) { delete load.busy[key]; if (e && e.message !== "SESSION") { requestWarnings[key] = "Could not refresh. Showing saved data."; if (!document.hidden) workspacePaint(); } }); if (0) fresh().then(function () { if (!document.hidden) softRefresh(); }, function () {});   // show old instantly, update silently
       return Promise.resolve(raw.d);
     }
-    return fresh();
+    return fresh().catch(function (e) {
+      if (e && (e.message === "SESSION" || e.message === "HTTP 403")) throw e;
+      var saved = cacheRaw(key);
+      if (saved && saved.d) { requestWarnings[key] = "Could not refresh. Showing saved data."; mem[key] = saved.d; return saved.d; }
+      throw e;
+    });
   }
 
   load.busy = {};
@@ -282,13 +294,15 @@
     app = document.createElement("div"); app.id = "pp-app";
     app.innerHTML =
       '<aside class="pp-side"><div class="pp-brand"><span class="pp-logo"><img src="/Content/Images/aiub_logo_92x92.png" alt="AIUB" decoding="async"></span><div><b>StudentDesk AIUB</b><small>Student workspace</small></div></div>' +
-      '<nav class="pp-nav">' + NAV.map(function (n, i) { return (i === 5 ? '<div class="pp-sep"></div>' : "") + '<a href="#/' + n.r + '" data-r="' + n.r + '">' + ic(n.i) + "<span>" + n.t + "</span></a>"; }).join("") +
+      '<nav class="pp-nav">' + NAV.map(function (n, i) { return (i === 0 ? '<div class="pp-nav-label">WORKSPACE</div>' : i === 5 ? '<div class="pp-sep"></div><div class="pp-nav-label">CAMPUS</div>' : "") + '<a href="#/' + n.r + '" data-r="' + n.r + '">' + ic(n.i) + "<span>" + n.t + "</span></a>"; }).join("") +
       '<div class="pp-sep"></div><a href="#/settings" data-r="settings">' + ic("gear") + "<span>Settings</span></a></nav>" +
       '<div class="pp-me"><span class="pp-avatar">' + esc(initials) + '</span><div><b>' + esc(NAME) + '</b><small>' + esc((L("Change Password") ? "" : "") + (location.host)) + '</small></div><button class="pp-iconbtn" data-act="theme" title="Dark / Light (Alt+D)">' + ic("moon") + "</button></div></aside>" +
       '<main class="pp-main"><header class="pp-top"><a class="pp-hlogo" href="#/home" aria-label="Home"><img src="/Content/Images/aiub_logo_92x92.png" alt="AIUB" decoding="async"></a><div class="pp-grow"><h1 id="pp-h"></h1><div class="pp-sub" id="pp-s"></div></div><div class="pp-row" id="pp-tr"></div>' +
       '<button class="pp-iconbtn" data-act="search" title="Search (Ctrl+K)">' + ic("search") + '</button><button class="pp-iconbtn pp-bell" data-act="noti" data-r="notifications" title="Notifications">' + ic("bell") + '</button><button class="pp-iconbtn pp-gear" data-act="settings" title="Settings">' + ic("gear") + '</button><button class="pp-iconbtn" data-act="refresh" title="Refresh data">' + ic("refresh") + '</button></header><div class="pp-scroll" id="pp-scroll"></div></main>' +
       '<nav class="pp-tabbar"><span class="pp-pill"></span>' + NAV.filter(function (n) { return n.tab; }).map(function (n) { return '<a href="#/' + n.r + '" data-r="' + n.r + '">' + ic(n.i) + "<span>" + n.tab + "</span></a>"; }).join("") + "</nav>" +
       '<div class="pp-toast" id="pp-toast"></div>';
+    var toolbar = document.createElement("div"); toolbar.className = "pp-header-tools"; toolbar.setAttribute("role", "group"); toolbar.setAttribute("aria-label", "Page tools");
+    $$(".pp-top > button", app).forEach(function (b) { toolbar.appendChild(b); }); $(".pp-top", app).appendChild(toolbar);
     document.body.appendChild(app);
     root.classList.add("pp-on");
     var ff = /Firefox\//.test(navigator.userAgent), mob = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent);
@@ -302,7 +316,7 @@
       if (a === "search") openSearch();
       if (a === "settings") go("#/settings");
       if (a === "noti") go("#/notifications");
-      if (a === "refresh") { clearCache(); toast("Refreshing from portal…"); route(true); }
+      if (a === "refresh") { mem = {}; pkMemo = {}; toast("Refreshing from portal… saved data kept as a fallback"); route(true); }
     });
     // The portal's own script swallows clicks on "#" links, so we handle navigation ourselves
     window.addEventListener("click", function (e) {
@@ -319,12 +333,13 @@
     window.addEventListener("hashchange", checkNav);
     window.addEventListener("popstate", checkNav);
     setInterval(checkNav, 300);
-    var rzW = innerWidth, rzT; window.addEventListener("resize", function () { clearTimeout(rzT); rzT = setTimeout(function () { if (innerWidth === rzW) return; rzW = innerWidth; movePill(); refreshQuickActions(); }, 150); });
+    var rzW = innerWidth, rzT; window.addEventListener("resize", function () { clearTimeout(rzT); rzT = setTimeout(function () { if (innerWidth === rzW) return; rzW = innerWidth; movePill(); refreshQuickActions(); syncPaint(); }, 120); });
+    [MQ_PHONE, MQ_TOUCH].forEach(function (mq) { if (mq.addEventListener) mq.addEventListener("change", refreshQuickActions); });
     syncThemeIcon();
     if (!/^#\//.test(location.hash)) history.replaceState(null, "", "#/" + (API.get().startPage || "home"));
     route();
     gestures();
-    wireTop(); warmOnIntent(); paintBadges();
+    wireTop(); warmOnIntent(); paintBadges(); workspaceStart();
     setTimeout(prefetch, 1800);
     setInterval(function () { if (!document.hidden) bg(function () { return notiLoad(true); }).catch(function () {}); }, 5 * 60e3);
     setInterval(function () { if (!document.hidden && current === "home") wxPaint(true); }, 10 * 60e3);
@@ -335,17 +350,19 @@
   function toast(m) { var t = $("#pp-toast", app); t.textContent = m; t.classList.add("on"); clearTimeout(t._t); t._t = setTimeout(function () { t.classList.remove("on"); }, 2200); }
   function movePill() {
     var bar = $(".pp-tabbar", app); if (!bar) return; var on = $("a.on", bar), pill = $(".pp-pill", bar);
-    if (!on) { pill.style.width = "0"; return; } pill.style.left = "0"; pill.style.transform = "translate3d(" + on.offsetLeft + "px,0,0)"; pill.style.width = on.offsetWidth + "px";
+    if (!on) { pill.style.width = "0"; return; }
+    var left = on.offsetLeft, width = on.offsetWidth;  // read layout once, then update the compositor-friendly transform
+    pill.style.transform = "translate3d(" + left + "px,0,0)"; pill.style.width = width + "px";
   }
   function setHead(h, s, right) { topH.textContent = h; topS.innerHTML = s || ""; topR.innerHTML = right || ""; }
   function skeleton(n) { var h = ""; for (var i = 0; i < (n || 3); i++) h += '<div class="pp-sk" style="height:' + (i ? 90 : 150) + 'px;margin-bottom:14px"></div>'; return '<div class="pp-view">' + h + "</div>"; }
   function failView(err) {
+    var net = networkError(err), message = net ? (navigator.onLine === false ? "You are offline. Reconnect and try again." : "The request could not finish. Check your connection and try again.") : err && err.message || "Unknown error";
     if (err && err.message === "SESSION") return '<div class="pp-view"><div class="pp-card pp-empty"><span class="pp-em">🔒</span><h3 style="justify-content:center">Session expired</h3><p>Please sign in again.</p><a class="pp-btn pri" href="/">Log in again</a></div></div>';
-    return '<div class="pp-view"><div class="pp-card pp-empty"><span class="pp-em">😕</span><h3 style="justify-content:center">Couldn’t load</h3><p>' + esc(err && err.message || "Unknown error") + '</p><button class="pp-btn pri" data-act="refresh">Try again</button> <a class="pp-btn" href="#/classic?u=' + encodeURIComponent(location.pathname + location.search) + '">Classic view</a></div></div>';
+    return '<div class="pp-view"><div class="pp-card pp-empty"><span class="pp-em">😕</span><h3 style="justify-content:center">Couldn’t load</h3><p>' + esc(message) + '</p><button class="pp-btn pri" data-act="refresh">Try again</button> <a class="pp-btn" href="#/classic?u=' + encodeURIComponent(location.pathname + location.search) + '">Classic view</a></div></div>';
   }
   var current = "", renderId = 0;
-  /* Numbers render immediately: avoid per-frame text/layout work. */
-  function animate() {}
+  // Show final numbers immediately: no per-frame text/layout work during navigation.
   /* ---------- background prefetch (one request at a time, so the portal server is never stressed) ---------- */
   function prefetch() {
     var jobs = [function () { return D.home && D.home(); }, function () { return D.reg && D.reg(); }, function () { return D.curr && D.curr(); }, function () { return D.sem && D.sem(); }, function () { return D.acc && D.acc(); }, function () { return noticePage(1); }, function () { return notiLoad(); }, function () { return mailIds(); }, function () { return examLoad(); }, function () { return regStatus(); }, function () { return rvCfg() ? rvList() : null; }, function () { return D.profile && D.profile(); }];
@@ -354,7 +371,6 @@
   }
   var MQ_PHONE = window.matchMedia ? matchMedia("(max-width: 900px)") : { matches: false };
   var MQ_TOUCH = window.matchMedia ? matchMedia("(hover: none) and (pointer: coarse)") : { matches: false };
-  [MQ_PHONE, MQ_TOUCH].forEach(function (mq) { if (mq.addEventListener) mq.addEventListener("change", refreshQuickActions); });
   function scTop(v) { if (!scroller) return 0; if (v == null) return scroller.scrollTop; scroller.scrollTop = v; }   // phone + PC: the app scrolls inside .pp-scroll (fixed tab bar never moves)
   var lastHash = null;
   function go(h) { if (location.hash === h) { route(); return; } location.hash = h; checkNav(); }
@@ -366,8 +382,16 @@
   function whenIdle(fn, quiet, cap) { var t0 = Date.now(); quiet = quiet || 1200; cap = cap || 6000; (function wait() { if (document.hidden || (Date.now() - lastInput < quiet && Date.now() - t0 < cap)) return setTimeout(wait, 250); var ric = window.requestIdleCallback; if (ric) ric(fn, { timeout: 1500 }); else setTimeout(fn, 60); })(); }
   ["touchstart", "pointerdown", "wheel", "keydown"].forEach(function (ev) { window.addEventListener(ev, function () { lastInput = Date.now(); }, { capture: true, passive: true }); });
   function swap(html, after) {
-    var doIt = function () { scroller.innerHTML = html; if (after) after(); };
-    doIt();
+    // Animate only the new view in CSS, not a snapshot of the entire browser page.
+    // Synchronous replacement also prevents an older queued transition winning a fast tab switch.
+    scroller.innerHTML = html;
+    $$("button:not([type])",scroller).forEach(function(b){b.type="button";});
+    if (after) after();
+    var view=$(".pp-view",scroller),reduced=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(view&&!view.classList.contains("pp-quiet")&&!API.get().performance&&API.get().anim!==false&&API.get().trans!==false&&!reduced&&view.animate) {
+      if(swap.motion)swap.motion.cancel();
+      swap.motion=view.animate([{opacity:.92},{opacity:1}],{duration:MQ_PHONE.matches||MQ_TOUCH.matches?110:160,easing:"ease-out"});
+    }
   }
   function route(force, silent) {
     lastHash = location.hash;
@@ -378,9 +402,9 @@
     var params = {}; q.split("&").forEach(function (kv) { if (!kv) return; var p = kv.split("="); params[decodeURIComponent(p[0])] = decodeURIComponent(p[1] || ""); });
     var id = ++renderId, prevR = current; current = r;
     if (r !== prevR) { RECENT = {}; clearTimeout(route.seenT); app.classList.remove("pp-cgon"); }
-    var shown = false, skT = silent ? null : setTimeout(function () { if (id === renderId && !shown) scroller.innerHTML = skeleton(); }, 90);  // skeleton only if slow
+    var shown = false, skT = silent ? null : setTimeout(function () { if (id === renderId && !shown) scroller.innerHTML = r === "notices" ? '<div class="pp-view pp-notices" aria-busy="true"><div class="pp-bulletin-head"><span class="pp-eyebrow">CAMPUS BULLETIN</span><h2>Stay in the loop.</h2><p role="status">Loading university notices…</p></div><div class="pp-card">' + skeleton(3) + '</div></div>' : skeleton(); }, 90);  // skeleton only if slow
     if (!force && r !== prevR) scTop(0);
-    Promise.resolve().then(function () { return VIEWS[r](params, !!force && !silent); }).then(function (html) { shown = true; clearTimeout(skT); if (id !== renderId) return; swap(silent ? html.replace('class="pp-view"', 'class="pp-view pp-quiet"') : html, function () { scroller.setAttribute("data-r", r); if (VIEWS[r].after) VIEWS[r].after(params); animate(); topCheck(); requestAnimationFrame(function () { setTimeout(paintBadges, 0); }); scheduleSeen(r); }); })
+    Promise.resolve().then(function () { return VIEWS[r](params, !!force && !silent); }).then(function (html) { shown = true; clearTimeout(skT); if (id !== renderId) return; swap(silent ? html.replace('class="pp-view"', 'class="pp-view pp-quiet"') : html, function () { scroller.setAttribute("data-r", r); if (VIEWS[r].after) VIEWS[r].after(params); workspacePaint(); topCheck(); requestAnimationFrame(function () { setTimeout(paintBadges, 0); }); scheduleSeen(r); }); })
       .catch(function (e) { shown = true; clearTimeout(skT); if (id !== renderId) return; scroller.innerHTML = failView(e); if (window.console) console.warn("[StudentDesk]", e); });
   }
   function greet() { var h = new Date().getHours(); return h >= 5 && h < 12 ? "Good morning" : h >= 12 && h < 17 ? "Good afternoon" : h >= 17 && h < 20 ? "Good evening" : "Good night"; }
@@ -400,6 +424,7 @@
   function tick() {
     if (!tickData) return; var el = $(".pp-tick", app); if (!el) return; var info = nextInfo(tickData), n = nowMin();
     var cd = $(".pp-cd", el), lab = $(".pp-nl", el);
+    if (!peek("home") && !peek("reg")) { lab.textContent = "Waiting for your schedule"; cd.textContent = ""; return; }
     if (info.live) { lab.innerHTML = '<span>Now · <b>' + esc(title(info.live.name)) + "</b> · Room " + esc(info.live.room) + "</span>"; cd.textContent = dur(info.live.end - n) + " left"; }
     else if (info.next && !info.next._in) { lab.innerHTML = '<span>Next · <b>' + esc(title(info.next.name)) + "</b> · Room " + esc(info.next.room) + " · " + fmtT(info.next.start) + "</span>"; cd.textContent = "in " + dur(info.next.start - n); }
     else if (info.next) { lab.innerHTML = '<span>No more classes today 🎉 Next: <b>' + esc(title(info.next.name)) + "</b> · " + DAYFULL[info.next.day] + " " + fmtT(info.next.start) + "</span>"; cd.textContent = ""; }
@@ -414,22 +439,21 @@
   }
   VIEWS.home = function (p, f) {
     setHead("Home", new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }));
-    return D.home(f).catch(function () { return null; }).then(function (home) {
+    return D.home(f).catch(function (e) { if (e && e.message === "SESSION") throw e; requestWarnings.home = "Home could not refresh. Check your connection or use the original portal."; return null; }).then(function (home) {
       var reg = peek("reg");
       if (!reg && !f) bg(function () { return D.reg(); }).then(function () { if (current === "home") softRefresh(); }, function () {});
       var slots = reg ? weekly(reg) : homeSlots(home); tickData = slots;
       var today = daySlots(slots, todayKey()), n = nowMin();
-      var todayHtml = today.length ? '<div class="pp-list">' + today.map(function (s) { var live = s.start <= n && n < s.end, past = n >= s.end;
+      var todayHtml = !home && !reg ? '<div class="pp-empty">Schedule unavailable. Your classes are not confirmed by this view.</div>' : today.length ? '<div class="pp-list">' + today.map(function (s) { var live = s.start <= n && n < s.end, past = n >= s.end;
           return '<a class="pp-item' + (past ? " pp-past" : "") + '" href="' + classic(s.href) + '"><span class="pp-dot" style="background:' + s.col + '"></span><div class="pp-t"><b>' + esc(title(s.name)) + '</b><small>' + (s.type ? esc(s.type) + " · " : "") + "Room " + esc(s.room) + '</small></div><div class="pp-r"><b>' + fmtShort(s.start) + "–" + fmtShort(s.end) + "</b><br>" + (live ? '<span class="pp-chip bad">Live</span>' : past ? "Done" : "in " + dur(s.start - n)) + "</div></a>"; }).join("") + "</div>"
         : '<div class="pp-empty"><span class="pp-em">🌿</span>No classes today</div>';
       var up = home && home.days ? home.days.slice(1, 4).map(function (d) { return '<div class="pp-item"><div class="pp-t"><b>' + esc(d.label) + "</b><small>" + (d.items.length ? d.items.map(function (i) { return esc(title(i.name)); }).join(" · ") : "No classes") + '</small></div><span class="pp-chip ' + (d.items.length ? "" : "ok") + '">' + d.items.length + "</span></div>"; }).join("") : "";
-      var q = quickActions();
-      var sub = (reg && reg.semester ? esc(reg.semester) + " · " : "") + (today.length ? today.length + (today.length > 1 ? " classes" : " class") + " today" : "Free day");
+      var sub = (!home && !reg ? "Schedule unavailable · refresh when connected" : "") || (reg && reg.semester ? esc(reg.semester) + " · " : "") + (today.length ? today.length + (today.length > 1 ? " classes" : " class") + " today" : "Free day");
       return '<div class="pp-view pp-home">' +
-        '<div class="pp-grid pp-g-21"><div class="pp-card pp-hero"><h2>' + esc(greet()) + ", " + esc(FIRST) + "</h2><p>" + sub + "</p>" +
-          '<div class="pp-next pp-tick">' + ic("clock") + '<div class="pp-nl"></div><div class="pp-cd"></div></div>' +
-          regBtnHtml(reg) + rvHeroBtn() + "</div>" +
-          '<div class="pp-card"><h3>Quick actions</h3><div class="pp-quick">' + quickActionsHtml() + "</div></div></div>" +
+        '<div class="pp-grid pp-g-21 pp-overview-grid"><section class="pp-card pp-hero pp-overview"><div class="pp-overview-intro"><div><span class="pp-eyebrow">STUDENTDESK · YOUR DAY</span><h2>' + esc(greet()) + ", " + esc(FIRST) + '</h2><p>' + sub + '</p></div><div class="pp-date-tile' + ((home || reg) && !today.length ? ' pp-day-off' : '') + '" aria-label="' + ((home || reg) && !today.length ? 'No classes today' : 'Today') + '"><small>' + new Date().toLocaleDateString("en-GB", { month: "short" }) + '</small><b>' + new Date().getDate() + '</b></div></div>' +
+          '<div class="pp-overview-body"><div class="pp-next pp-tick">' + ic("clock") + '<div class="pp-nl"></div><div class="pp-cd"></div></div>' +
+          '<div class="pp-home-links">' + regBtnHtml(reg) + rvHeroBtn() + "</div></div></section>" +
+          '<section class="pp-card pp-quick-card"><span class="pp-eyebrow">AT YOUR FINGERTIPS</span><h3>Quick actions</h3><p class="pp-section-caption">A little less searching. A little more doing.</p><div class="pp-quick">' + quickActionsHtml() + "</div></section></div>" +
         (examUpcoming().length ? '<div class="pp-card pp-examcard"><h3>📝 Exam routine is out<a class="pp-more" href="#/schedule?view=exams">All exams →</a></h3><div class="pp-list">' + examRows(examUpcoming(), 3) + "</div></div>" : "") +
         '<div class="pp-card pp-wxcard"><h3>Campus weather<span class="pp-more" style="color:var(--ap-muted)">AIUB · Kuratoli, Dhaka</span></h3><div id="pp-wx">' + (peek("wx") ? wxCard(peek("wx")) : '<div class="pp-sk" style="height:120px"></div>') + "</div></div>" +
         '<div class="pp-grid pp-g2"><div class="pp-card"><h3>Today · ' + DAYFULL[todayKey()] + '<a class="pp-more" href="#/schedule">Routine →</a></h3>' + todayHtml + "</div>" +
@@ -444,7 +468,7 @@
     wireQuickActions();
     var box = $("#pp-hnot", app); if (!box) return;
     if (!box.children.length) box.innerHTML = '<div class="pp-sk" style="height:56px"></div><div class="pp-sk" style="height:56px"></div>';
-    noticePage(1).then(function (d) { var b = $("#pp-hnot", app); if (b) b.innerHTML = noticeRows(d.items.slice(0, 4)) || '<div class="pp-empty">No notices</div>'; paintBadges(); }, function () { var b = $("#pp-hnot", app); if (b && !b.querySelector(".pp-item")) b.innerHTML = '<div class="pp-empty">Couldn’t reach aiub.edu</div>'; });
+    noticePage(1).then(function (d) { var b = $("#pp-hnot", app); if (b) b.innerHTML = noticeRows(d.items.slice(0, 4)) || '<div class="pp-empty">No notices</div>'; paintBadges(); }, function () { var b = $("#pp-hnot", app); if (b && !b.querySelector(".pp-item")) b.innerHTML = '<a class="pp-item" href="#/notices"><span class="pp-qi">' + ic("bell") + '</span><div class="pp-t"><b>View university notices</b><small>Latest university updates in your campus bulletin</small></div>' + ic("ext") + '</a>'; });
   };
 
   /* ---------- update tracker: red dots with counts (stored on this device only) ---------- */
@@ -492,7 +516,23 @@
     });
     return c && c.d ? pr.catch(function () { return c.d; }) : pr;
   }
-  function mailIds() { return fetch("/Message/Email/GetMessageList?boxID=0&pageNo=0&pageSize=100", { credentials: "include", headers: { Accept: "application/json" } }).then(function (r) { return r.json(); }).then(function (d) { if (Array.isArray(d)) cacheSet("mail0", d.map(function (m) { return String(m.ID); })); return d; }); }
+  var jsonReads={};
+  function portalJSON(path) {
+    var u;try{u=new URL(path,location.href);if(u.origin!==location.origin)throw new Error("Invalid portal request");}catch(e){return Promise.reject(e);}
+    if(jsonReads[u.href])return jsonReads[u.href];
+    var promise=retryRead(function(){return new Promise(function(resolve,reject){
+      var xhr=new XMLHttpRequest();xhr.open("GET",u.href,true);xhr.timeout=12000;xhr.withCredentials=true;
+      xhr.setRequestHeader("Accept","application/json");xhr.setRequestHeader("X-Requested-With","XMLHttpRequest");
+      xhr.onload=function(){var body=String(xhr.responseText||"").replace(/^\uFEFF/,"");
+        if(xhr.status===401 || /\/Login(?:[/?]|$)/i.test(xhr.responseURL||"") || /<form[^>]+id=["']loginForm/i.test(body))return reject(new Error("SESSION"));
+        if(xhr.status<200||xhr.status>=300)return reject(new Error("HTTP "+xhr.status));
+        try{var data=JSON.parse(body);if(typeof data==="string")data=JSON.parse(data);resolve(data);}catch(e){reject(new Error(/<html|<!doctype/i.test(body)?"The portal returned a web page instead of mailbox data. Open the original mailbox or sign in again.":"The portal mailbox returned an unreadable response."));}
+      };
+      xhr.onerror=function(){reject(new TypeError("Portal mailbox network error"));};xhr.ontimeout=function(){reject(new Error("Mailbox timeout"));};xhr.send();
+    });});jsonReads[u.href]=promise;promise.then(done,done);function done(){delete jsonReads[u.href];}return promise;
+  }
+  function mailArray(data){if(Array.isArray(data))return data;var keys=["Messages","messages","Items","items","Data","data"];for(var i=0;i<keys.length;i++)if(data&&Array.isArray(data[keys[i]]))return data[keys[i]];throw new Error("Mailbox response format was not recognized. Open the original mailbox.");}
+  function mailIds() { return portalJSON("/Message/Email/GetMessageList?boxID=0&pageNo=0&pageSize=100").then(mailArray).then(function(d){cacheSet("mail0",d.map(function(m){return String(m.ID);}));return d;}); }
   function plain(h) { var d = new DOMParser().parseFromString("<div>" + h + "</div>", "text/html"); return (d.body.textContent || "").replace(/\s+/g, " ").trim(); }
   var notiShow = 30;
   VIEWS.notifications = function (p, f) {
@@ -1034,17 +1074,12 @@
   function isCoursesResult(name) { return /^COURSES?(?:AND)?RESULTS?$/.test(norm(name)); }
   function coursesResultHref() {
     var href = null;
-    MENU.some(function (g) { return g.items.some(function (it) { if (isCoursesResult(it.t) && it.h) { href = it.h; return true; } }); });
+    MENU.some(function (g) { return g.items.some(function (it) { if (!isCoursesResult(it.t) || !it.h) return false; href = it.h; return true; }); });
     return href;
   }
-  function quickActionsHtml() {
-    return quickActions().map(function (x, i) { return '<a href="#/' + x[0] + '" data-qi="' + i + '"' + (x[3] ? ' data-r="' + x[3] + '"' : '') + '><span class="pp-qi">' + ic(x[1]) + '</span>' + x[2] + '</a>'; }).join('');
-  }
-  function wireQuickActions() { var qa = quickActions(); $$(".pp-quick a[data-qi]", app).forEach(function (a) { var x = qa[+a.getAttribute("data-qi")]; if (x && x[4]) a.__pre = x[4]; }); }
-  function refreshQuickActions() { var box = $(".pp-quick", app); if (current === "home" && box) { box.innerHTML = quickActionsHtml(); wireQuickActions(); } }
-  function quickActions() {
+  function defaultQuickActions() {
     var phone = MQ_PHONE.matches || MQ_TOUCH.matches, q = [], resultHref = coursesResultHref();
-    var resultAction = resultHref ? ["classic?u=" + encodeURIComponent(resultHref), "book", "Courses &amp; Result"] : null;
+    var resultAction = resultHref ? ["classic?u=" + encodeURIComponent(resultHref), "book", "Courses & Result"] : null;
     if (phone) q.push(["grades", "award", "Grades", "grades"], ["finance", "wallet", "Payments", "finance"], ["mail", "mail", "Mail", "mail"]);
     q.push(["schedule", "coffee", "Free time", "", function () { schedState.view = "free"; }]);
     if (!phone) q.push(["schedule", "grid", "Week view", "", function () { schedState.view = "week"; }]);
@@ -1055,6 +1090,19 @@
     if (L("Drop Application")) q.push(["classic?u=" + encodeURIComponent(L("Drop Application")), "minus", "Drop course"]);
     if (!phone) { if (L("Search Book")) q.push(["classic?u=" + encodeURIComponent(L("Search Book")), "lib", "Library"]); if (resultAction) q.push(resultAction); }
     return q.slice(0, 8);
+  }
+  function quickActionsHtml() {
+    return quickActions().map(function (x, i) { return '<a href="#/' + x[0] + '" data-qi="' + i + '"' + (x[3] ? ' data-r="' + x[3] + '"' : "") + '><span class="pp-qi">' + ic(x[1]) + '</span><span class="pp-ql">' + esc(x[2]) + "</span></a>"; }).join("");
+  }
+  function wireQuickActions() {
+    var qa = quickActions();
+    $$(".pp-quick a[data-qi]", app).forEach(function (a) { var x = qa[+a.getAttribute("data-qi")]; if (x && x[4]) a.__pre = x[4]; });
+  }
+  function refreshQuickActions() {
+    if (!app || current !== "home") return;
+    var box = $(".pp-quick", app); if (!box) return;
+    var html = quickActionsHtml(); if (box.innerHTML === html) return;
+    box.innerHTML = html; wireQuickActions();
   }
 
   /* ---------- header: turns into liquid glass when content scrolls under it ---------- */
@@ -1078,23 +1126,66 @@
 
   /* ---------- AIUB notices (public website www.aiub.edu) ---------- */
   var SITE = "https://www.aiub.edu";
-  function xget(url) {
+  function hasPublicTransport() {
+    return typeof GM_xmlhttpRequest === "function" || (typeof GM !== "undefined" && GM && typeof GM.xmlHttpRequest === "function") || (typeof browser !== "undefined" && browser.runtime && typeof browser.runtime.sendMessage === "function") || (typeof chrome !== "undefined" && chrome.runtime && typeof chrome.runtime.sendMessage === "function");
+  }
+  function publicRuntime() {
+    if(typeof chrome!=="undefined" && chrome.runtime && typeof chrome.runtime.sendMessage==="function")return chrome.runtime;
+    if(typeof browser!=="undefined" && browser.runtime && typeof browser.runtime.sendMessage==="function")return browser.runtime;
+    return null;
+  }
+  function runtimePublicRequest(url) {
+    // Accept callback and Promise runtime APIs. Some Safari-compatible wrappers
+    // expose browser.runtime but return undefined instead of a Promise.
+    return new Promise(function(resolve,reject){
+      var rt=publicRuntime(),done=false,timer;
+      if(!rt){reject(new Error("BACKGROUND: Extension messaging unavailable"));return;}
+      timer=setTimeout(function(){finish(new Error("BACKGROUND_TIMEOUT: No public-page response after 7 seconds"));},7000);
+      function finish(error,value){if(done)return;done=true;clearTimeout(timer);error?reject(error):resolve(value);}
+      function receive(response){
+        if(!response){finish(new Error("BACKGROUND: Empty extension response"));return;}
+        if(response.err){finish(new Error((response.code||"PUBLIC_REQUEST")+": "+String(response.err).slice(0,220)));return;}
+        if(typeof response.text!=="string"){finish(new Error("BACKGROUND: Invalid extension response"));return;}
+        finish(null,response.text);
+      }
+      function callback(response){var e=rt.lastError;if(e){finish(new Error("BACKGROUND: "+(e.message||"Extension connection lost")));return;}receive(response);}
+      var message={t:"xget",url:url};
+      try {
+        var isChrome=typeof chrome!=="undefined"&&rt===chrome.runtime;
+        if(isChrome){var p=rt.sendMessage(message,callback);if(p&&typeof p.then==="function")p.then(receive,function(e){finish(new Error("BACKGROUND: "+String(e&&e.message||e)));});}
+        else {
+          var result=rt.sendMessage(message);
+          if(result&&typeof result.then==="function")result.then(receive,function(e){finish(new Error("BACKGROUND: "+String(e&&e.message||e)));});
+          else {var second=rt.sendMessage(message,callback);if(second&&typeof second.then==="function")second.then(receive,function(e){finish(e);});}
+        }
+      }catch(e){finish(new Error("BACKGROUND: "+String(e&&e.message||e)));}
+    });
+  }
+  function xgetOnce(url) {
     return new Promise(function (res, rej) {
       var done = false, to = setTimeout(function () { if (!done) { done = true; rej(new Error("aiub.edu is not responding")); } }, 20000);
       function ok(t) { if (done) return; done = true; clearTimeout(to); res(t); } function bad(e) { if (done) return; done = true; clearTimeout(to); rej(e instanceof Error ? e : new Error(String(e))); }
       try {
-        if (typeof GM_xmlhttpRequest === "function") return GM_xmlhttpRequest({ method: "GET", url: url, anonymous: true, onload: function (r) { r.status < 400 ? ok(r.responseText) : bad("HTTP " + r.status); }, onerror: function () { bad("Network error"); }, ontimeout: function () { bad("Timeout"); } });
-        if (typeof GM !== "undefined" && GM && GM.xmlHttpRequest) return GM.xmlHttpRequest({ method: "GET", url: url, onload: function (r) { r.status < 400 ? ok(r.responseText) : bad("HTTP " + r.status); }, onerror: function () { bad("Network error"); } });
-        var rt = typeof browser !== "undefined" && browser.runtime && browser.runtime.id ? browser.runtime : typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id ? chrome.runtime : null;
-        if (rt) return rt.sendMessage({ t: "xget", url: url }, function (r) { if (!r || r.err) bad((r && r.err) || "Couldn’t reach aiub.edu"); else ok(r.text); });
+        if (typeof GM_xmlhttpRequest === "function") return GM_xmlhttpRequest({ method: "GET", url: url, anonymous: true, timeout: 15000, onload: function (r) { r.status >= 200 && r.status < 400 ? ok(r.responseText) : bad("HTTP " + r.status); }, onerror: function () { bad("Network error"); }, ontimeout: function () { bad("Timeout"); } });
+        if (typeof GM !== "undefined" && GM && GM.xmlHttpRequest) { var gp = GM.xmlHttpRequest({ method: "GET", anonymous: true, timeout: 15000, url: url, onload: function (r) { r.status >= 200 && r.status < 400 ? ok(r.responseText) : bad("HTTP " + r.status); }, onerror: function () { bad("Network error"); }, ontimeout: function () { bad("Timeout"); } }); if (gp && gp.then) gp.then(function (r) { if (!r) return; r.status >= 200 && r.status < 400 ? ok(r.responseText) : bad("HTTP " + r.status); }, bad); return; }
+        if(publicRuntime()){runtimePublicRequest(url).then(ok,bad);return;}
       } catch (e) { return bad(e); }
       fetch(url, { credentials: "omit" }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); }).then(ok, bad);
     });
   }
+  function xget(url) { return retryRead(function () { return xgetOnce(url); }); }
+  function publicFailure(e) {
+    var m = String(e && e.message || e || "Network error");
+    if (/context invalidated|receiving end|connection unavailable|message port|could not establish/i.test(m)) return "Extension connection lost. Reload the portal tab after reloading the extension.";
+    if (/403|429/.test(m)) return "aiub.edu refused or limited this request. Open the official site; retry later.";
+    if (/could not be read/.test(m)) return "The public notices page format was not recognized.";
+    return "Public website request failed: " + m.slice(0, 200) + ".";
+  }
+  var noticeInflight = {};
   function parseNotices(html) {
     var d = new DOMParser().parseFromString(html, "text/html"), items = [];
     $$(".notification", d).forEach(function (n) {
-      var a = n.closest("a[href]") || $("a[href]", n); if (!a) return; var href = a.getAttribute("href"); if (!href || href.charAt(0) !== "/" || /^\/category\//.test(href)) return;
+      var a = n.closest("a[href]") || $("a[href]", n); if (!a) return; var target; try { target = new URL(a.getAttribute("href"), SITE); } catch (e) { return; } if (target.origin !== SITE || /^\/category\//.test(target.pathname)) return; var href = target.pathname;
       var dc = $(".date-custom", n), parts = dc ? txt(dc).split(" ") : [];
       items.push({ u: href, title: txt($(".title", n)), desc: txt($(".desc", n)), day: parts[0] || "", mon: parts[1] || "", year: parts[2] || "" });
     });
@@ -1102,10 +1193,15 @@
     return { items: items, last: last };
   }
   function noticePage(n, force) {
-    var key = "notices" + n, c = !force && cacheRaw(key);
-    if (c && c.d && Date.now() - c.t < 10 * 60e3) return Promise.resolve(c.d);
-    var pr = xget(SITE + "/category/notices?pageNo=" + n + "&pageSize=20").then(function (h) { var d = parseNotices(h); if (!d.items.length) throw new Error("No notices found"); cacheSet(key, d); mem[key] = d; return d; });
-    return c && c.d ? pr.catch(function () { return c.d; }) : pr;
+    var key = "notices" + n, c = cacheRaw(key);
+    if (!force && c && c.d && Date.now() - c.t < 10 * 60e3) return Promise.resolve(c.d);
+    if (noticeInflight[key]) return noticeInflight[key];
+    var pr = noticeAccess("/category/notices?pageNo=" + n + "&pageSize=20", function(h){var d=parseNotices(h);if(!d.items.length)throw new Error("The notices page could not be read");return d;}).then(function(d){delete requestWarnings[key];cacheSet(key,d);mem[key]=d;return d;}).catch(function (e) {
+      requestWarnings[key] = "Notices could not refresh. " + (c && c.d ? "Showing saved notices. " : "") + publicFailure(e);
+      if (c && c.d) return c.d;
+      throw e;
+    });
+    noticeInflight[key] = pr; pr.then(done, done); function done() { delete noticeInflight[key]; } return pr;
   }
   function noticeRows(items) {
     return items.map(function (it) { var isNew = isNewSig("notices", it.u);
@@ -1113,20 +1209,60 @@
   }
   function noticeTime(it) { var t = Date.parse(it.day + " " + it.mon + " " + it.year); return isNaN(t) ? 0 : t; }
   var noticeState = { q: "", pages: 1 };
-  VIEWS.notices = function (p, f) {
-    setHead("Notices", "Official notices from aiub.edu");
-    var jobs = []; for (var i = 1; i <= noticeState.pages; i++) jobs.push(noticePage(i, f));
-    return Promise.all(jobs).then(function (pages) {
-      var all = [], last = pages[0].last; pages.forEach(function (pg) { all = all.concat(pg.items); });
-      var q = noticeState.q.toLowerCase(), list = q ? all.filter(function (it) { return (it.title + " " + it.desc).toLowerCase().indexOf(q) >= 0; }) : all;
-      return '<div class="pp-view pp-notices"><div class="pp-row" style="margin-bottom:14px"><input class="pp-input" id="pp-nq" placeholder="Search notices" value="' + esc(noticeState.q) + '" style="flex:1"><a class="pp-btn" target="_blank" rel="noopener" href="' + SITE + '/category/notices">' + ic("ext") + " aiub.edu</a></div>" +
-        '<div class="pp-card"><div class="pp-list">' + (noticeRows(list) || '<div class="pp-empty">No matching notices</div>') + "</div>" +
-        (noticeState.pages < last ? '<div style="text-align:center;margin-top:14px"><button class="pp-btn" id="pp-nmore">Load older notices</button></div>' : "") + "</div></div>";
+  // The official page is a temporary, offscreen data source only. The visible UI
+  // is always ours. Verified origin + exact window/path/page checks prevent spoofing.
+  function publicNoticeData(path) {
+    return new Promise(function(resolve,reject) {
+      var url;try{url=new URL(path,SITE);}catch(e){reject(e);return;}
+      if(url.origin!==SITE || !/^\/[\w\-\/.%]+$/.test(url.pathname)){reject(new Error("Invalid public notice URL"));return;}
+      var frame=document.createElement("iframe"),done=false,timer;
+      frame.id="pp-notice-data-frame";frame.title="Public notice data loader";frame.tabIndex=-1;frame.setAttribute("aria-hidden","true");frame.referrerPolicy="no-referrer";
+      frame.setAttribute("sandbox","allow-scripts allow-same-origin");
+      frame.style.cssText="display:block!important;position:fixed!important;left:-10000px!important;top:0!important;width:1px!important;height:1px!important;border:0!important;opacity:0!important;pointer-events:none!important";
+      function finish(error,value){if(done)return;done=true;clearTimeout(timer);window.removeEventListener("message",receive);frame.remove();error?reject(error):resolve(value);}
+      function receive(e){
+        if(e.origin!==SITE || e.source!==frame.contentWindow || !e.data || e.data.t!=="studentdesk:public-notice:v1")return;
+        var payload=e.data,d=payload.data;if(payload.path!==url.pathname || !d)return;
+        if(/^\/category\/notices\/?$/.test(url.pathname)){
+          if(d.kind!=="list" || !Array.isArray(d.items))return;
+          var sourcePage=new URLSearchParams(payload.search||"").get("pageNo")||"1";
+          if(sourcePage!==(url.searchParams.get("pageNo")||"1"))return;
+          var items=d.items.slice(0,100).filter(function(it){return it&&typeof it.title==="string"&&typeof it.u==="string"&&/^\/[\w\-\/.%]+$/.test(it.u)&&!/^\/category\//.test(it.u);}).map(function(it){return {u:it.u,title:it.title.slice(0,2000),desc:String(it.desc||"").slice(0,4000),day:String(it.day||"").slice(0,8),mon:String(it.mon||"").slice(0,16),year:String(it.year||"").slice(0,8)};});
+          if(!items.length)return;finish(null,{items:items,last:Math.max(+sourcePage,Math.min(1000,+d.last||1))});
+        }else if(d.kind==="detail" && typeof d.title==="string" && typeof d.body==="string")finish(null,{title:d.title.slice(0,2000),date:String(d.date||"").slice(0,120),body:cleanHtml(d.body.slice(0,600000))});
+      }
+      window.addEventListener("message",receive);
+      timer=setTimeout(function(){finish(new Error("Public notice access unavailable. Allow StudentDesk on www.aiub.edu in your extension or userscript manager, then retry."));},10000);
+      frame.onload=function(){if(!done&&frame.contentWindow)frame.contentWindow.postMessage({t:"studentdesk:read-public:v1"},SITE);};
+      frame.src=url.href;document.body.appendChild(frame);
+    });
+  }
+  function noticeAccess(path,parse) {
+    var gm=typeof GM_xmlhttpRequest==="function" || (typeof GM!=="undefined"&&GM&&typeof GM.xmlHttpRequest==="function");
+    // An installed WebExtension uses its own background, not a cross-site frame.
+    // Never turn a missing/failed background into another long, doomed wait.
+    if(publicRuntime()&&!gm)return runtimePublicRequest(SITE+path).then(parse);
+    if(!hasPublicTransport())return publicNoticeData(path);
+    return xgetOnce(SITE+path).then(parse).catch(function(){return publicNoticeData(path);});
+  }
+  function noticeUnavailable(path,error) {
+    return '<section class="pp-card pp-notice-unavailable"><span class="pp-eyebrow">PUBLIC PAGE UNAVAILABLE</span><h3>Notices couldn’t refresh</h3><p>The extension could not retrieve this public page. Saved notices remain available when present.</p>'+(error?'<p class="pp-note" role="status">'+esc(String(error).slice(0,260))+'</p>':'')+'<div class="pp-row"><button type="button" class="pp-btn pri" data-act="refresh">'+ic("refresh")+' Retry</button><a class="pp-btn" href="'+SITE+esc(path)+'" target="_blank" rel="noopener noreferrer">'+ic("ext")+' Open official site</a></div></section>';
+  }
+  function filteredNotices(items,q){q=q.toLowerCase().trim();return q?items.filter(function(it){return (it.title+" "+it.desc).toLowerCase().indexOf(q)>=0;}):items;}
+  VIEWS.notices=function(p,f){
+    setHead("Notices","Official updates · your campus bulletin");
+    if(p.compact)noticeState.pages=1;
+    var jobs=[];for(var i=1;i<=noticeState.pages;i++)jobs.push(noticePage(i,f).catch(function(e){return {items:[],last:noticeState.pages,unavailable:true,error:String(e&&e.message||e)};}));
+    return Promise.all(jobs).then(function(pages){
+      var all=[],seen={},last=pages[0].last,failed=pages.some(function(pg){return pg.unavailable;});
+      pages.forEach(function(pg){pg.items.forEach(function(it){if(!seen[it.u]){seen[it.u]=true;all.push(it);}});last=Math.max(last,pg.last);});noticeState.items=all;
+      var list=filteredNotices(all,noticeState.q);
+      return '<div class="pp-view pp-notices"><div class="pp-bulletin-head"><span class="pp-eyebrow">CAMPUS BULLETIN</span><h2>Stay in the loop.</h2><p>Notices, deadlines and important university updates.</p></div><div class="pp-notice-toolbar"><input type="search" class="pp-input" id="pp-nq" aria-label="Search loaded notices" placeholder="Search loaded notices" value="'+esc(noticeState.q)+'"><a class="pp-btn sm" href="'+SITE+'/category/notices" target="_blank" rel="noopener noreferrer">'+ic("ext")+' Official site</a></div>'+(failed?noticeUnavailable("/category/notices",(pages.filter(function(pg){return pg.unavailable;})[0]||{}).error):"")+(all.length?'<section class="pp-card pp-bulletin"><div class="pp-bulletin-label"><span>Latest updates</span><span id="pp-notice-count">'+list.length+' of '+all.length+'</span></div><div class="pp-list" id="pp-notice-list">'+(noticeRows(list)||'<div class="pp-empty">No matching notices</div>')+'</div>'+(noticeState.pages<last?'<button type="button" class="pp-btn" id="pp-nmore">Load older notices</button>':'')+'</section>':"")+'</div>';
     });
   };
-  VIEWS.notices.after = function () {
-    var q = $("#pp-nq", app), tmr; if (q) q.oninput = function () { clearTimeout(tmr); tmr = setTimeout(function () { noticeState.q = q.value; var pos = q.selectionStart; route(); setTimeout(function () { var n = $("#pp-nq", app); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) {} } }, 60); }, 250); };
-    var m = $("#pp-nmore", app); if (m) m.onclick = function () { m.disabled = true; m.textContent = "Loading…"; noticeState.pages++; route(); };
+  VIEWS.notices.after=function(){
+    var q=$("#pp-nq",app),tmr;if(q)q.oninput=function(){clearTimeout(tmr);var value=q.value;tmr=setTimeout(function(){if(!q.isConnected)return;noticeState.q=value;var items=noticeState.items||[],list=filteredNotices(items,value),box=$("#pp-notice-list",app),count=$("#pp-notice-count",app);if(box)box.innerHTML=noticeRows(list)||'<div class="pp-empty">No matching notices</div>';if(count)count.textContent=list.length+' of '+items.length;},100);};
+    var m=$("#pp-nmore",app);if(m)m.onclick=function(){m.disabled=true;noticeState.pages++;route();};
   };
   function cleanHtml(html) {
     var d = new DOMParser().parseFromString("<div>" + html + "</div>", "text/html"), root = d.body.firstChild;
@@ -1134,24 +1270,25 @@
     (function walk(el) { Array.prototype.slice.call(el.children).forEach(function (c) {
       if (!OK.test(c.tagName)) { if (/^(SCRIPT|STYLE|IFRAME|OBJECT|EMBED|FORM|INPUT|BUTTON|LINK|META)$/.test(c.tagName)) { c.remove(); return; } var f = d.createDocumentFragment(); while (c.firstChild) f.appendChild(c.firstChild); c.replaceWith(f); walk(el); return; }
       Array.prototype.slice.call(c.attributes).forEach(function (at) { var n = at.name.toLowerCase(); if (!((n === "href" && c.tagName === "A") || (n === "src" && c.tagName === "IMG") || n === "colspan" || n === "rowspan" || n === "alt")) c.removeAttribute(at.name); });
-      if (c.tagName === "A") { var h = c.getAttribute("href") || ""; if (/^\s*javascript:/i.test(h)) c.removeAttribute("href"); else { if (h.charAt(0) === "/") c.setAttribute("href", SITE + h); c.setAttribute("target", "_blank"); c.setAttribute("rel", "noopener"); } }
+      if (c.tagName === "A") { var h = c.getAttribute("href") || ""; try { var target = new URL(h,SITE); if (!/^(https?:|mailto:)$/.test(target.protocol)) c.removeAttribute("href"); else c.setAttribute("href",target.href); } catch(e) { c.removeAttribute("href"); } c.setAttribute("target","_blank"); c.setAttribute("rel","noopener noreferrer"); }
       if (c.tagName === "IMG") { var sr = c.getAttribute("src") || ""; if (sr.charAt(0) === "/") c.setAttribute("src", SITE + sr); else if (!/^https:/i.test(sr)) c.remove(); c.setAttribute("loading", "lazy"); }
       walk(c); }); })(root);
     $$("p, div, span", root).reverse().forEach(function (e) { if (!e.textContent.replace(/\s|\u00a0/g, "") && !e.querySelector("img")) e.remove(); });
     return root.innerHTML;
   }
-  VIEWS.notice = function (p) {
+  VIEWS.notice = function (p, force) {
     var u = p.u || ""; if (!/^\/[\w\-\/%.]+$/.test(u)) return Promise.resolve('<div class="pp-view"><div class="pp-card pp-empty">Invalid notice link</div></div>');
     setHead("Notice", '<a href="#/notices">← All notices</a>');
     var key = "notice:" + u, c = mem[key] || (cacheRaw(key) || {}).d;
-    var pr = c ? Promise.resolve(c) : xget(SITE + u).then(function (h) {
+    var pr = c && !force ? Promise.resolve(c) : noticeAccess(u, function (h) {
       var d = new DOMParser().parseFromString(h, "text/html"), t = txt($("#dynamicHeading", d)) || txt($("h1", d)), cols = $$(".col-md-8 .question-column", d), body = cols.length > 1 ? cols[1].innerHTML : (cols[0] ? cols[0].innerHTML : "");
       var db = $(".date-box", d), date = db ? txt(db).replace(/\s+/g, " ") : "";
-      var v = { title: t, date: date, body: cleanHtml(body) }; mem[key] = v; cacheSet(key, v); return v; });
+      if(!t || !body)throw new Error("Notice content unavailable");return {title:t,date:date,body:cleanHtml(body)};}).then(function(v){mem[key]=v;cacheSet(key,v);return v;});
     return pr.then(function (n) {
       return '<div class="pp-view pp-ndetail"><div class="pp-card"><div class="pp-chip mute" style="margin-bottom:10px">' + ic("cal") + " " + esc(n.date) + '</div><h2 class="pp-ntitle">' + esc(n.title) + '</h2><div class="pp-nbody">' + (n.body || "<p>(No text — open on aiub.edu)</p>") + '</div><div class="pp-row" style="margin-top:18px"><a class="pp-btn" href="#/notices">← All notices</a><a class="pp-btn pri" target="_blank" rel="noopener" href="' + SITE + esc(u) + '">' + ic("ext") + " Open on aiub.edu</a></div></div></div>";
-    });
+    }).catch(function (error) { return '<div class="pp-view pp-notices"><a class="pp-btn sm" href="#/notices">← All notices</a>' + noticeUnavailable(u,error&&error.message) + '</div>'; });
   };
+
   /* CGPA privacy: every CGPA is blurred until tapped; tap again to blur it. Resets when you change page. */
   function cgB(v, tag) { tag = tag || "span"; return "<" + tag + ' class="pp-cgb" role="button" tabindex="0" title="Tap to show / hide CGPA">' + v + "</" + tag + ">"; }
   function cgWire() {
@@ -1375,7 +1512,7 @@
 
   /* ---------- mail ---------- */
   var mailState = { tab: "portal", box: 0 };
-  function jdate(v) { if (!v) return ""; var m = /\/Date\((\d+)/.exec(v); var d = m ? new Date(+m[1]) : new Date(v); return isNaN(d) ? String(v) : d.toLocaleString(undefined, { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }); }
+  function jdate(v) { if (!v) return "";try{var m=/\/Date\((\d+)/.exec(v),d=m?new Date(+m[1]):new Date(v);if(isNaN(d.getTime()))return String(v);try{return d.toLocaleString("en-GB",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"});}catch(e){return d.toISOString().slice(0,16).replace("T"," ");}}catch(e){return String(v||"");} }
   function pickDate(o) { for (var k in o) if (/date|time|sent|created/i.test(k) && o[k] && typeof o[k] === "string") return jdate(o[k]); return ""; }
   VIEWS.mail = function (p, force) {
     if (p.tab) mailState.tab = p.tab;
@@ -1393,13 +1530,16 @@
     }
     var boxes = ["Inbox", "Sent", "Drafts", "Trash"];
     var mk = "mail" + mailState.box, mc = mem[mk];
-    var getList = mc && !force && Date.now() - mc.t < 120e3 ? Promise.resolve(mc.d) : fetch("/Message/Email/GetMessageList?boxID=" + mailState.box + "&pageNo=0&pageSize=100", { credentials: "include", headers: { Accept: "application/json" } }).then(function (r) { if (!r.ok) throw new Error("Couldn’t load mailbox (" + r.status + ")"); return r.json(); }).then(function (d) { mem[mk] = { t: Date.now(), d: d }; if (mailState.box === 0 && Array.isArray(d)) cacheSet("mail0", d.map(function (m) { return String(m.ID); })); return d; });
+    var getList = mc && !force && Date.now() - mc.t < 120e3 ? Promise.resolve(mc.d) : portalJSON("/Message/Email/GetMessageList?boxID=" + mailState.box + "&pageNo=0&pageSize=100").then(mailArray).then(function (d) { mem[mk] = { t: Date.now(), d: d }; if (mailState.box === 0 && Array.isArray(d)) cacheSet("mail0", d.map(function (m) { return String(m.ID); })); return d; });
     return getList.then(function (list) {
       list = Array.isArray(list) ? list : [];
       return '<div class="pp-view">' + tabs + '<div class="pp-mail"><div class="pp-card" style="padding:12px"><div class="pp-tabs" style="width:100%;margin-bottom:10px">' + boxes.map(function (b, i) { return '<button data-mb="' + i + '" class="' + (mailState.box === i ? "on" : "") + '">' + b + "</button>"; }).join("") + '</div><div class="pp-list" id="pp-mlist">' +
-        (list.length ? list.map(function (m, i) { var fr = m.From || {}; return '<div class="pp-item pp-click" data-mid="' + esc(m.ID) + '"><span class="pp-avatar" style="width:34px;height:34px;font-size:12px">' + esc((fr.Name || "?").trim().charAt(0)) + '</span><div class="pp-t"><b>' + esc(fr.Name || "Unknown") + (mailState.box === 0 && isNewSig("mail", String(m.ID)) ? NEWDOT : "") + "</b><small>" + esc(m.Subject || "(no subject)") + '</small></div><div class="pp-r" style="font-size:11.5px">' + esc(pickDate(m)) + "</div></div>"; }).join("")
+        (list.length ? list.map(function (m, i) { var fr = m.From || {}; return '<div class="pp-item pp-click" data-mid="' + esc(m.ID) + '"><span class="pp-avatar" style="width:34px;height:34px;font-size:12px">' + esc(String(fr.Name || "?").trim().charAt(0)) + '</span><div class="pp-t"><b>' + esc(fr.Name || "Unknown") + (mailState.box === 0 && isNewSig("mail", String(m.ID)) ? NEWDOT : "") + "</b><small>" + esc(m.Subject || "(no subject)") + '</small></div><div class="pp-r" style="font-size:11.5px">' + esc(pickDate(m)) + "</div></div>"; }).join("")
           : '<div class="pp-empty"><span class="pp-em">📭</span>' + boxes[mailState.box] + " is empty</div>") +
         '</div></div><div class="pp-card" id="pp-mview"><div class="pp-empty"><span class="pp-em">✉️</span>Select a message</div><div style="text-align:center"><a class="pp-btn" href="' + classic("/Message/Email") + '">' + ic("layers") + " Open portal mailbox (compose)</a></div></div></div></div>";
+    }).catch(function(e){
+      var session=e&&e.message==="SESSION";
+      return '<div class="pp-view">'+tabs+'<div class="pp-card pp-mail-recovery"><span class="pp-qi">'+ic("mail")+'</span><h2>'+(session?'Sign in again to open mail':'Portal mailbox')+'</h2><p>'+esc(session?'Your portal session has expired.':e.message||'Mailbox data could not be read.')+'</p><div class="pp-row"><a class="pp-btn pri" href="'+(session?'/':classic('/Message/Email'))+'">'+(session?'Sign in':'Open original mailbox')+'</a><button type="button" class="pp-btn" data-act="refresh">Retry</button></div><p class="pp-note">Outlook is separate and remains available from the tab above.</p></div></div>';
     });
   };
   VIEWS.mail.after = function () {
@@ -1416,7 +1556,7 @@
     $$("[data-mid]", app).forEach(function (it) { it.onclick = function () {
       $$("[data-mid]", app).forEach(function (x) { x.style.outline = x === it ? "2px solid var(--ap-accent)" : ""; });
       var v = $("#pp-mview", app); v.innerHTML = '<div class="pp-sk" style="height:300px"></div>';
-      fetch("/Message/Email/GetMessageByID?messageID=" + encodeURIComponent(it.getAttribute("data-mid")), { credentials: "include", headers: { Accept: "application/json" } }).then(function (r) { return r.json(); }).then(function (m) {
+      portalJSON("/Message/Email/GetMessageByID?messageID=" + encodeURIComponent(it.getAttribute("data-mid"))).then(function (m) {
         var fr = m.From || {}; v.innerHTML = "<h3>" + esc(m.Subject || "(no subject)") + '</h3><div class="pp-row" style="margin-bottom:12px"><span class="pp-chip">' + esc(fr.Name || "") + '</span><span style="color:var(--ap-muted);font-size:12.5px">' + esc(pickDate(m)) + '</span></div><iframe sandbox="allow-popups allow-popups-to-escape-sandbox" id="pp-mbody"></iframe>';
         var fr2 = $("#pp-mbody", v); fr2.srcdoc = '<base target="_blank"><style>body{font:15px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:#1e293b;margin:16px;word-wrap:break-word}img{max-width:100%}</style>' + (m.Body || "");
       }).catch(function () { v.innerHTML = '<div class="pp-empty">Couldn’t load message</div>'; });
@@ -1427,14 +1567,24 @@
   /* ---------- What's new + update check ----------
      Reads the public file update.json from the GitHub repo (nothing is sent) at most every 6 hours.
      When a newer version exists, More shows the new features and a GitHub update link. */
-  var PP_VER = "3.9.8";
+  var PP_VER = "3.9.9";
   var PP_NEW = [
-    "Courses & Result moved from More \u2192 Academics to Home \u2192 Quick actions.",
-    "PC: Courses & Result replaces Password; Change password remains in More \u2192 Account.",
-    "Phone and tablet: Courses & Result replaces Outlook; Outlook remains in Mail.",
-    "Lighter page changes, immediate result numbers, and transform-based bottom navigation highlighting.",
-    "Quick actions adapt when the screen size changes; the existing footer position is preserved.",
-    "Windows PC: install directly from Microsoft Edge Add-ons. The in-app update log includes a clickable store link; no ZIP or Developer mode needed."
+    "Safari-specific nonpersistent background page, native public-page requests and bounded runtime responses fix the public notice transport compatibility path.",
+    "portable bounded DOCX/PPTX decoder and native ArrayBuffer attachment reads replace Safari-sensitive stream APIs.",
+    "Rebuilt Notices: dedicated in-app bulletin, search, pagination and sanitized article details. A temporary offscreen official-site bridge supports compatible userscript managers; the full website is never displayed inside Notices. No third-party proxy.",
+    "Portal Mail uses absolute same-origin JSON requests with session validation, readable recovery and persistent Outlook access.",
+    "New Focus interface: gradient header with a light content deck, navigation groups, launchpad shortcuts, file workspace and short reduced-motion-aware transitions. Off-day calendar remains red.",
+    "Customize and reorder Home quick actions separately for desktop and touch devices.",
+    "Optional class and exam reminders while the portal tab is open; optional desktop notifications.",
+    "Export the current routine as PNG, print/Save as PDF, or an 8-week calendar file.",
+    "Liquid Glass header with glossy edges and a readable frosted surface on scroll in light/dark themes; solid fallback in Performance mode.",
+    "Phone rendering avoids stacked blur and repeated card animations; navigation uses one brief opacity fade. Footer position is unchanged.",
+    "Data freshness badges distinguish cached data and offline snapshots.",
+    "Preview teacher attachments in memory: PDF, images, plain text, and text-only DOCX/PPTX, with download fallback.",
+    "Bounded retries for temporary read failures; failed refresh keeps saved data and clearly labels it.",
+    "Notices stay usable when one page fails, with Retry and official-site fallback.",
+    "Added developer Facebook profile.",
+    "Portal login and server-side captcha validation remain unchanged."
   ];
   var GH_REPO = "https://github.com/amitsami/studentdesk-aiub",
       UPD_URL = "https://raw.githubusercontent.com/amitsami/studentdesk-aiub/main/update.json",
@@ -1481,7 +1631,7 @@
       (d && !st ? '<p class="pp-note" style="margin:0 0 10px">' + (us ? "Tap <b>Update now</b>. Tampermonkey opens the new version, then tap <b>Update</b> / <b>Install</b>." : "Download the new extension zip, replace the files in your StudentDesk folder, then click <b>Reload</b> on the extensions page.") + "</p>" : "") +
       '<div class="pp-row" style="gap:8px;flex-wrap:wrap">' + (d && !st ? '<a class="pp-btn pri sm" href="' + esc(link) + '" target="_blank" rel="noopener">' + ic("refresh") + (us ? " Update now" : " Download update") + "</a>" : "") +
       '<a class="pp-btn sm" href="' + GH_REPO + '/releases/latest" target="_blank" rel="noopener">' + ic("github") + " View on GitHub</a></div>" +
-      '<p class="pp-note" style="margin:12px 0 0">Windows PC: install StudentDesk AIUB directly from <a href="https://microsoftedge.microsoft.com/addons/detail/studentdesk-aiub-%E2%80%94-modern/meogjhmphdkglfabjonfjbdjlfpcpbpa" target="_blank" rel="noopener noreferrer">Microsoft Edge Add-ons</a>. No ZIP or Developer mode needed. The store delivers the version currently approved by Microsoft.</p></div>';
+      '<p class="pp-note" style="margin:12px 0 0">Windows PC: install StudentDesk AIUB directly from <a href="https://microsoftedge.microsoft.com/addons/detail/studentdesk-aiub-%E2%80%94-modern/meogjhmphdkglfabjonfjbdjlfpcpbpa" target="_blank" rel="noopener noreferrer" style="color:var(--ap-accent);text-decoration:underline">Microsoft Edge Add-ons</a>. No ZIP or Developer mode needed. The store delivers the version currently approved by Microsoft.</p></div>';
   }
   /* Home banner: "Update available" (until updated; "Later" hides it for a day) or, once, "Updated to vX". */
   function updBarHtml() {
@@ -1516,11 +1666,12 @@
         '<div class="pp-grid pp-g3" style="margin:0">' + keys.filter(function (k) { return fl[k]; }).map(function (k) { return '<div class="pp-item"><div class="pp-t"><small>' + esc(k) + "</small>" + (k === "CGPA" ? cgB(esc(fl[k]), "b") : "<b" + (/Contact|Email/.test(k) ? ' class="ap-private"' : "") + ">" + esc(fl[k]) + "</b>") + "</div></div>"; }).join("") + "</div></div>" + updCard() +
         '<a class="pp-card pp-facard" href="#/reviews" data-r="reviews"><span class="pp-qi">' + ic("star") + '</span><div class="pp-t"><b>Faculty review</b><small>Rate your faculty anonymously · see everyone’s reviews</small></div>' + ic("back", "flip") + "</a>" +
         '<a class="pp-card pp-facard" href="#/faculty"><span class="pp-qi">' + ic("user") + '</span><div class="pp-t"><b>Faculty list</b><small>Find any AIUB faculty — room, email, department, research interests</small></div>' + ic("back", "flip") + "</a>" +
-        '<div class="pp-grid pp-g3">' + MENU.map(function (g) { return '<div class="pp-card"><h3>' + ic(GROUP_IC[g.g] || "grid") + " " + esc(g.g) + '</h3><div class="pp-list">' + g.items.filter(function (it) { return g.g !== "Academics" || !isCoursesResult(it.t); }).map(function (it) { return '<a class="pp-item" style="padding:10px 12px" href="' + classic(it.h) + '"><div class="pp-t"><b style="font-size:13.5px">' + esc(it.t) + "</b></div>" + ic("back", "flip") + "</a>"; }).join("") + "</div></div>"; }).join("") +
+        '<div class="pp-grid pp-g3">' + MENU.map(function (g) { var items = g.items.filter(function (it) { return norm(g.g) !== "ACADEMICS" || !isCoursesResult(it.t); }); if (!items.length) return ""; return '<div class="pp-card"><h3>' + ic(GROUP_IC[g.g] || "grid") + " " + esc(g.g) + '</h3><div class="pp-list">' + items.map(function (it) { return '<a class="pp-item" style="padding:10px 12px" href="' + classic(it.h) + '"><div class="pp-t"><b style="font-size:13.5px">' + esc(it.t) + "</b></div>" + ic("back", "flip") + "</a>"; }).join("") + "</div></div>"; }).join("") +
         '<div class="pp-card"><h3>' + ic("lock") + ' Account</h3><div class="pp-list"><a class="pp-item" href="#/settings"><div class="pp-t"><b>Settings & theme</b></div></a><a class="pp-item" href="' + classic(L("Change Password") || "/Student/Credential/ChangePassword") + '"><div class="pp-t"><b>Change password</b></div></a>' +
         '<a class="pp-item" href="' + classic(location.pathname + location.search) + '"><div class="pp-t"><b>Classic portal view</b><small>Original portal layout</small></div></a><a class="pp-item" href="/Login/Logout" id="pp-logout" style="color:#ef4444"><div class="pp-t"><b>Log out</b></div>' + ic("out") + "</a></div></div></div></div>" +
         '<div class="pp-card pp-dev"><h3>' + ic("user") + ' Developer info</h3><div class="pp-row" style="gap:14px;align-items:center"><span class="pp-avatar" style="width:52px;height:52px;font-size:18px">AS</span><div class="pp-t" style="flex:1;min-width:0"><b style="font-size:16px">Amit Hasan Sami</b><small>Developer of StudentDesk AIUB</small></div></div>' +
         '<div class="pp-list" style="margin-top:12px"><a class="pp-item" href="mailto:amitsami110@gmail.com">' + ic("mail") + '<div class="pp-t"><small>Email</small><b>amitsami110@gmail.com</b></div></a>' +
+        '<a class="pp-item" href="https://www.facebook.com/amithsami110" target="_blank" rel="noopener noreferrer">' + ic("user") + '<div class="pp-t"><small>Facebook</small><b>facebook.com/amithsami110</b></div>' + ic("ext") + "</a>" +
         '<a class="pp-item" href="https://github.com/amitsami" target="_blank" rel="noopener">' + ic("github") + '<div class="pp-t"><small>GitHub</small><b>github.com/amitsami</b></div>' + ic("ext") + "</a></div></div>";
     });
   };
@@ -1551,8 +1702,9 @@
   };
   VIEWS.classic.after = function () {
     var fr = $("#pp-frame", app); if (!fr) return;
+    try { if (fr.contentDocument && fr.contentDocument.body) attachNotePreviews(fr.contentDocument); } catch (e) {}
     var startU = (fr.getAttribute("src") || "").split("?")[0], HOME_RX = /^\/Student\/?(Home(\/Index)?\/?)?$/i;
-    fr.addEventListener("load", function () { try { var d = fr.contentDocument; if (d && d.getElementById("loginForm")) { location.href = "/"; return; }
+    fr.addEventListener("load", function () { try { var d = fr.contentDocument; if (d && d.getElementById("loginForm")) { location.href = "/"; return; } if (d && d.body) attachNotePreviews(d);
       // A classic page (e.g. Registration -> Cancel, or registration closed) went back to the portal home:
       // show the StudentDesk home instead of the old layout.
       var pth = fr.contentWindow.location.pathname;
@@ -1598,6 +1750,195 @@
     $$(".pp-tabbar a", app).forEach(function (a) { a.addEventListener("click", buzz); });
   }
   function buzz() { try { if (navigator.vibrate && matchMedia("(pointer: coarse)").matches) navigator.vibrate(8); } catch (e) {} }
+  /* ---------- v3.9.9 workspace tools: local-only, opt-in ---------- */
+  function featureMode() { return MQ_PHONE.matches || MQ_TOUCH.matches ? "touch" : "desktop"; }
+  function quickId(x) { return norm(x[2]); }
+  function quickCatalog() {
+    var q = defaultQuickActions(), all = q.slice();
+    var result = coursesResultHref();
+    if (result) all.push(["classic?u=" + encodeURIComponent(result), "book", "Courses & Result"]);
+    all.push(["mail", "cloud", "Outlook", "", function () { mailState.tab = "outlook"; }],
+      ["schedule", "grid", "Week view", "", function () { schedState.view = "week"; }],
+      ["classic?u=" + encodeURIComponent(L("Change Password") || "/Student/Credential/ChangePassword"), "key", "Password"]);
+    if (L("Search Book")) all.push(["classic?u=" + encodeURIComponent(L("Search Book")), "lib", "Library"]);
+    NAV.forEach(function (n) { all.push([n.r, n.i, n.t, n.r]); });
+    var seen = {}; return all.filter(function (x) { var id = quickId(x); if (seen[id]) return false; seen[id] = true; return true; });
+  }
+  function quickActions() {
+    var saved = jget("pp.quick." + featureMode(), null);
+    if (!Array.isArray(saved) || !saved.length) return defaultQuickActions();
+    var catalog = quickCatalog(), out = [];
+    saved.slice(0, 8).forEach(function (id) { var x = catalog.filter(function (v) { return quickId(v) === id; })[0]; if (x && !out.some(function (v) { return quickId(v) === id; })) out.push(x); });
+    return out.length ? out : defaultQuickActions();
+  }
+  var featureDialogClose = null;
+  function featureDialog(label, html) {
+    if (featureDialogClose) featureDialogClose();
+    var previous = document.activeElement, box = document.createElement("div"); box.className = "pp-overlay";
+    box.innerHTML = '<section class="pp-sheet" role="dialog" aria-modal="true" aria-label="' + esc(label) + '"><header class="pp-sheet-head"><div><small>STUDENTDESK</small><h2>' + esc(label) + '</h2></div><button class="pp-iconbtn" data-sheet-close aria-label="Close dialog">' + ic("x") + '</button></header><div class="pp-sheet-body">' + html + '</div></section>';
+    var actions = $(".pp-sheet-actions", box); if (actions) $(".pp-sheet", box).appendChild(actions);
+    app.appendChild(box);
+    function close() { if (!box.isConnected) return; box.remove(); document.removeEventListener("keydown", key, true); if (box.onCleanup) box.onCleanup(); featureDialogClose = null; if (previous && previous.isConnected) previous.focus(); }
+    function key(e) { if (e.key === "Escape") { e.preventDefault(); e.stopImmediatePropagation(); close(); } if (e.key === "Tab") { var f = $$("button:not(:disabled), a[href], input, select, textarea, iframe", box).filter(function (x) { return x.getClientRects().length; }); if (!f.length) return; var first = f[0], last = f[f.length - 1]; if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } } }
+    box.addEventListener("click", function (e) { if (e.target === box || e.target.closest("[data-sheet-close]")) close(); });
+    document.addEventListener("keydown", key, true); featureDialogClose = close; $("[data-sheet-close]", box).focus(); return box;
+  }
+  function editQuickActions() {
+    var mode = featureMode(), catalog = quickCatalog(), chosen = quickActions().map(quickId);
+    var box = featureDialog("Your quick actions", '<p class="pp-note">' + (mode === "touch" ? "Phone & tablet" : "Desktop") + ' shortcuts · choose up to 8. Changes stay in this browser.</p><div id="pp-quick-editor"></div><div class="pp-sheet-actions"><button class="pp-btn" id="pp-quick-reset">Use defaults</button><button class="pp-btn pri" id="pp-quick-save">Save shortcuts</button></div>');
+    function draw() { $("#pp-quick-editor", box).innerHTML = '<h3>Selected <span class="pp-chip">' + chosen.length + '/8</span></h3><ol class="pp-order">' + chosen.map(function (id, i) { var x = catalog.filter(function (x) { return quickId(x) === id; })[0]; return '<li><span class="pp-qi">' + ic(x[1]) + '</span><b>' + esc(x[2]) + '</b><button class="pp-iconbtn" data-move="' + i + '" data-delta="-1" aria-label="Move ' + esc(x[2]) + ' up"' + (!i ? " disabled" : "") + '>↑</button><button class="pp-iconbtn" data-move="' + i + '" data-delta="1" aria-label="Move ' + esc(x[2]) + ' down"' + (i === chosen.length - 1 ? " disabled" : "") + '>↓</button><button class="pp-iconbtn" data-remove="' + esc(id) + '" aria-label="Remove ' + esc(x[2]) + '">×</button></li>'; }).join("") + '</ol><h3>Add a shortcut</h3><div class="pp-shortcut-options">' + catalog.filter(function (x) { return chosen.indexOf(quickId(x)) < 0; }).map(function (x) { return '<button class="pp-btn" data-add="' + esc(quickId(x)) + '">' + ic(x[1]) + ' ' + esc(x[2]) + '</button>'; }).join("") + '</div>'; }
+    box.addEventListener("click", function (e) { var b = e.target.closest("[data-move], [data-remove], [data-add]"); if (!b) return; if (b.hasAttribute("data-move")) { var i = +b.dataset.move, j = i + +b.dataset.delta; if (j >= 0 && j < chosen.length) { var t = chosen[i]; chosen[i] = chosen[j]; chosen[j] = t; } } else if (b.dataset.remove) chosen = chosen.filter(function (x) { return x !== b.dataset.remove; }); else if (chosen.length < 8) chosen.push(b.dataset.add); else { toast("Choose up to 8 shortcuts"); return; } draw(); });
+    $("#pp-quick-save", box).onclick = function () { if (!chosen.length) { toast("Keep at least one shortcut"); return; } jset("pp.quick." + mode, chosen); featureDialogClose(); refreshQuickActions(); toast("Shortcuts saved on this device"); };
+    $("#pp-quick-reset", box).onclick = function () { localStorage.removeItem("pp.quick." + mode); featureDialogClose(); refreshQuickActions(); toast("Default shortcuts restored"); }; draw();
+  }
+  function workspaceSettingsHtml() {
+    var lead = +jget("pp.reminder.minutes", 0);
+    return '<div class="pp-card pp-workspace"><h3>' + ic("spark") + ' Workspace tools <span class="pp-chip">New</span></h3><p class="pp-note">Useful extras. No new account, no external document viewer.</p><div class="pp-list"><button type="button" class="pp-item pp-click pp-performance-row" id="pp-performance" role="switch" aria-checked="' + (!!API.get().performance) + '" aria-pressed="' + (!!API.get().performance) + '"><span class="pp-t"><b>Performance mode</b><small>Less blur and visual work on slower devices</small></span><span class="pp-mode-switch" aria-hidden="true"><i></i></span><span class="pp-performance-label">' + (API.get().performance ? "On" : "Off") + '</span></button><button class="pp-item pp-click" id="pp-edit-quick"><div class="pp-t"><b>Customize quick actions</b><small>Choose and reorder shortcuts for this screen type</small></div>' + ic("grid") + '</button><div class="pp-item"><div class="pp-t"><b>Class & exam reminders</b><small>Only while a logged-in portal tab is open. Campus time: Dhaka.</small></div><select class="pp-input" id="pp-reminder" aria-label="Reminder timing">' + [0, 5, 10, 15, 30].map(function (n) { return '<option value="' + n + '"' + (n === lead ? " selected" : "") + '>' + (n ? n + " min before" : "Off") + '</option>'; }).join("") + '</select></div><button class="pp-item pp-click" id="pp-notification-permission"><div class="pp-t"><b>Allow desktop notifications</b><small>Optional browser permission; in-app reminders still work without it</small></div>' + ic("bell") + '</button></div><p class="pp-note">Routine → Export: PNG, Print / Save as PDF, or an 8-week calendar file. Teacher notes → Preview: PDF, images, plain text, and text-only DOCX/PPTX. Unsupported files keep their normal download.</p></div>';
+  }
+  function workspaceSettingsWire() {
+    var p = $("#pp-performance", app); if (!p) return;
+    p.type = "button";
+    if (!p.__ppPerformance) { p.__ppPerformance = true; p.addEventListener("click", function (e) { e.preventDefault(); e.stopImmediatePropagation(); var on = !API.get().performance; API.set("performance", on); if(on&&swap.motion)swap.motion.cancel(); p.setAttribute("aria-pressed", String(on)); p.setAttribute("aria-checked", String(on)); $(".pp-performance-label", p).textContent = on ? "On" : "Off"; toast(on ? "Performance mode on" : "Balanced motion restored"); }, true); }
+    $("#pp-edit-quick", app).onclick = editQuickActions;
+    $("#pp-reminder", app).onchange = function (e) { jset("pp.reminder.minutes", +e.target.value); reminderTick(); toast(+e.target.value ? "Reminders enabled while the portal is open" : "Reminders off"); };
+    $("#pp-notification-permission", app).onclick = function () { if (!("Notification" in window) || !window.isSecureContext) { toast("Browser notifications unavailable; use in-app reminders"); return; } if (Notification.permission === "denied") { toast("Notifications blocked in browser site settings"); return; } Notification.requestPermission().then(function (v) { toast(v === "granted" ? "Desktop notifications allowed" : "In-app reminders remain available"); }); };
+  }
+  function syncPaint() {
+    if (!app || !topS) return;
+    var old = $("#pp-fresh", app); if (old) old.remove();
+    var keys = { home: "home", schedule: "reg", courses: "curr", grades: "sem", finance: "acc", more: "profile", notifications: "noti", notices: "notices1" }, key = keys[current], raw = key && cacheRaw(key);
+    if (!raw || !raw.t) return;
+    var age = Math.max(0, Math.floor((Date.now() - raw.t) / 60000)), stale = age >= 10;
+    var badge = document.createElement("span"); badge.id = "pp-fresh"; badge.className = "pp-fresh" + (stale || navigator.onLine === false ? " stale" : "");
+    badge.textContent = (requestWarnings[key] ? "Refresh failed · saved " : navigator.onLine === false ? "Offline · saved " : "Cached · ") + (age ? age < 60 ? age + "m ago" : Math.floor(age / 60) + "h ago" : "just now");
+    badge.title = "Data saved " + new Date(raw.t).toLocaleString() + ". Cached data may differ from the portal. Use Refresh for a new request."; var host = MQ_PHONE.matches && $("#pp-scroll > .pp-view", app); if (host) { badge.classList.add("pp-mobile-fresh"); host.insertBefore(badge, host.firstChild); } else topS.appendChild(badge);
+  }
+  function campusNow() { return new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Dhaka" })); }
+  function examStart(e) {
+    if (!e.date) return null;
+    var m = /(?:^|\s)(\d{1,2})[:.](\d{2})\s*(AM|PM)?/i.exec(e.time || ""); if (!m) return null;
+    var h = +m[1], mi = +m[2]; if (mi > 59 || h > 23 || (m[3] && (h < 1 || h > 12))) return null;
+    if (m[3]) h = h % 12 + (/PM/i.test(m[3]) ? 12 : 0);
+    var d = new Date(new Date(e.date).toLocaleString("en-US", { timeZone: "Asia/Dhaka" })); d.setHours(h, mi, 0, 0); return d;
+  }
+  function reminderTick() {
+    var lead = +jget("pp.reminder.minutes", 0); if ([5, 10, 15, 30].indexOf(lead) < 0 || !app) return;
+    var now = campusNow(), reg = peek("reg"), events = [];
+    if (reg) daySlots(weekly(reg), DAYS[now.getDay()]).forEach(function (s) { var d = new Date(now); d.setHours(Math.floor(s.start / 60), s.start % 60, 0, 0); events.push({ id: "class|" + d.toDateString() + "|" + s.name + "|" + s.start, at: d.getTime(), title: title(s.name), text: fmtT(s.start) + (s.room ? " · Room " + s.room : "") }); });
+    var exams = peek("exams"); if (exams && exams.list) exams.list.forEach(function (e) { var d = examStart(e); if (d) events.push({ id: "exam|" + examSig(e), at: d.getTime(), title: "Exam · " + title(e.course), text: e.time + (e.room ? " · Room " + e.room : "") }); });
+    events.forEach(function (e) { var left = (e.at - now.getTime()) / 60000; if (left <= 0 || left > lead || jget("pp.reminded." + e.id, false)) return; jset("pp.reminded." + e.id, true); toast(e.title + " · in " + Math.ceil(left) + " min · " + e.text); if ("Notification" in window && Notification.permission === "granted") try { var n = new Notification("StudentDesk · " + e.title, { body: "In " + Math.ceil(left) + " min · " + e.text, tag: e.id }); setTimeout(function () { n.close(); }, 15000); } catch (x) {} });
+  }
+  function fileSave(name, blob) { var url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(url); }, 60000); }
+  function icsEscape(s) { return String(s || "").replace(/\\/g, "\\\\").replace(/\r?\n/g, "\\n").replace(/,/g, "\\,").replace(/;/g, "\\;"); }
+  function dateCode(d) { return d.getFullYear() + ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2); }
+  function timeCode(d) { return dateCode(d) + "T" + ("0" + d.getHours()).slice(-2) + ("0" + d.getMinutes()).slice(-2) + "00"; }
+  function calendarText(slots, exams, now) {
+    var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//StudentDesk AIUB//Routine Preview//EN", "CALSCALE:GREGORIAN", "X-WR-CALNAME:StudentDesk AIUB - 8 weeks", "BEGIN:VTIMEZONE", "TZID:Asia/Dhaka", "BEGIN:STANDARD", "DTSTART:19700101T000000", "TZOFFSETFROM:+0600", "TZOFFSETTO:+0600", "TZNAME:+06", "END:STANDARD", "END:VTIMEZONE"], stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z/, "Z");
+    slots.forEach(function (s, i) { var day = DAYS.indexOf(s.day); if (day < 0) return; var d = new Date(now); d.setDate(d.getDate() + (day - d.getDay() + 7) % 7); d.setHours(Math.floor(s.start / 60), s.start % 60, 0, 0); if (d < now) d.setDate(d.getDate() + 7); var end = new Date(d); end.setMinutes(end.getMinutes() + s.end - s.start); lines.push("BEGIN:VEVENT", "UID:class-" + dateCode(d) + "-" + i + "@studentdesk.local", "DTSTAMP:" + stamp, "DTSTART;TZID=Asia/Dhaka:" + timeCode(d), "DTEND;TZID=Asia/Dhaka:" + timeCode(end), "RRULE:FREQ=WEEKLY;COUNT=8", "SUMMARY:" + icsEscape(s.name + (s.sec ? " [" + s.sec + "]" : "")), "LOCATION:" + icsEscape(s.room || ""), "DESCRIPTION:" + icsEscape("8-week copy of your current routine. Not an official semester calendar; verify changes in the portal."), "BEGIN:VALARM", "TRIGGER:-PT15M", "ACTION:DISPLAY", "DESCRIPTION:Class reminder", "END:VALARM", "END:VEVENT"); });
+    (exams || []).forEach(function (e, i) { if (!e.date) return; var d = examStart(e), day = new Date(new Date(e.date).toLocaleString("en-US", { timeZone: "Asia/Dhaka" })); if (day.getTime() < now.getTime() - 864e5) return; lines.push("BEGIN:VEVENT", "UID:exam-" + dateCode(day) + "-" + i + "@studentdesk.local", "DTSTAMP:" + stamp); if (d) lines.push("DTSTART;TZID=Asia/Dhaka:" + timeCode(d)); else { var end = new Date(day); end.setDate(end.getDate() + 1); lines.push("DTSTART;VALUE=DATE:" + dateCode(day), "DTEND;VALUE=DATE:" + dateCode(end)); } lines.push("SUMMARY:" + icsEscape("Exam: " + e.course), "LOCATION:" + icsEscape(e.room), "DESCRIPTION:" + icsEscape([e.term, e.time, "Confirm timing in the portal"].filter(Boolean).join(" · ")), "END:VEVENT"); });
+    lines.push("END:VCALENDAR");
+    return lines.map(function (line) { var chunks = [], part = "", size = 0; Array.from(line).forEach(function (ch) { var n = new TextEncoder().encode(ch).length; if (size + n > 73) { chunks.push(part); part = " "; size = 1; } part += ch; size += n; }); chunks.push(part); return chunks.join("\r\n"); }).join("\r\n") + "\r\n";
+  }
+  function routineRows(slots) { return DAYS.map(function (day) { var rows = daySlots(slots, day); return '<section><h2>' + DAYFULL[day] + '</h2>' + (rows.length ? rows.map(function (s) { return '<article><strong>' + esc(title(s.name)) + '</strong><span>' + esc(fmtT(s.start) + " – " + fmtT(s.end)) + '</span><small>' + esc([s.sec && "Section " + s.sec, s.type, s.room && "Room " + s.room].filter(Boolean).join(" · ")) + '</small></article>'; }).join("") : '<p>No classes</p>') + '</section>'; }).join(""); }
+  function routineExport() {
+    var reg = peek("reg"); if (!reg) { toast("Open Routine and wait for your classes to load"); return; } var slots = weekly(reg);
+    var box = featureDialog("Export your routine", '<p class="pp-note">' + esc(reg.semester || "Current semester") + ' · Campus time: Asia/Dhaka. Files are created locally.</p><div class="pp-export-options"><button class="pp-export" data-export="png">' + ic("grid") + '<b>Routine image</b><small>Save a clean PNG</small></button><button class="pp-export" data-export="print">' + ic("file") + '<b>Print / PDF</b><small>Choose Save as PDF in the print dialog</small></button><button class="pp-export" data-export="ics">' + ic("cal") + '<b>Add to calendar</b><small>Next 8 weekly occurrences + cached exams</small></button></div><p class="pp-note">Calendar files are snapshots, not a live sync. Re-import after changes. Class alerts: 15 minutes before. Exams without a readable start time become all-day events.</p>');
+    box.addEventListener("click", function (e) { var b = e.target.closest("[data-export]"); if (!b) return; if (b.dataset.export === "ics") { fileSave("StudentDesk-routine-8-weeks.ics", new Blob([calendarText(slots, (peek("exams") || {}).list, campusNow())], { type: "text/calendar;charset=utf-8" })); toast("Calendar exported · check dates before importing"); }
+      if (b.dataset.export === "print") { var w = window.open("", "_blank"); if (!w) { toast("Allow pop-ups to open the print view"); return; } w.opener = null; w.document.write('<!doctype html><html><meta charset="utf-8"><title>StudentDesk Routine</title><style>body{font:15px system-ui;color:#202124;margin:32px}h1{margin:0}header p{color:#64748b}main{display:grid;grid-template-columns:1fr 1fr;gap:16px}section{border:1px solid #ddd;border-radius:12px;padding:16px;break-inside:avoid}h2{font-size:17px;margin:0 0 12px}article{margin:12px 0}article span,article small{display:block;color:#475569;margin-top:4px}@media print{button{display:none}body{margin:12mm}}</style><header><h1>Class routine</h1><p>' + esc(reg.semester || "StudentDesk AIUB") + ' · Asia/Dhaka · Current cached routine</p><button onclick="window.print()">Print / Save as PDF</button></header><main>' + routineRows(slots) + '</main></html>'); w.document.close(); }
+      if (b.dataset.export === "png") routinePng(slots, reg.semester);
+    });
+  }
+  function routinePng(slots, semester) {
+    var canvas = document.createElement("canvas"), ctx = canvas.getContext("2d"), rowHeights = DAYS.map(function (d) { return Math.max(150, 70 + daySlots(slots, d).length * 110); });
+    var rowH = []; for (var i = 0; i < 4; i++) rowH.push(Math.max(rowHeights[i * 2], rowHeights[i * 2 + 1] || 0));
+    canvas.width = 1400; canvas.height = 150 + rowH.reduce(function (a, b) { return a + b + 20; }, 0) + 45;
+    ctx.fillStyle = "#f5f5f7"; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = "#1d1d1f"; ctx.font = "bold 38px Arial"; ctx.fillText("Class routine", 44, 65); ctx.font = "20px Arial"; ctx.fillStyle = "#667085"; ctx.fillText((semester || "StudentDesk AIUB") + " · Asia/Dhaka", 44, 108);
+    function fit(s, width) { while (ctx.measureText(s).width > width && s.length > 1) s = s.slice(0, -2); return s; }
+    var y = 150; DAYS.forEach(function (day, i) { var x = 40 + (i % 2) * 670, height = rowH[Math.floor(i / 2)]; ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.roundRect(x, y, 650, height, 18); ctx.fill(); ctx.fillStyle = "#1d1d1f"; ctx.font = "bold 24px Arial"; ctx.fillText(DAYFULL[day], x + 22, y + 38); var rows = daySlots(slots, day); if (!rows.length) { ctx.fillStyle = "#667085"; ctx.font = "20px Arial"; ctx.fillText("No classes", x + 22, y + 85); } rows.forEach(function (s, j) { var yy = y + 78 + j * 110; ctx.fillStyle = "#1d1d1f"; ctx.font = "bold 21px Arial"; ctx.fillText(fit(title(s.name), 600), x + 22, yy); ctx.font = "19px Arial"; ctx.fillStyle = "#2563eb"; ctx.fillText(fmtT(s.start) + " – " + fmtT(s.end), x + 22, yy + 29); ctx.fillStyle = "#667085"; ctx.font = "18px Arial"; ctx.fillText(fit([s.sec && "Section " + s.sec, s.type, s.room && "Room " + s.room].filter(Boolean).join(" · "), 600), x + 22, yy + 56); }); if (i % 2 || i === 6) y += height + 20; });
+    ctx.font = "17px Arial"; ctx.fillStyle = "#667085"; ctx.fillText("StudentDesk AIUB · Cached snapshot. Verify updates in your portal.", 44, canvas.height - 20); canvas.toBlob(function (blob) { if (blob) fileSave("StudentDesk-class-routine.png", blob); }, "image/png");
+  }
+  function fileCandidate(a) { var h = a.getAttribute("href") || "", label = [a.textContent, a.getAttribute("title"), a.getAttribute("download")].filter(Boolean).join(" "); return h && !/^(#|javascript:|mailto:)/i.test(h) && (/\.(pdf|png|jpe?g|webp|gif|txt|csv|md|docx?|pptx?|xlsx?)(?:[?#\s]|$)/i.test(h + " " + label) || /download|attachment|\/files?\/|getfile|viewfile|coursenote/i.test(h) || a.hasAttribute("download")); }
+  function attachNotePreviews(d) {
+    if (!d || d.__ppPreviewObserver) return;
+    function scan() { $$("a[href]", d).forEach(function (a) { if (a.dataset.ppPreview || !fileCandidate(a)) return; var u; try { u = new URL(a.getAttribute("href"), d.location && d.location.href !== "about:blank" ? d.location.href : d.baseURI); } catch (e) { return; } if (u.origin !== location.origin || u.protocol !== location.protocol) return; a.dataset.ppPreview = "1"; var b = d.createElement("button"); b.type = "button"; b.className = "pp-note-preview"; b.textContent = "Preview"; b.setAttribute("aria-label", "Preview " + (a.textContent.trim() || "attachment")); b.style.cssText = "min-height:44px;margin:4px 8px;padding:6px 14px;border:1px solid #cbd5e1;border-radius:12px;background:#eff6ff;color:#1d4ed8;font:600 14px system-ui;cursor:pointer"; b.onclick = function (e) { e.preventDefault(); e.stopPropagation(); previewNote(u.href, a.getAttribute("download") || a.getAttribute("title") || a.textContent.trim() || "Teacher note"); }; a.insertAdjacentElement("afterend", b); }); }
+    var pending = false, observer = new MutationObserver(function () { if (pending) return; pending = true; setTimeout(function () { pending = false; scan(); }, 160); });
+    d.__ppPreviewObserver = observer; observer.observe(d.body, { childList: true, subtree: true }); scan();
+    function frames() { $$("iframe", d).forEach(function (f) { if (f.__ppPreviewHook) return; f.__ppPreviewHook = true; function hook() { try { if (f.contentDocument && f.contentDocument.body) attachNotePreviews(f.contentDocument); } catch (e) {} } f.addEventListener("load", hook); hook(); }); }
+    frames(); var frameWatch = new MutationObserver(frames); frameWatch.observe(d.body, { childList:true, subtree:true });
+  }
+  async function readBounded(response, limit) {
+    if (+response.headers.get("content-length") > limit) throw new Error("This file is too large for preview (25 MB limit). Use the original download.");
+    if (!response.body || !response.body.getReader) { var ab = await response.arrayBuffer(); if (ab.byteLength > limit) throw new Error("File too large for preview"); return new Uint8Array(ab); }
+    var reader = response.body.getReader(), chunks = [], size = 0;
+    try { while (true) { var r = await reader.read(); if (r.done) break; size += r.value.length; if (size > limit) { await reader.cancel(); throw new Error("This file is too large for preview (25 MB limit)."); } chunks.push(r.value); } } finally { reader.releaseLock(); }
+    var out = new Uint8Array(size), pos = 0; chunks.forEach(function (c) { out.set(c, pos); pos += c.length; }); return out;
+  }
+  async function officeText(bytes, kind) {
+    var view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength), end = -1;
+    for (var i = bytes.length - 22; i >= Math.max(0, bytes.length - 65557); i--) if (view.getUint32(i, true) === 0x06054b50) { end = i; break; }
+    if (end < 0) throw new Error("Invalid Office archive");
+    var count = view.getUint16(end + 10, true), pos = view.getUint32(end + 16, true), files = []; if (count > 4000) throw new Error("This document is too complex for preview");
+    for (i = 0; i < count; i++) { if (pos + 46 > bytes.length || view.getUint32(pos, true) !== 0x02014b50) throw new Error("Invalid Office directory"); var flags = view.getUint16(pos + 8, true), method = view.getUint16(pos + 10, true), packed = view.getUint32(pos + 20, true), unpacked = view.getUint32(pos + 24, true), nlen = view.getUint16(pos + 28, true), extra = view.getUint16(pos + 30, true), comment = view.getUint16(pos + 32, true), local = view.getUint32(pos + 42, true); var name = new TextDecoder().decode(bytes.subarray(pos + 46, pos + 46 + nlen)); pos += 46 + nlen + extra + comment;
+      if ((kind === "docx" && name === "word/document.xml") || (kind === "pptx" && /^ppt\/slides\/slide\d+\.xml$/.test(name))) { if (flags & 1 || unpacked > 2 * 1024 * 1024 || packed > 4 * 1024 * 1024) throw new Error("Encrypted or large document not supported"); files.push({ name: name, method: method, packed: packed, unpacked: unpacked, local: local }); }
+    }
+    files.sort(function (a, b) { return +(a.name.match(/slide(\d+)/) || [0, 0])[1] - +(b.name.match(/slide(\d+)/) || [0, 0])[1]; });
+    if (!files.length || files.length > 100 || files.reduce(function (n, f) { return n + f.unpacked; }, 0) > 12 * 1024 * 1024) throw new Error("This Office document cannot be previewed safely");
+    var pages = [];
+    for (var j = 0; j < files.length; j++) { var f = files[j], offset = f.local; if (offset + 30 > bytes.length || view.getUint32(offset, true) !== 0x04034b50) throw new Error("Invalid Office entry"); var begin = offset + 30 + view.getUint16(offset + 26, true) + view.getUint16(offset + 28, true); if (begin + f.packed > bytes.length) throw new Error("Truncated Office entry"); var raw = bytes.subarray(begin, begin + f.packed), xml;
+      if (f.method === 0) { if (raw.length !== f.unpacked) throw new Error("Invalid Office entry size"); xml = new TextDecoder().decode(raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength)); } else if (f.method === 8 && window.__sdInflate) { var expanded = window.__sdInflate(raw, f.unpacked); xml = new TextDecoder().decode(expanded.buffer.slice(expanded.byteOffset,expanded.byteOffset+expanded.byteLength)); } else throw new Error("Document decoder missing. Reload the extension and the portal tab.");
+      if (/<!DOCTYPE|<!ENTITY/i.test(xml)) throw new Error("Unsupported XML document"); var doc = new DOMParser().parseFromString(xml, "application/xml"); if (doc.getElementsByTagName("parsererror").length) throw new Error("Invalid document text"); var paras = Array.from(doc.getElementsByTagNameNS("*", "p")); var text = paras.map(function (p) { return Array.from(p.getElementsByTagNameNS("*", "t")).map(function (t) { return t.textContent; }).join(""); }).filter(Boolean).join("\n\n"); pages.push({ title: kind === "pptx" ? "Slide " + (j + 1) : "Document text", text: text || "No readable text on this page." });
+    } return pages;
+  }
+  function readPortalAttachment(url, signal) {
+    return new Promise(function(resolve,reject){
+      var xhr=new XMLHttpRequest(),limit=25*1024*1024,finished=false;
+      function done(error,value){if(finished)return;finished=true;if(signal)signal.removeEventListener("abort",abort);error?reject(error):resolve(value);}
+      function abort(){xhr.abort();var e=new Error("Preview closed");e.name="AbortError";done(e);}
+      if(signal&&signal.aborted)return abort();
+      xhr.open("GET",new URL(url,location.href).href,true);xhr.responseType="arraybuffer";xhr.timeout=20000;
+      xhr.onprogress=function(e){if(e.loaded>limit || (e.lengthComputable&&e.total>limit)){xhr.abort();done(new Error("This file is too large for preview (25 MB limit). Use the original download."));}};
+      xhr.onload=function(){var response=xhr.response;if(!response)return done(new Error("The portal returned an empty attachment."));if(response.byteLength>limit)return done(new Error("This file is too large for preview (25 MB limit)."));
+        done(null,{ok:xhr.status>=200&&xhr.status<300,status:xhr.status,url:xhr.responseURL,headers:{get:function(k){return xhr.getResponseHeader(k);}},arrayBuffer:function(){return Promise.resolve(response);}});
+      };
+      xhr.onerror=function(){done(new Error("Attachment network request failed. Reopen the original notes page and try again."));};xhr.ontimeout=function(){done(new Error("The attachment server did not respond in time."));};
+      if(signal)signal.addEventListener("abort",abort,{once:true});xhr.send();
+    });
+  }
+  function previewNote(url, label) {
+    var u = new URL(url, location.href); if (u.origin !== location.origin) { toast("Use the original link for externally hosted files"); return; }
+    var box = featureDialog("Note preview", '<div class="pp-file-meta"><span class="pp-file-glyph">' + ic("book") + '</span><span><b>' + esc(label) + '</b><small>Private preview · stays in this browser</small></span></div><div class="pp-preview-content" id="pp-preview-content"><div class="pp-sk" style="height:180px"></div><p>Opening note…</p></div><div class="pp-sheet-actions"><a class="pp-btn" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">Original download</a></div>');
+    var ctl = new AbortController(), blobs = [], timedOut = false, previewTimer = setTimeout(function () { timedOut = true; ctl.abort(); }, 20000); box.onCleanup = function () { clearTimeout(previewTimer); ctl.abort(); blobs.forEach(function (u) { URL.revokeObjectURL(u); }); };
+    function object(bytes, type) { var u = URL.createObjectURL(new Blob([bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength)], { type: type })); blobs.push(u); return u; }
+    readPortalAttachment(url, ctl.signal).then(async function (r) {
+      if (!r.ok) throw new Error("The portal could not open this attachment (HTTP " + r.status + ")");
+      if (r.url && new URL(r.url, location.href).origin !== location.origin) throw new Error("This attachment redirects outside the portal. Use Original download to open it directly.");
+      var bytes = await readBounded(r, 25 * 1024 * 1024), type = (r.headers.get("content-type") || "").split(";")[0].toLowerCase(), name = label + " " + u.pathname + " " + (r.headers.get("content-disposition") || ""); var content = $("#pp-preview-content", box); if (!box.isConnected) return;
+      content.textContent = "";
+      var headText = new TextDecoder().decode(bytes.slice(0, 2000));
+      if (/text\/html/.test(type) || /^\s*(?:<!doctype html|<html|<form)/i.test(headText)) throw new Error(/loginForm|password|sign.?in/i.test(headText) ? "Your portal session expired. Sign in again, then reopen the note." : "This link opened a web page, not the actual file. Open the notes page and use Preview beside the file download link.");
+      if (bytes[0] === 37 && bytes[1] === 80 && bytes[2] === 68 && bytes[3] === 70) { var src = object(bytes, "application/pdf"), frame = document.createElement("iframe"); frame.title = "PDF note preview"; frame.className = "pp-pdf-preview"; frame.src = src; content.appendChild(frame); var a = document.createElement("a"); a.href = src; a.target = "_blank"; a.rel = "noopener"; a.className = "pp-btn sm"; a.textContent = "PDF blank on this browser? Open PDF in a new tab"; content.appendChild(a); }
+      else if ((bytes[0] === 137 && bytes[1] === 80 && bytes[2] === 78) || (bytes[0] === 255 && bytes[1] === 216) || (bytes[0] === 71 && bytes[1] === 73 && bytes[2] === 70) || (bytes[0] === 82 && bytes[1] === 73 && bytes[8] === 87 && bytes[9] === 69)) { var img = document.createElement("img"); img.alt = label; img.src = object(bytes, bytes[0] === 137 ? "image/png" : bytes[0] === 255 ? "image/jpeg" : bytes[0] === 71 ? "image/gif" : "image/webp"); content.appendChild(img); }
+      else if (bytes[0] === 80 && bytes[1] === 75 && /docx|pptx|wordprocessingml|presentationml|word\/document\.xml|ppt\/slides\//i.test(name + type + new TextDecoder("latin1").decode(bytes.slice(-65536)))) { var kind = /pptx|presentationml|ppt\/slides\//i.test(name + type + new TextDecoder("latin1").decode(bytes.slice(-65536))) ? "pptx" : "docx", pages = await officeText(bytes, kind); if (!box.isConnected) return; var note = document.createElement("p"); note.className = "pp-note"; note.textContent = "Text-only preview: original layout, images, equations and formatting are not reproduced."; content.appendChild(note); pages.forEach(function (p) { var section = document.createElement("section"), h = document.createElement("h3"), pre = document.createElement("pre"); h.textContent = p.title; pre.textContent = p.text; section.append(h, pre); content.appendChild(section); }); }
+      else if (/text\/(plain|csv|markdown)/.test(type) || /\.(txt|csv|md)(?:[\s?#";]|$)/i.test(name)) { var text = new TextDecoder().decode(bytes); if (/<(?:!doctype|html|form)\b/i.test(text.slice(0, 1500))) throw new Error("The portal returned a sign-in page instead of the file. Sign in again."); var pre = document.createElement("pre"); pre.textContent = text.slice(0, 1000000); content.appendChild(pre); }
+      else throw new Error("This file type cannot be previewed here. PDF, images, text, DOCX and PPTX text are supported. Use the original download for other formats.");
+    }).catch(function (e) { if (!box.isConnected || (e.name === "AbortError" && !timedOut)) return; var c = $("#pp-preview-content", box); c.textContent = ""; var p = document.createElement("p"); p.className = "pp-preview-error"; p.textContent = timedOut ? "The attachment server did not respond in time. Retry or use the original download." : e.message || "Preview unavailable. Use the original download."; c.appendChild(p); }).finally(function () { clearTimeout(previewTimer); });
+  }
+  function workspacePaint() {
+    syncPaint();
+    var wkeys = { home: "home", schedule: "reg", courses: "curr", grades: "sem", finance: "acc", notices: "notices1" }, warning = requestWarnings[wkeys[current]], view = $("#pp-scroll > .pp-view", app);
+    if (current === "notices") Object.keys(requestWarnings).some(function (k) { if (/^notices\d+$/.test(k) && +k.slice(7) <= noticeState.pages) { warning = requestWarnings[k]; return true; } });
+    if (warning && view && !$(".pp-notice-unavailable",view) && !$(".pp-data-warning", view)) { var warn = document.createElement("div"); warn.className = "pp-data-warning"; warn.setAttribute("role", "status"); var text = document.createElement("span"); text.textContent = warning; var retry = document.createElement("button"); retry.className = "pp-btn sm"; retry.dataset.act = "refresh"; retry.textContent = "Retry"; warn.append(text, retry); view.insertBefore(warn, view.firstChild); }
+    if (current === "home") { var quick = $(".pp-quick", app), h = quick && quick.parentNode.querySelector("h3"); if (h && !$("[data-custom-quick]", h)) { var b = document.createElement("button"); b.className = "pp-btn sm pp-custom-quick"; b.dataset.customQuick = "1"; b.textContent = "Customize"; b.onclick = editQuickActions; h.appendChild(b); } }
+    if (current === "schedule") { var view = $("#pp-scroll > .pp-view", app); if (view && !$("#pp-export-bar", view)) { var bar = document.createElement("div"); bar.id = "pp-export-bar"; bar.className = "pp-toolstrip"; bar.innerHTML = '<div><b>Your week, anywhere</b><small>Save a routine image, PDF or calendar snapshot</small></div><button class="pp-btn sm" id="pp-export-routine">' + ic("ext") + ' Export</button>'; view.insertBefore(bar, view.firstChild); $("#pp-export-routine", bar).onclick = routineExport; } }
+    if (current === "settings") { var view = $("#pp-scroll > .pp-view", app); if (view && !$(".pp-workspace", view)) { var wrap = document.createElement("div"); wrap.innerHTML = workspaceSettingsHtml(); view.insertBefore(wrap.firstChild, view.firstChild); } workspaceSettingsWire(); }
+    if (current === "classic") { var fr = $("#pp-frame", app); if (fr && !fr.__ppNoteHook) { fr.__ppNoteHook = true; fr.addEventListener("load", function () { try { attachNotePreviews(fr.contentDocument); } catch (e) {} }); try { if (fr.contentDocument && fr.contentDocument.body) attachNotePreviews(fr.contentDocument); } catch (e) {} } }
+  }
+  function workspaceStart() {
+    workspacePaint(); setInterval(syncPaint, 60000); setInterval(reminderTick, 20000);
+    window.addEventListener("online", syncPaint); window.addEventListener("offline", syncPaint);
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) { syncPaint(); reminderTick(); } });
+  }
+
   function start() { if (document.getElementById("pp-app")) return; if (!$("#main-content") && !$("#navigation-bar")) return; build(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
 })();

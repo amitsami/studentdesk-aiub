@@ -8,6 +8,7 @@ on:
       - "scripts/pack.js"
       - "scripts/firefox-publish-check.js"
       - "scripts/firefox-publish-check.test.js"
+      - "scripts/public-transport.test.js"
       - ".github/workflows/firefox-publish.yml"
   release:
     types: [published]
@@ -34,7 +35,9 @@ jobs:
         with:
           node-version: "24"
       - name: Test publishing safeguards
-        run: node --test scripts/firefox-publish-check.test.js
+        run: |
+          node --test scripts/firefox-publish-check.test.js
+          node scripts/public-transport.test.js
       - name: Check credentials and whether this version is new
         id: version
         env:
