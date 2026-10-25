@@ -68,8 +68,20 @@ function releaseMetadata(version, changelog) {
   const sections = changelog.split(/^## /m).slice(1);
   const entry = sections.find((s) => s.split(/\s/)[0] === version);
   if (!entry) throw new Error(`CHANGELOG.md needs an entry for ${version}.`);
-  const notes = entry.split("\n").slice(1).join("\n").trim();
+  let notes = entry.split("\n").slice(1).join("\n").trim();
   if (!notes) throw new Error("Release notes cannot be empty.");
+  // AMO permits at most 3000 characters; keep the full changelog on GitHub.
+  if (notes.length > 3000) {
+    const link = `Full changelog: https://github.com/amitsami/studentdesk-aiub/releases/tag/v${version}`;
+    const groups = notes.split(/^### /m).filter(Boolean);
+    const budget = Math.max(80, Math.floor((2900 - link.length) / groups.length));
+    notes = groups.map(group => {
+      const text = group.trim();
+      if (text.length <= budget) return text;
+      const end = text.lastIndexOf(" ", budget - 1);
+      return text.slice(0, end > 0 ? end : budget - 1) + "…";
+    }).join("\n\n") + "\n\n" + link;
+  }
   return {
     version: {
       release_notes: { "en-US": notes },

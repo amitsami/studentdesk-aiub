@@ -49,3 +49,10 @@ test("fail closed on missing listing or authentication errors", async () => {
     ok: false, status: 401,
   })), /HTTP 401/);
 });
+ test("long store notes fit AMO limit and preserve full-changelog link", () => {
+  const body = Array.from({length: 9}, (_, i) => "### Group " + i + "\n- " + "Detailed change ".repeat(80)).join("\n");
+  const notes = releaseMetadata("4.0.0", "## 4.0.0 - Studio\n" + body).version.release_notes["en-US"];
+  assert.ok(notes.length <= 3000);
+  assert.match(notes, /Group 8/);
+  assert.match(notes, /releases\/tag\/v4\.0\.0/);
+});
