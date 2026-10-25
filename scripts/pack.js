@@ -18,7 +18,7 @@ function pack(name, edit) {
 }
 pack("StudentDesk-AIUB-chromium.zip", (m) => { delete m.browser_specific_settings; m.background = { service_worker: "bg.js" }; return m; });
 pack("StudentDesk-AIUB-firefox.zip", (m) => {
-  m.background = { scripts: ["bg.js"] };
+  m.background = { scripts: ["bg.js", "public-sync.js"] };
   m.browser_specific_settings = { gecko: { id: "aiub-portal-plus@student.local", strict_min_version: "140.0",
     // Only a faculty review you choose to submit is sent (anonymous). Nothing is collected automatically.
     data_collection_permissions: { required: ["none"] } }, gecko_android: { strict_min_version: "142.0" } };
@@ -27,8 +27,8 @@ pack("StudentDesk-AIUB-firefox.zip", (m) => {
 
 // Safari: avoid service-worker lifecycle differences in temporary folder installs.
 pack("StudentDesk-AIUB-safari.zip", (m) => {
-  m.name = "StudentDesk AIUB — Safari Fix 1";
-  m.background = { scripts: ["bg.js"], persistent: false, preferred_environment: "document" };
+  m.name = "StudentDesk AIUB — Safari";
+  m.background = { scripts: ["bg.js", "public-sync.js"], persistent: false, preferred_environment: "document" };
   m.browser_specific_settings = { safari: { strict_min_version: "15.4" } };
   return m;
 });

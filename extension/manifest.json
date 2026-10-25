@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "StudentDesk AIUB \u2014 Modern UI",
-  "short_name": "StudentDesk AIUB",
-  "version": "3.9.9",
+  "short_name": "StudentDesk",
+  "version": "4.0.0",
   "description": "Unofficial: modern, fast app-style design for the AIUB Student Portal. Your portal data never leaves your browser.",
   "icons": {
     "16": "icons/16.png",
@@ -17,10 +17,17 @@
       "css": [
         "theme.css",
         "shell.css",
-        "glass.css"
+        "glass.css",
+        "v4.css"
       ],
       "js": [
         "zip-inflate.js",
+        "curricula.js",
+        "public-snapshot.js",
+        "planner-engine.js",
+        "studio-art.js",
+        "plan-export.js",
+        "planner-view.js",
         "app.js",
         "shell.js"
       ],
@@ -45,7 +52,8 @@
   "background": {
     "service_worker": "bg.js",
     "scripts": [
-      "bg.js"
+      "bg.js",
+      "public-sync.js"
     ],
     "preferred_environment": "document"
   },
@@ -55,5 +63,8 @@
       "id": "aiub-portal-plus@student.local",
       "strict_min_version": "140.0"
     }
-  }
+  },
+  "permissions": [
+    "storage"
+  ]
 }

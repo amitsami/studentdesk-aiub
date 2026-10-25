@@ -43,3 +43,6 @@
     task.then(reply,function(){reply(responseError("PUBLIC_REQUEST","Public request failed"));});return true;
   });
 })();
+
+// Service workers load the public sync bridge; document backgrounds load it from the manifest.
+if(typeof importScripts === "function") importScripts("public-sync.js");

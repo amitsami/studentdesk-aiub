@@ -1,0 +1,75 @@
+StudentDesk AIUB 4.0.0 — PRIVATE TEST BUILD (not published)
+
+WHAT IS NEW
+- Current courses are excluded from the next-semester draft. Checked pass assumptions
+  can unlock explicitly CONDITIONAL successors; they do not become completed results.
+  Untick dropped/uncertain current courses to mark dependent saved choices blocked; reminder entries are retained.
+- Old Appearance customization controls removed; simple Light/Dark/System theme retained.
+  Reminder label/select sizing fixed for desktop, phone and tablet.
+- Academic Studio: batch-confirmed curriculum, prerequisite states, local recommendations,
+  retake/direct-unlock priority, credit-limited recommendations, persistent reminders and local PDF/JPG exports.
+- Conflict-free section search checks every supplied lab/theory meeting and open seats.
+- Offering history shows observed frequency only after three comparable complete seasons.
+  It cannot predict actual future offerings or guarantee seats.
+- Editorial warm light/dark workspace, responsive planner, glass header, lighter motion.
+- Public faculty thumbnails are bundled for offline All reviews photos, with URL fallback.
+- Notices show a clearly labeled official saved snapshot immediately when no cache exists;
+  privileged live fetching continues, with official-tab public-only sync as a fallback.
+- Existing PDF/image/text and DOCX/PPTX text-only previews retained and regression checked.
+
+IMPORTANT LIMITATIONS — READ BEFORE PUBLISHING
+1. This is a deterministic local planning engine, not an external AI/LLM integration.
+   Grades are not sent to an AI service. Suggestions are not academic approval.
+2. Not every department/intake is fully verified. CSE and EEE have useful rule coverage;
+   some other catalogs have blank/conflicting prerequisites. CoE, IPE, Architecture
+   rules remain unavailable. BBA descriptions are Spring 2022-2023, not verified for
+   Fall 2024 onwards, and their credits need advisor confirmation.
+   No other department's prerequisites are substituted. Unknown rules remain unknown.
+   The in-app source/version and docs/v4-curriculum-audit.json expose coverage.
+3. No historical university offering dataset is bundled. Save complete real semester
+   offerings locally before historical frequency is available. Never call it a guarantee.
+4. AIUB public-site 503/network failures are outside extension control. The packaged
+   notice copy may be outdated and is labeled as such. No CAPTCHA/auth bypass was added.
+5. Tested with local fixtures in Chromium at 320, 390, 820 and 1440 px, light/dark,
+   reduced motion, performance toggle, official snapshot fallback, actual compressed
+   DOCX attachment and All reviews bundled photo. Rule/transport/cache tests included.
+   Real Safari/Firefox engines, live authenticated portal and all real curricula have
+   NOT been fully tested. No measured 60fps claim or all-device guarantee.
+6. No GitHub push, tag, store submission, or release was performed for this build.
+
+QUICK TEST
+- Disable the older StudentDesk copy; do not run extension + userscript together.
+- Home / More > Course planner. Choose your exact program and confirm your batch.
+- Check completed credits, then inspect prerequisite reasons before adding courses.
+- Suggest a starting plan; compare it to your advisor-approved load.
+- Timetable > Load offered sections > Find conflict-free sections.
+- Verify actual official notice title/date, a real teacher attachment, All reviews photos,
+  performance On/Off and dark-mode contrast on your own phone and computer.
+- Re-enable the stable store version if you find a regression.
+
+SOURCE PROVENANCE
+Public official AIUB curricula and faculty directory were snapshotted for this test.
+Each curriculum course retains its official source URL. Batch/version confirmation is required.
+Public notices source: https://www.aiub.edu/category/notices?pageNo=1&pageSize=20
+Directory source: https://www.aiub.edu/Files/Uploads/public-employee-profiles/employeeProfiles.json?v=1.0.11
+Screenshots use DEMO STUDENT DATA, not a live student account.
+
+Presentation update: original lightweight section illustrations; functional navigation icons remain unchanged. Curriculum setup and current-course assumptions can collapse; the phone saved plan opens with PDF/JPG downloads visible.
+
+COURSE INTELLIGENCE UPDATE
+- Every remaining course can be saved as a reminder before batch confirmation, including blocked/unverified courses. Confirmation is still required for verified recommendations and section search.
+- Each course explains its prerequisite names/status, why it is prioritized, and named direct successors. Other missing requirements are shown; successors are not guaranteed future offerings.
+- Running credits and projected completed credits are separate. Portal registration credit values are preferred; missing values stay unverified.
+- Each card can display exact-matched offering sections, remaining/total seats, theory/lab times and rooms from the supplied snapshot. Term and saved time remain visible.
+- Optional offering-scoped suggestions require the user to verify the displayed term. Historical/other-term seats are not treated as future availability.
+- Seat refresh is user-triggered or on returning focus after 60s; no polling loop. Repeated manual checks are bounded by a 15s cooldown. A snapshot is not a seat reservation.
+- A real session-expiry response still requires normal portal sign-in. A redirected/unavailable registration page is not treated as an empty course list.
+- Official Next/wait/queue/approval behavior is unchanged; no bypass, hidden submission, CAPTCHA evasion or automatic course registration.
+- Local Chromium fixture checks cover 320,390,820,1440 widths. Active pre-registration and real Safari still need testing on the user's own authenticated device.
+
+SAVED PLAN & DOWNLOADS
+- Add to plan appears on every remaining-course card, independent of prerequisite/credit verification. Manual reminders may exceed the credit target; a warning is shown rather than silently blocking save. Maximum 30 saved courses.
+- Saved courses persist in local browser storage across navigation and reloads. Eligibility changes do not remove reminders. Missing/current/completed entries in an older saved plan are marked for recheck. Clearing site data removes the saved plan.
+- Download PDF creates an image-backed, paginated A4 document locally. Download JPG creates a styled summary image locally. JSON is only under Optional backup. No third-party export service or upload.
+- Blocked/unverified entries remain visibly labeled in both the saved plan and downloads; saving does not grant registration eligibility. Automatic section search still requires confirmed, eligible/conditional courses with verified credits and a valid search load.
+- Browser/device download handling can differ; actual iPhone Safari still needs verification.

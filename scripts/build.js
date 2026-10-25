@@ -31,6 +31,10 @@ const header = [
   "// @run-at       document-start",
   "// @grant        GM_xmlhttpRequest",
   "// @grant        GM.xmlHttpRequest",
+  "// @grant        GM_getValue",
+  "// @grant        GM_setValue",
+  "// @grant        GM.getValue",
+  "// @grant        GM.setValue",
   "// @connect      www.aiub.edu",
   "// @connect      api.open-meteo.com",
   "// ==/UserScript==",
@@ -58,13 +62,13 @@ let prevUpd = {}; try { prevUpd = JSON.parse(fs.readFileSync(path.join(root, "up
 const upd = { version: manifest.version, date: prevUpd.version === manifest.version && prevUpd.date ? prevUpd.date : today, title: top[2].trim(), notes: notes, release: "https://github.com/amitsami/studentdesk-aiub/releases/latest" };
 fs.writeFileSync(path.join(root, "update.json"), JSON.stringify(upd, null, 2) + "\n");
 
-const css = ["theme.css", "shell.css", "glass.css"].map(ext).join("\n");
+const css = ["theme.css", "shell.css", "glass.css", "v4.css"].map(ext).join("\n");
 const style =
   '(function(){var s=document.createElement("style");s.id="ap-css";s.textContent=' +
   JSON.stringify(css) +
   ";(document.head||document.documentElement).appendChild(s);})();";
 
-const out = [header, '(function(){if(location.hostname === "www.aiub.edu"){', ext("public-reader.js"), 'return;}', style, ext("zip-inflate.js"), ext("app.js"), ext("shell.js"), '}());'].join("\n");
+const out = [header, '(function(){if(location.hostname === "www.aiub.edu"){', ext("public-reader.js"), 'return;}', style, ext("zip-inflate.js"), ext("curricula.js"), ext("public-snapshot.js"), ext("planner-engine.js"), ext("studio-art.js"), ext("plan-export.js"), ext("planner-view.js"), ext("app.js"), ext("shell.js"), '}());'].join("\n");
 const dest = path.join(root, "userscript", "StudentDesk-AIUB.user.js");
 fs.writeFileSync(dest, out);
 // Compatibility copy: older installs check this path for updates. Remove after everyone has updated.

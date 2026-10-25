@@ -6,15 +6,17 @@ Fast, modern app-style UI for the [AIUB Student Portal](https://portal.aiub.edu)
 
 **Windows PC (Microsoft Edge):** [Install from Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/studentdesk-aiub-%E2%80%94-modern/meogjhmphdkglfabjonfjbdjlfpcpbpa). Click **Get → Add extension**. No ZIP or Developer mode needed. The store delivers the version currently approved by Microsoft.
 
-## v3.9.9 highlights
+## v4.0.0 — Academic Studio
 
-- Liquid Glass header with readable light/dark scroll states and a low-cost Performance mode.
-- Native Notices bulletin, loaded-notice search, older pages and in-app article reader.
-- Safari-specific temporary extension package with a nonpersistent background and bounded public-page requests.
-- In-browser teacher-file previews: PDF, images and text; DOCX/PPTX are text-only previews, with original-download fallback.
-- Customizable quick actions, opt-in class/exam reminders, and routine export.
+- New next-semester **Course planner** with prerequisite explanations, named successor courses and conditional suggestions based on current-semester pass assumptions.
+- Save any remaining course as a reminder, then **download a styled PDF or JPG**. Blocked/unverified reminders stay clearly marked; saving is not registration approval.
+- Read-only portal section, seat and timetable snapshots with source/term labels, conflict checking and historical offering context when enough data exists.
+- A calmer editorial interface, original section illustrations, responsive phone/PC layouts, light/dark themes and Performance mode.
+- Improved Notices caching/sync, faculty-photo fallbacks, session error handling and simplified Settings.
 
-Safari compatibility was fixture-tested; a real authenticated Safari account was not available for verification. Store delivery still depends on Mozilla/Microsoft approval. Login and captcha validation are unchanged.
+**[Full v4.0 changelog](docs/RELEASE-v4.0.md)** · **[All version history](CHANGELOG.md)** · **[Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/studentdesk-aiub/)**
+
+Catalog coverage varies by department and curriculum version; unknown prerequisites remain unverified. Planning is local and does not submit registration or bypass the portal queue. Chromium fixture/responsive tests were run; real authenticated Safari and active pre-registration were not available for validation. Store delivery depends on approval.
 
 ## Contents
 
@@ -34,15 +36,155 @@ Safari compatibility was fixture-tested; a real authenticated Safari account was
 
 ## Screenshots
 
-| PC: Home | PC: Class routine |
-| --- | --- |
-| ![Home: next class, registration, weather](docs/screenshots/pc-home.jpg) | ![Class routine with free time and breaks](docs/screenshots/pc-class-routine.png) |
-| **PC: Grades & CGPA** | **PC: Faculty reviews** |
-| ![Grades & CGPA with what-if calculator](docs/screenshots/pc-grades-cgpa.png) | ![Anonymous faculty reviews](docs/screenshots/pc-faculty-reviews.jpg) |
-| **PC: Settings** | **Phone: Home, routine, reviews** |
-| ![Customize colors, glass, roundness, text size](docs/screenshots/pc-settings.png) | ![Your AIUB portal, redesigned for phone](docs/screenshots/phone-home-routine-reviews.jpg) |
-| **Phone: Grades, notices, settings** | |
-| ![Grades, AIUB notices and your own style](docs/screenshots/phone-grades-notices-settings.jpg) | |
+Each screenshot is a separate image—not a collage. Phone and desktop views are separated below.
+
+> Screenshots use a local demonstration account, sample grades/sections and demonstration reviews—not a real student's record. Notices show a dated saved official snapshot, not proof of a live refresh. Seats and eligibility are illustrative, not a registration guarantee.
+
+### Desktop
+
+<details>
+<summary>Home</summary>
+
+![Desktop — Home](docs/screenshots/pc-home.jpg)
+
+</details>
+
+<details>
+<summary>Home · dark mode</summary>
+
+![Desktop — Home · dark mode](docs/screenshots/pc-home-dark.jpg)
+
+</details>
+
+<details>
+<summary>Class routine</summary>
+
+![Desktop — Class routine](docs/screenshots/pc-routine.jpg)
+
+</details>
+
+<details>
+<summary>Grades & CGPA · privacy blur</summary>
+
+![Desktop — Grades & CGPA · privacy blur](docs/screenshots/pc-grades.jpg)
+
+</details>
+
+<details>
+<summary>Faculty reviews</summary>
+
+![Desktop — Faculty reviews](docs/screenshots/pc-reviews.jpg)
+
+</details>
+
+<details>
+<summary>Notices · saved official snapshot</summary>
+
+![Desktop — Notices · saved official snapshot](docs/screenshots/pc-notices.jpg)
+
+</details>
+
+<details>
+<summary>Settings</summary>
+
+![Desktop — Settings](docs/screenshots/pc-settings.jpg)
+
+</details>
+
+### Phone
+
+<details>
+<summary>Home</summary>
+
+<img src="docs/screenshots/phone-home.jpg" alt="Phone — Home" width="390" />
+
+</details>
+
+<details>
+<summary>Home · dark mode</summary>
+
+<img src="docs/screenshots/phone-home-dark.jpg" alt="Phone — Home · dark mode" width="390" />
+
+</details>
+
+<details>
+<summary>Class routine</summary>
+
+<img src="docs/screenshots/phone-routine.jpg" alt="Phone — Class routine" width="390" />
+
+</details>
+
+<details>
+<summary>Grades & CGPA · privacy blur</summary>
+
+<img src="docs/screenshots/phone-grades.jpg" alt="Phone — Grades & CGPA · privacy blur" width="390" />
+
+</details>
+
+<details>
+<summary>Faculty reviews</summary>
+
+<img src="docs/screenshots/phone-reviews.jpg" alt="Phone — Faculty reviews" width="390" />
+
+</details>
+
+<details>
+<summary>Notices · saved official snapshot</summary>
+
+<img src="docs/screenshots/phone-notices.jpg" alt="Phone — Notices · saved official snapshot" width="390" />
+
+</details>
+
+<details>
+<summary>Settings</summary>
+
+<img src="docs/screenshots/phone-settings.jpg" alt="Phone — Settings" width="390" />
+
+</details>
+
+### Course planner & downloads
+
+<details>
+<summary>Desktop Course planner</summary>
+
+![Desktop Course planner](docs/screenshots/pc-planner.jpg)
+
+</details>
+
+<details>
+<summary>Phone Course planner</summary>
+
+<img src="docs/screenshots/phone-planner.jpg" alt="Phone Course planner" width="390" />
+
+</details>
+
+<details>
+<summary>Saved plan · PDF/JPG downloads</summary>
+
+<img src="docs/screenshots/phone-saved-plan.jpg" alt="Saved plan · PDF/JPG downloads" width="390" />
+
+</details>
+
+<details>
+<summary>Desktop course details · prerequisites, successors and sample sections</summary>
+
+![Desktop course details](docs/screenshots/pc-planner-details.jpg)
+
+</details>
+
+<details>
+<summary>Phone course details · prerequisites, successors and sample sections</summary>
+
+<img src="docs/screenshots/phone-planner-details.jpg" alt="Phone course details" width="390" />
+
+</details>
+
+<details>
+<summary>Example downloaded plan image</summary>
+
+<img src="docs/screenshots/plan-export.jpg" alt="Example downloaded plan image" width="700" />
+
+</details>
 
 ## What is StudentDesk AIUB?
 
@@ -51,7 +193,7 @@ StudentDesk AIUB gives the official AIUB student portal (portal.aiub.edu) a mode
 There are two ways to use it:
 
 - **Userscript** (works on phone and PC): a small script that runs inside a free helper app called **Tampermonkey** (or **Userscripts** on iPhone). It updates itself automatically. **Recommended for most students.**
-- **Browser extension** (PC only): a zip file you load into Chrome, Edge or Brave. Use this if you do not want to install Tampermonkey.
+- **Browser extension:** install from Firefox Add-ons or Microsoft Edge Add-ons, or use the browser-specific ZIP for local testing. Firefox Android support depends on the installed browser version.
 
 You only need **one** of them. Do not install both at the same time.
 
@@ -65,7 +207,7 @@ You only need **one** of them. Do not install both at the same time.
 | **PC (no Tampermonkey)** | [StudentDesk-AIUB-extension.zip](https://github.com/amitsami/studentdesk-aiub/releases/latest/download/StudentDesk-AIUB-extension.zip) | 1. Download and **extract** (unzip) the file.<br>2. Open `chrome://extensions` (or `edge://extensions`, `brave://extensions`).<br>3. Turn on **Developer mode** -> **Load unpacked** -> choose the extracted folder.<br>4. Go to portal.aiub.edu. Do not delete the folder afterwards. |
 | **Tampermonkey zip** (phone **and** PC) | [StudentDesk-AIUB-Tampermonkey.zip](https://github.com/amitsami/studentdesk-aiub/releases/latest/download/StudentDesk-AIUB-Tampermonkey.zip) | **Phone (Android, Firefox + Tampermonkey):** download the zip -> tap the Tampermonkey icon (Firefox menu -> Add-ons -> Tampermonkey) -> **Dashboard** -> **Utilities** -> **Import from file** -> choose the zip from Downloads -> **Install**.<br>**PC:** Tampermonkey icon -> **Dashboard** -> **Utilities** -> **Import from file** -> choose the zip -> **Install**.<br>Useful when the userscript link does not open an install page. Do not unzip it. |
 
-> **If the `.js` link does not work on your phone, use the Tampermonkey zip instead - it works.** Download [StudentDesk-AIUB-Tampermonkey.zip](https://github.com/amitsami/studentdesk-aiub/releases/latest/download/StudentDesk-AIUB-Tampermonkey.zip) and import it in Tampermonkey (see [Tampermonkey zip import](#tampermonkey-zip-import-phone-and-pc)).
+> **If the `.js` link does not work on your phone, use the Tampermonkey zip instead - if your manager supports ZIP import.** Download [StudentDesk-AIUB-Tampermonkey.zip](https://github.com/amitsami/studentdesk-aiub/releases/latest/download/StudentDesk-AIUB-Tampermonkey.zip) and import it in Tampermonkey (see [Tampermonkey zip import](#tampermonkey-zip-import-phone-and-pc)).
 
 > `schema.sql` is only for the developer (review server database). Students do not need it.
 
@@ -83,7 +225,7 @@ You only need **one** of them. Do not install both at the same time.
 
 Tip: in Firefox, tap the menu -> **Add to Home screen** while on the portal to open it like an app.
 
-> **If the `.js` link does not work on your phone, use the Tampermonkey zip instead - it works.** Download [StudentDesk-AIUB-Tampermonkey.zip](https://github.com/amitsami/studentdesk-aiub/releases/latest/download/StudentDesk-AIUB-Tampermonkey.zip) and import it in Tampermonkey (see [Tampermonkey zip import](#tampermonkey-zip-import-phone-and-pc)).
+> **If the `.js` link does not work on your phone, use the Tampermonkey zip instead - if your manager supports ZIP import.** Download [StudentDesk-AIUB-Tampermonkey.zip](https://github.com/amitsami/studentdesk-aiub/releases/latest/download/StudentDesk-AIUB-Tampermonkey.zip) and import it in Tampermonkey (see [Tampermonkey zip import](#tampermonkey-zip-import-phone-and-pc)).
 
 ### iPhone / iPad
 
@@ -120,11 +262,11 @@ Works in Chrome, Edge and Brave.
 7. If the browser asks for permission for www.aiub.edu and api.open-meteo.com, allow it (used for public notices, the faculty list and campus weather).
 8. Open https://portal.aiub.edu and sign in.
 
-Firefox: open `about:debugging#/runtime/this-firefox` -> **Load Temporary Add-on** -> choose `manifest.json`. This lasts until Firefox restarts, so on Firefox the Tampermonkey method is better.
+Firefox: prefer the [public Add-ons listing](https://addons.mozilla.org/en-US/firefox/addon/studentdesk-aiub/). For temporary local testing, extract the Firefox-specific ZIP, then use `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on** → `manifest.json`. Temporary installs end when Firefox restarts.
 
 ### Tampermonkey zip import (phone and PC)
 
-The Tampermonkey zip works on **phones too**, not only on PC. **If the `.js` link does not work on your phone, this zip works** - use it if opening the userscript link does not show an install page, or if you want to install from a downloaded file. Do **not** unzip it - Tampermonkey reads the zip directly.
+The Tampermonkey zip works on **phones too**, not only on PC. **If the `.js` link does not work on your phone, try ZIP import if your manager supports it** - use it if opening the userscript link does not show an install page, or if you want to install from a downloaded file. Do **not** unzip it - Tampermonkey reads the zip directly.
 
 **On an Android phone (Firefox + Tampermonkey):**
 
@@ -149,7 +291,7 @@ Scripts imported from the zip still auto-update from GitHub.
 1. Go to https://portal.aiub.edu and sign in with your AIUB ID and password as usual. The login captcha is a security check, so you still solve it yourself.
 2. After signing in, StudentDesk opens its home screen: greeting, quick actions, routine, grades, payments and more.
 3. On a phone, use the **tab bar at the bottom**. On a PC, use the **sidebar on the left**.
-4. Open **Settings** in StudentDesk to choose light / dark mode, accent color and your start page.
+4. Open **Settings** in StudentDesk to choose light / dark / system mode and your start page.
 5. The first load reads your data from the portal. After that, pages open much faster because data is cached on your device.
 
 ## CGPA privacy
@@ -174,7 +316,7 @@ When a new version is out, StudentDesk tells you automatically:
 
 - **Userscript (Tampermonkey):** updates automatically. To update right away: Tampermonkey -> **Dashboard** -> **Check for userscript updates**.
 - **iPhone (Userscripts):** open the Userscripts app -> **Update** or open the userscript link again.
-- **From a store (Edge Add-ons, Firefox Add-ons, Opera add-ons, Greasy Fork):** updates install automatically. Store links are added here once each store approves StudentDesk.
+- **From a store (Edge Add-ons, Firefox Add-ons, Opera add-ons, Greasy Fork):** updates install automatically. Use the Firefox and Edge links above; the approved store version may lag behind GitHub.
 - **Browser extension (zip):** does not update itself. Download the new `StudentDesk-AIUB-extension.zip` from [Releases](https://github.com/amitsami/studentdesk-aiub/releases), extract it **into the same folder** (replace the old files), then click **Reload** on the extension's card in `chrome://extensions`.
 
 ## Turning it off or removing it
@@ -188,7 +330,7 @@ When a new version is out, StudentDesk tells you automatically:
 | Problem | Fix |
 | --- | --- |
 | The portal looks unchanged | Check that the script / extension is **on**, then reload the page. In Chrome, Edge or Brave, make sure **Developer mode** (and **Allow User Scripts** for Tampermonkey) is on. |
-| The `.js` link does not work on my phone | Use the Tampermonkey zip instead - it works on phones. See [Tampermonkey zip import](#tampermonkey-zip-import-phone-and-pc). |
+| The `.js` link does not work on my phone | Use the Tampermonkey zip instead - if supported by your script manager. See [Tampermonkey zip import](#tampermonkey-zip-import-phone-and-pc). |
 | Opening the userscript link only shows code | Tampermonkey is not installed or not enabled in this browser. Install it first, or use the Tampermonkey zip import. |
 | "Manifest file is missing" when loading the extension | Choose the folder that directly contains `manifest.json`, not the zip and not a parent folder. |
 | The extension stopped working | You probably moved or deleted the extracted folder. Load it again from its new location. |
@@ -197,8 +339,9 @@ When a new version is out, StudentDesk tells you automatically:
 
 ## Features
 
+- Next-semester Course planner with prerequisites, conditional options, saved reminders and local PDF/JPG downloads
 - App-style home with greeting, quick actions, class routine, grades, payments and mail
-- Liquid Glass theme with light / dark mode and custom accent colors
+- Warm editorial theme with light / dark / system mode and a readable glass header
 - Phone layout with a bottom tab bar, PC layout with a sidebar
 - Red update dots for new notices, notifications, grades, courses, routine and mail
 - Exam routine detection with countdown
@@ -234,7 +377,7 @@ When a new version is out, StudentDesk tells you automatically:
 2. Set the new version in `extension/manifest.json`.
 3. Add an entry at the top of `CHANGELOG.md`: `## <version> - Short title` followed by `- feature` lines (these lines are what users see).
 4. Run `node scripts/build.js` - it updates the userscript, the in-app version / What's new list and `update.json`.
-5. Commit and push to `main` (and create a release with the files). Within about an hour every StudentDesk user sees **Update available** with the new features.
+5. Commit and push to `main` (and create a release with the files). Update checks depend on the browser, network and cache; store updates additionally require review and the store update cycle.
 
 Build the userscript after changing files in `extension/`:
 

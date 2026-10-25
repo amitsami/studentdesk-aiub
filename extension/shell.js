@@ -95,11 +95,11 @@
     var attempt = function () {
       var ctl = window.AbortController ? new AbortController() : null, to = setTimeout(function () { if (ctl) ctl.abort(); }, 12000);
       return fetch(url, { credentials: "include", signal: ctl ? ctl.signal : undefined }).then(function (r) {
-        if (/\/Login(?:\/|\?|$)/i.test(r.url) || (r.url && /^https:\/\/portal\.aiub\.edu\/?(?:\?.*)?$/i.test(r.url))) throw new Error("SESSION");
+        if (/\/Login(?:\/|\?|$)/i.test(r.url)) throw new Error("SESSION");
         if (r.status === 401) throw new Error("SESSION");
         if (!r.ok) throw new Error("HTTP " + r.status);
         return r.text();
-      }).then(function (h) { var d = new DOMParser().parseFromString(h, "text/html"); if (d.getElementById("loginForm")) throw new Error("SESSION"); return d; }).finally(function () { clearTimeout(to); });
+      }).then(function (h) { var d = new DOMParser().parseFromString(h, "text/html"); if (d.getElementById("loginForm") || d.querySelector('form input[type="password"]') && !d.querySelector("#navigation-bar")) throw new Error("SESSION"); return d; }).finally(function () { clearTimeout(to); });
     };
     var pr = retryRead(attempt).catch(function (e) { if (e && e.name === "AbortError") throw new Error("The portal is responding slowly — please try again"); throw e; });
     pr.then(done, done); function done() { delete inflight[url]; }
@@ -118,7 +118,7 @@
       return Promise.resolve(raw.d);
     }
     return fresh().catch(function (e) {
-      if (e && (e.message === "SESSION" || e.message === "HTTP 403")) throw e;
+      if ((force && (key === "reg" || key === "offered")) || e && (e.message === "SESSION" || e.message === "HTTP 403")) throw e;
       var saved = cacheRaw(key);
       if (saved && saved.d) { requestWarnings[key] = "Could not refresh. Showing saved data."; mem[key] = saved.d; return saved.d; }
       throw e;
@@ -169,7 +169,7 @@
     var ctl = $$("a, button, input[type=button], input[type=submit]", box).filter(vis), lab = function (el) { return (txt(el) || el.value || "").replace(/\s+/g, " ").trim(); };
     var next = ctl.some(function (el) { return /^next\b/i.test(lab(el)); }), cancel = ctl.some(function (el) { return /^cancel$/i.test(lab(el)); });
     var blocked = /not allowed|closed|not open|expired|no registration/i.test(al);
-    return { open: next && cancel && !blocked, done: /already completed/i.test(al), msg: al.slice(0, 180) };
+    return { known: (next && cancel) || blocked || /already completed/i.test(al), open: next && cancel && !blocked, done: /already completed/i.test(al), msg: al.slice(0, 180) };
   }
   var regBusy = null;
   function regStatus(force) {
@@ -201,6 +201,7 @@
     },
     reg: function (d) {
       var out = { semester: "", semesters: [], courses: [], fees: [], credits: {} };
+      if (!d.querySelector("#SemesterDropDown,#main-content table.table-details")) throw new Error("REGISTRATION_PAGE_UNAVAILABLE");
       var sel = $("#SemesterDropDown", d); if (sel) { out.semesters = $$("option", sel).map(function (o) { return { t: txt(o), u: o.value, on: o.selected }; }); var so = $$("option", sel).filter(function (o) { return o.selected; })[0]; out.semester = so ? txt(so) : ""; }
       $$("#main-content table.table-details tbody tr", d).forEach(function (tr) {
         var a = $("a", tr); if (!a) return; var sc = splitCourse(txt(a)); var slots = [];
@@ -240,10 +241,11 @@
     },
     offered: function (d) {
       var out = { title: txt($("#main-content .panel-title", d)) || txt($("#main-content h5", d)), list: [] };
-      var tb = $("#main-content table", d); if (!tb) return out;
+      var tb = $("#main-content table", d); if (!tb) throw new Error("OFFERINGS_PAGE_UNAVAILABLE");
       $$("tr", tb).forEach(function (tr) { if (tr.parentNode.closest && tr.parentNode.closest("table") !== tb) return; var cs = tr.children; if (cs.length < 6 || cs[0].tagName !== "TD") return;
         var sc = splitCourse(txt(cs[1])); var times = $$("tr", cs[5]).map(function (r) { var t = $$("td", r).map(txt); var rg = parseRange((t[1] || "").slice(0, 3) + " " + t[2] + " - " + t[3]); return rg ? { type: t[0], day: rg.day, start: rg.start, end: rg.end, room: t[4] } : null; }).filter(Boolean);
-        out.list.push({ id: txt(cs[0]), name: sc.name, sec: sc.sec, status: txt(cs[2]), cap: num(txt(cs[3])), cnt: num(txt(cs[4])), times: times });
+        function knownNumber(el){var t=txt(el).replace(/,/g,"");return /^\d+(?:\.\d+)?$/.test(t)?Number(t):null;}
+        out.list.push({ id: txt(cs[0]), code:(/^[A-Z]{2,6}\d{3,6}$/i.test(txt(cs[0]))?txt(cs[0]):""), name: sc.name, sec: sc.sec, status: txt(cs[2]), cap: knownNumber(cs[3]), cnt: knownNumber(cs[4]), times: times });
       });
       return out;
     },
@@ -278,6 +280,7 @@
     { r: "schedule", t: "Class Routine", i: "cal", tab: "Routine" },
     { r: "courses", t: "Courses", i: "book", tab: "Courses" },
     { r: "grades", t: "Grades & CGPA", i: "award" },
+    { r: "planner", t: "Course planner", i: "spark" },
     { r: "finance", t: "Financials", i: "wallet" },
     { r: "notices", t: "Notices", i: "megaphone", tab: "Notices" },
     { r: "notifications", t: "Notifications", i: "bell" },
@@ -294,7 +297,7 @@
     app = document.createElement("div"); app.id = "pp-app";
     app.innerHTML =
       '<aside class="pp-side"><div class="pp-brand"><span class="pp-logo"><img src="/Content/Images/aiub_logo_92x92.png" alt="AIUB" decoding="async"></span><div><b>StudentDesk AIUB</b><small>Student workspace</small></div></div>' +
-      '<nav class="pp-nav">' + NAV.map(function (n, i) { return (i === 0 ? '<div class="pp-nav-label">WORKSPACE</div>' : i === 5 ? '<div class="pp-sep"></div><div class="pp-nav-label">CAMPUS</div>' : "") + '<a href="#/' + n.r + '" data-r="' + n.r + '">' + ic(n.i) + "<span>" + n.t + "</span></a>"; }).join("") +
+      '<nav class="pp-nav">' + NAV.map(function (n, i) { return (i === 0 ? '<div class="pp-nav-label">WORKSPACE</div>' : n.r === "notices" ? '<div class="pp-sep"></div><div class="pp-nav-label">CAMPUS</div>' : "") + '<a href="#/' + n.r + '" data-r="' + n.r + '">' + ic(n.i) + "<span>" + n.t + "</span></a>"; }).join("") +
       '<div class="pp-sep"></div><a href="#/settings" data-r="settings">' + ic("gear") + "<span>Settings</span></a></nav>" +
       '<div class="pp-me"><span class="pp-avatar">' + esc(initials) + '</span><div><b>' + esc(NAME) + '</b><small>' + esc((L("Change Password") ? "" : "") + (location.host)) + '</small></div><button class="pp-iconbtn" data-act="theme" title="Dark / Light (Alt+D)">' + ic("moon") + "</button></div></aside>" +
       '<main class="pp-main"><header class="pp-top"><a class="pp-hlogo" href="#/home" aria-label="Home"><img src="/Content/Images/aiub_logo_92x92.png" alt="AIUB" decoding="async"></a><div class="pp-grow"><h1 id="pp-h"></h1><div class="pp-sub" id="pp-s"></div></div><div class="pp-row" id="pp-tr"></div>' +
@@ -335,6 +338,10 @@
     setInterval(checkNav, 300);
     var rzW = innerWidth, rzT; window.addEventListener("resize", function () { clearTimeout(rzT); rzT = setTimeout(function () { if (innerWidth === rzW) return; rzW = innerWidth; movePill(); refreshQuickActions(); syncPaint(); }, 120); });
     [MQ_PHONE, MQ_TOUCH].forEach(function (mq) { if (mq.addEventListener) mq.addEventListener("change", refreshQuickActions); });
+    if(window.StudentDeskPlannerView) {
+      var planner = window.StudentDeskPlannerView({app:app,esc:esc,title:title,ic:ic,toast:toast,time:fmtT,account:NAME,curr:D.curr,profile:D.profile,reg:D.reg,registrationStatus:function(f){return regStatus(f).then(function(st){return Object.assign({},st,{checkedAt:(cacheRaw("regst")||{}).t,url:regTarget().h});});},registrationUrl:function(){return classic(regTarget().h);},offered:function(f){return D.offered(f).then(function(d){return Object.assign({},d,{snapshotAt:(cacheRaw("offered")||{}).t});});},setHead:setHead,refresh:function(){route(true);}});
+      VIEWS.planner = planner.render; VIEWS.planner.after = planner.after;
+    }
     syncThemeIcon();
     if (!/^#\//.test(location.hash)) history.replaceState(null, "", "#/" + (API.get().startPage || "home"));
     route();
@@ -455,6 +462,7 @@
           '<div class="pp-home-links">' + regBtnHtml(reg) + rvHeroBtn() + "</div></div></section>" +
           '<section class="pp-card pp-quick-card"><span class="pp-eyebrow">AT YOUR FINGERTIPS</span><h3>Quick actions</h3><p class="pp-section-caption">A little less searching. A little more doing.</p><div class="pp-quick">' + quickActionsHtml() + "</div></section></div>" +
         (examUpcoming().length ? '<div class="pp-card pp-examcard"><h3>📝 Exam routine is out<a class="pp-more" href="#/schedule?view=exams">All exams →</a></h3><div class="pp-list">' + examRows(examUpcoming(), 3) + "</div></div>" : "") +
+        '<a class="sd-planner-banner" href="#/planner"><span class="sd-banner-mark">' + ic("spark") + '</span><div><span class="pp-eyebrow">NEW IN STUDENTDESK 4</span><b>Your next semester starts with a plan.</b><small>Prerequisites, course priorities and a timetable that fits.</small></div><span class="sd-banner-cta">Open planner ↗</span></a>' +
         '<div class="pp-card pp-wxcard"><h3>Campus weather<span class="pp-more" style="color:var(--ap-muted)">AIUB · Kuratoli, Dhaka</span></h3><div id="pp-wx">' + (peek("wx") ? wxCard(peek("wx")) : '<div class="pp-sk" style="height:120px"></div>') + "</div></div>" +
         '<div class="pp-grid pp-g2"><div class="pp-card"><h3>Today · ' + DAYFULL[todayKey()] + '<a class="pp-more" href="#/schedule">Routine →</a></h3>' + todayHtml + "</div>" +
           '<div class="pp-card"><h3>Coming up<a class="pp-more" href="#/schedule">Week →</a></h3><div class="pp-list">' + (up || '<div class="pp-empty">—</div>') + "</div></div></div>" +
@@ -514,7 +522,7 @@
       var list = (Array.isArray(j) ? j : j.Data || []).map(function (n) { var pt = /\/Date\((\d+)/.exec(n.PostedDate || ""); return { ID: n.ID || 0, Title: n.Title || "", Message: String(n.Message || ""), WebUrl: n.WebUrl || "", Duration: n.Duration || "", t: pt ? +pt[1] : 0 }; });
       var d = { list: list }; cacheSet("noti", d); mem.noti = d; return d;
     });
-    return c && c.d ? pr.catch(function () { return c.d; }) : pr;
+    return pr.catch(function(error) { if(c&&c.d)return c.d;var snapshot=window.StudentDeskPublicSnapshot&&window.StudentDeskPublicSnapshot.faculty;if(snapshot&&snapshot.list&&snapshot.list.length){cacheSet("faculty",snapshot);return snapshot;}throw error; });
   }
   var jsonReads={};
   function portalJSON(path) {
@@ -564,7 +572,7 @@
     var c = cacheRaw("wx"); if (!force && c && c.d && Date.now() - c.t < 10 * 60e3) return Promise.resolve(c.d);
     var pr = fetch(WX_URL, { credentials: "omit" }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).catch(function () { return xget(WX_URL).then(JSON.parse); })
       .then(function (j) { if (!j || !j.current) throw new Error("No weather"); cacheSet("wx", j); return j; });
-    return c && c.d ? pr.catch(function () { return c.d; }) : pr;
+    return pr.catch(function(error) { if(c&&c.d)return c.d;var snapshot=window.StudentDeskPublicSnapshot&&window.StudentDeskPublicSnapshot.faculty;if(snapshot&&snapshot.list&&snapshot.list.length){cacheSet("faculty",snapshot);return snapshot;}throw error; });
   }
   function wxCard(j) {
     if (!j || !j.current) return '<div class="pp-wx-empty">Weather unavailable right now</div>';
@@ -607,7 +615,7 @@
         return terms.reduce(function (p, tm) { return p.then(function () { return J("/Student/ExamRoutineSchedule/GetExamRoutinesBySemesterIdTermId?semesterId=" + cur.ID + "&termId=" + tm.ID).then(function (x) { (Array.isArray(x) ? x : x.Data || []).forEach(function (o) { list.push(examNorm(o, tm.Name || tm.Title || tm.TermName || "")); }); }, function () {}); }); }, Promise.resolve()).then(function () { return { list: list }; });
       });
     }).then(function (d) { d.list.sort(function (a, b) { return a.date - b.date; }); cacheSet("exams", d); return d; });
-    return c && c.d ? pr.catch(function () { return c.d; }) : pr;
+    return pr.catch(function(error) { if(c&&c.d)return c.d;var snapshot=window.StudentDeskPublicSnapshot&&window.StudentDeskPublicSnapshot.faculty;if(snapshot&&snapshot.list&&snapshot.list.length){cacheSet("faculty",snapshot);return snapshot;}throw error; });
   }
   function examSig(e) { return e.term + "|" + e.course + "|" + e.date + "|" + e.time + "|" + e.room; }
   function examRows(list, limit) {
@@ -630,11 +638,12 @@
     var c = cacheRaw("faculty"); if (!force && c && c.d && Date.now() - c.t < 3 * 864e5) return Promise.resolve(c.d);
     var pr = xget(SITE + "/Files/Uploads/public-employee-profiles/employeeProfiles.json?v=1.0.11").then(function (t) {
       var j = JSON.parse(t.replace(/^\uFEFF/, "")), L0 = j.EmployeeProfileLightList || j || [];
-      var list = L0.map(function (e) { var cv = e.CvPersonal || {}, po = e.PersonalOtherInfo || {}; return [title(String(cv.Name || "").toLowerCase()), cv.Email || "", e.Faculty || "", (e.HrDepartment || "").replace(/^DEPARTMENT OF /i, ""), e.Position || "", e.Designation && !/^faculty$/i.test(e.Designation) ? e.Designation : "", [po.RoomNo, po.BuildingNo].filter(Boolean).join(", "), po.SecondProfilePhoto || "", [po.AcademicInterests, po.ResearchInterests].filter(Boolean).join(", ")]; })
+      if(!Array.isArray(L0))throw new Error("Faculty directory format changed");
+      var list = L0.map(function (e) { var cv = e.CvPersonal || {}, po = e.PersonalOtherInfo || {}; return [title(String(cv.Name || "").toLowerCase()), cv.Email || "", e.Faculty || "", (e.HrDepartment || "").replace(/^DEPARTMENT OF /i, ""), e.Position || "", e.Designation && !/^faculty$/i.test(e.Designation) ? e.Designation : "", [po.RoomNo, po.BuildingNo].filter(Boolean).join(", "), po.SecondProfilePhoto || po.ProfilePhoto || cv.ProfilePhoto || e.ProfilePhoto || "", [po.AcademicInterests, po.ResearchInterests].filter(Boolean).join(", ")]; })
         .filter(function (x) { return x[0]; }).sort(function (a, b) { return facRank(a[4]) - facRank(b[4]) || a[0].localeCompare(b[0]); });
       var d = { list: list }; cacheSet("faculty", d); return d;
     });
-    return c && c.d ? pr.catch(function () { return c.d; }) : pr;
+    return pr.catch(function(error) { if(c&&c.d)return c.d;var snapshot=window.StudentDeskPublicSnapshot&&window.StudentDeskPublicSnapshot.faculty;if(snapshot&&snapshot.list&&snapshot.list.length){cacheSet("faculty",snapshot);return snapshot;}throw error; });
   }
   function facShort(f) { return title(f.replace(/^FACULTY OF /i, "").toLowerCase()).replace(/ And /g, " & "); }
   VIEWS.faculty = function (p, f) {
@@ -784,16 +793,18 @@
   }
   /* faculty photo + extra info from aiub.edu public faculty list (by email) */
   var facIdx = null;
+  if((!peek("faculty")||!Array.isArray(peek("faculty").list))&&window.StudentDeskPublicSnapshot&&window.StudentDeskPublicSnapshot.faculty){mem.faculty=window.StudentDeskPublicSnapshot.faculty;}
   function facBy(e) {
-    if (!facIdx) { var d = peek("faculty"); if (!d) return null; facIdx = {}; d.list.forEach(function (x) { if (x[1]) facIdx[x[1].toLowerCase()] = x; }); }
-    return facIdx[String(e || "").toLowerCase()] || null;
+    if (!facIdx) { var d = peek("faculty"); if (!d || !Array.isArray(d.list)) return null; facIdx = {}; d.list.forEach(function (x) { if (x[1]) facIdx[String(x[1]).trim().toLowerCase()] = x; }); }
+    return facIdx[String(e || "").trim().toLowerCase()] || null;
   }
+  function facultyPhotoUrl(value) {try { if(!value)return "";var u=new URL(String(value).replace(/\\/g,"/"),SITE);return u.protocol==="https:" && (u.origin===SITE || u.origin==="https://portal.aiub.edu") ? u.href : ""; } catch(e){return "";} }
   function facPic(e, portalImg, name, cls) {
-    var x = facBy(e), src = x && x[7] ? SITE + x[7] : portalImg || "";
+    var x = facBy(e), packed=window.StudentDeskPublicSnapshot&&window.StudentDeskPublicSnapshot.faculty;var fallback=packed&&packed.list.filter(function(p){return String(p[1]||"").toLowerCase()===String(e||"").toLowerCase();})[0];var src = fallback&&/^data:image\/webp;base64,/.test(fallback[9]||"")?fallback[9]:facultyPhotoUrl(x && x[7]) || facultyPhotoUrl(portalImg);
     var ini = String(name || "?").split(" ").filter(function (w) { return /^[A-Z]/i.test(w) && !/^(dr|md|mr|ms|mrs)\.?$/i.test(w); }).slice(0, 2).map(function (w) { return w[0]; }).join("").toUpperCase();
-    picWire(); var alt = portalImg && portalImg !== src ? portalImg : "";
+    picWire(); var alt = facultyPhotoUrl(portalImg) || facultyPhotoUrl((x||fallback||[])[7]); if(alt===src)alt="";
     if (src && picDead[src] && Date.now() - picDead[src] < 6e5) src = alt;
-    return '<span class="pp-rvpic ' + (cls || "") + '" data-i="' + esc(ini) + '" data-e="' + esc(e) + '"' + (alt ? ' data-alt="' + esc(alt) + '"' : "") + ">" + (src ? '<img loading="lazy" decoding="async" alt="" src="' + esc(src) + '" data-src="' + esc(src) + '">' : "") + "</span>";
+    return '<span class="pp-rvpic ' + (cls || "") + '" data-i="' + esc(ini) + '" data-e="' + esc(e) + '"' + (alt ? ' data-alt="' + esc(alt) + '"' : "") + ">" + (src ? '<img loading="lazy" decoding="async" alt="" referrerpolicy="no-referrer" src="' + esc(src) + '" data-src="' + esc(src) + '">' : "") + "</span>";
   }
   function starsHtml(n, big) { var s = ""; for (var i = 1; i <= 5; i++) s += '<i class="' + (i <= Math.round(n) ? "on" : "") + '">★</i>'; return '<span class="pp-stars' + (big ? " big" : "") + '">' + s + "</span>"; }
   function agoIso(s) { var t = Date.parse(s); return !t ? "" : Date.now() - t < 60e3 ? "just now" : ago(t); }
@@ -804,6 +815,7 @@
   function picFail(im) {
     var el = im.parentNode, base = im.getAttribute("data-src") || im.getAttribute("src") || "", n = +(im.getAttribute("data-try") || 0);
     if (!el || !base) return;
+    if (/^data:/.test(base)) n=3; // A data URI must never receive a cache-busting query.
     if (n < 3) { im.setAttribute("data-try", n + 1); setTimeout(function () { if (im.isConnected && im.getAttribute("data-src") === base) im.src = base + (base.indexOf("?") < 0 ? "?" : "&") + "r=" + Date.now().toString(36); }, [1500, 4000, 9000][n]); return; }
     picDead[base] = Date.now();
     var alt = el.getAttribute("data-alt");
@@ -828,7 +840,7 @@
     if (!peek("faculty")) { facEnsure().then(function () { rvPics(); }, function () {}); return; }
     facIdx = null;
     $$(".pp-rvpic[data-e]", app).forEach(function (el) {
-      var x = facBy(el.getAttribute("data-e")); if (!x || !x[7]) return; var src = SITE + x[7], im = $("img", el);
+      var x = facBy(el.getAttribute("data-e")); if (!x || !x[7]) return; var packed=window.StudentDeskPublicSnapshot&&window.StudentDeskPublicSnapshot.faculty;var cached=packed&&packed.list.filter(function(p){return String(p[1]||"").toLowerCase()===String(el.getAttribute("data-e")||"").toLowerCase();})[0];var src=cached&&/^data:image\/webp;base64,/.test(cached[9]||"")?cached[9]:facultyPhotoUrl(x[7]), im = $("img", el); if(!src)return;
       if (picDead[src] && Date.now() - picDead[src] < 6e5) return;
       if (im && im.getAttribute("data-src") === src && !im.getAttribute("data-try") && im.complete && !im.naturalWidth) { picFail(im); return; }  // failed before we were listening
       if (im && (im.getAttribute("data-src") === src || im.getAttribute("data-try"))) return;
@@ -1196,6 +1208,13 @@
     var key = "notices" + n, c = cacheRaw(key);
     if (!force && c && c.d && Date.now() - c.t < 10 * 60e3) return Promise.resolve(c.d);
     if (noticeInflight[key]) return noticeInflight[key];
+    // First paint does not wait for a potentially blocked cross-origin request.
+    if (!force && n === 1 && !c && window.StudentDeskPublicSnapshot && window.StudentDeskPublicSnapshot.notices) {
+      var initial = {items:window.StudentDeskPublicSnapshot.notices.items,last:window.StudentDeskPublicSnapshot.notices.last,snapshotAt:window.StudentDeskPublicSnapshot.checked};
+      cacheSet(key,initial);mem[key]=initial;
+      setTimeout(function(){noticePage(1,true).then(function(d){if(!d.snapshotAt && current==="notices")route();},function(){});},50);
+      return Promise.resolve(initial);
+    }
     var pr = noticeAccess("/category/notices?pageNo=" + n + "&pageSize=20", function(h){var d=parseNotices(h);if(!d.items.length)throw new Error("The notices page could not be read");return d;}).then(function(d){delete requestWarnings[key];cacheSet(key,d);mem[key]=d;return d;}).catch(function (e) {
       requestWarnings[key] = "Notices could not refresh. " + (c && c.d ? "Showing saved notices. " : "") + publicFailure(e);
       if (c && c.d) return c.d;
@@ -1237,16 +1256,34 @@
       frame.src=url.href;document.body.appendChild(frame);
     });
   }
-  function noticeAccess(path,parse) {
-    var gm=typeof GM_xmlhttpRequest==="function" || (typeof GM!=="undefined"&&GM&&typeof GM.xmlHttpRequest==="function");
-    // An installed WebExtension uses its own background, not a cross-site frame.
-    // Never turn a missing/failed background into another long, doomed wait.
-    if(publicRuntime()&&!gm)return runtimePublicRequest(SITE+path).then(parse);
-    if(!hasPublicTransport())return publicNoticeData(path);
-    return xgetOnce(SITE+path).then(parse).catch(function(){return publicNoticeData(path);});
+  function publicCacheMessage(message) {
+    return new Promise(function(resolve,reject){var rt=publicRuntime(),done=false,timer=setTimeout(function(){finish(new Error("Public cache not responding"));},1800);function finish(e,v){if(done)return;done=true;clearTimeout(timer);e?reject(e):resolve(v);}function callback(v){if(rt&&rt.lastError){finish(new Error("Public cache unavailable"));return;}finish(null,v);}if(!rt){try{var read=typeof GM_getValue==="function"?GM_getValue:typeof GM!=="undefined"&&GM&&GM.getValue?GM.getValue.bind(GM):null;if(read&&message.t==="sd-public-cache-get"){Promise.resolve(read("sd.public."+message.path,null)).then(function(v){finish(null,{cached:v});},finish);return;}}catch(e){}finish(new Error("Extension messaging unavailable"));return;}try{var p=typeof chrome!=="undefined"&&rt===chrome.runtime?rt.sendMessage(message,callback):rt.sendMessage(message);if(p&&p.then)p.then(function(v){finish(null,v);},function(e){finish(e);});else if(!(typeof chrome!=="undefined"&&rt===chrome.runtime))rt.sendMessage(message,callback);}catch(e){finish(e);}});
   }
+  function noticeCachedData(path) {
+    return publicCacheMessage({t:"sd-public-cache-get",path:path}).then(function(r){
+      if(!r||!r.cached||!r.cached.data)throw new Error("No synced public page");var d=r.cached.data;
+      if(/^\/category\/notices/.test(path)){
+        if(d.kind!=="list"||!Array.isArray(d.items))throw new Error("Invalid public list");
+        return {items:d.items.slice(0,100).filter(function(it){return it&&typeof it.u==="string"&&/^\/[\w/%.\-]+$/.test(it.u)&&!it.u.startsWith("//")&&typeof it.title==="string";}).map(function(it){return {u:it.u,title:it.title.slice(0,2000),desc:String(it.desc||"").slice(0,4000),day:String(it.day||"").slice(0,8),mon:String(it.mon||"").slice(0,16),year:String(it.year||"").slice(0,8)};}),last:Math.min(1000,Math.max(1,+d.last||1)),syncedAt:r.cached.at};
+      }
+      if(d.kind!=="detail"||typeof d.title!=="string"||typeof d.body!=="string")throw new Error("Invalid public notice");return {title:d.title.slice(0,2000),date:String(d.date||"").slice(0,120),body:cleanHtml(d.body.slice(0,600000)),syncedAt:r.cached.at};
+    });
+  }
+  function noticeAccess(path,parse) {
+    var direct=publicRuntime()?runtimePublicRequest(SITE+path).then(parse):hasPublicTransport()?xgetOnce(SITE+path).then(parse):publicNoticeData(path);
+    return direct.catch(function(error){
+      return noticeCachedData(path).catch(function(){
+        var snapshot=window.StudentDeskPublicSnapshot;
+        if(snapshot&&snapshot.notices&&/^\/category\/notices\?pageNo=1(?:&|$)/.test(path)){
+          return {items:snapshot.notices.items,last:snapshot.notices.last,snapshotAt:snapshot.checked,networkError:String(error&&error.message||error)};
+        }
+        throw error;
+      });
+    });
+  }
+  function noticeSyncHtml(path) {return '<a class="pp-btn pri sd-sync-public" href="'+SITE+esc(path)+'" target="_blank" rel="noopener noreferrer">'+ic("refresh")+' Sync from official site</a><p class="sd-muted sd-small">If background access is blocked, open the official page once with StudentDesk enabled there, then return here. Only public notices are synced; no student data is shared.</p>';}
   function noticeUnavailable(path,error) {
-    return '<section class="pp-card pp-notice-unavailable"><span class="pp-eyebrow">PUBLIC PAGE UNAVAILABLE</span><h3>Notices couldn’t refresh</h3><p>The extension could not retrieve this public page. Saved notices remain available when present.</p>'+(error?'<p class="pp-note" role="status">'+esc(String(error).slice(0,260))+'</p>':'')+'<div class="pp-row"><button type="button" class="pp-btn pri" data-act="refresh">'+ic("refresh")+' Retry</button><a class="pp-btn" href="'+SITE+esc(path)+'" target="_blank" rel="noopener noreferrer">'+ic("ext")+' Open official site</a></div></section>';
+    return noticeSyncHtml(path) + '<section class="pp-card pp-notice-unavailable"><span class="pp-eyebrow">PUBLIC PAGE UNAVAILABLE</span><h3>Notices couldn’t refresh</h3><p>The extension could not retrieve this public page. Saved notices remain available when present.</p>'+(error?'<p class="pp-note" role="status">'+esc(String(error).slice(0,260))+'</p>':'')+'<div class="pp-row"><button type="button" class="pp-btn pri" data-act="refresh">'+ic("refresh")+' Retry</button><a class="pp-btn" href="'+SITE+esc(path)+'" target="_blank" rel="noopener noreferrer">'+ic("ext")+' Open official site</a></div></section>';
   }
   function filteredNotices(items,q){q=q.toLowerCase().trim();return q?items.filter(function(it){return (it.title+" "+it.desc).toLowerCase().indexOf(q)>=0;}):items;}
   VIEWS.notices=function(p,f){
@@ -1254,10 +1291,10 @@
     if(p.compact)noticeState.pages=1;
     var jobs=[];for(var i=1;i<=noticeState.pages;i++)jobs.push(noticePage(i,f).catch(function(e){return {items:[],last:noticeState.pages,unavailable:true,error:String(e&&e.message||e)};}));
     return Promise.all(jobs).then(function(pages){
-      var all=[],seen={},last=pages[0].last,failed=pages.some(function(pg){return pg.unavailable;});
+      var all=[],seen={},last=pages[0].last,snap=pages.some(function(pg){return pg.snapshotAt;}),synced=pages.some(function(pg){return pg.syncedAt;}),failed=pages.some(function(pg){return pg.unavailable;});
       pages.forEach(function(pg){pg.items.forEach(function(it){if(!seen[it.u]){seen[it.u]=true;all.push(it);}});last=Math.max(last,pg.last);});noticeState.items=all;
       var list=filteredNotices(all,noticeState.q);
-      return '<div class="pp-view pp-notices"><div class="pp-bulletin-head"><span class="pp-eyebrow">CAMPUS BULLETIN</span><h2>Stay in the loop.</h2><p>Notices, deadlines and important university updates.</p></div><div class="pp-notice-toolbar"><input type="search" class="pp-input" id="pp-nq" aria-label="Search loaded notices" placeholder="Search loaded notices" value="'+esc(noticeState.q)+'"><a class="pp-btn sm" href="'+SITE+'/category/notices" target="_blank" rel="noopener noreferrer">'+ic("ext")+' Official site</a></div>'+(failed?noticeUnavailable("/category/notices",(pages.filter(function(pg){return pg.unavailable;})[0]||{}).error):"")+(all.length?'<section class="pp-card pp-bulletin"><div class="pp-bulletin-label"><span>Latest updates</span><span id="pp-notice-count">'+list.length+' of '+all.length+'</span></div><div class="pp-list" id="pp-notice-list">'+(noticeRows(list)||'<div class="pp-empty">No matching notices</div>')+'</div>'+(noticeState.pages<last?'<button type="button" class="pp-btn" id="pp-nmore">Load older notices</button>':'')+'</section>':"")+'</div>';
+      return '<div class="pp-view pp-notices"><div class="pp-bulletin-head"><span class="pp-eyebrow">CAMPUS BULLETIN</span><h2>Stay in the loop.</h2><p>Notices, deadlines and important university updates.</p></div><div class="pp-notice-toolbar"><input type="search" class="pp-input" id="pp-nq" aria-label="Search loaded notices" placeholder="Search loaded notices" value="'+esc(noticeState.q)+'"><a class="pp-btn sm" href="'+SITE+'/category/notices" target="_blank" rel="noopener noreferrer">'+ic("ext")+' Official site</a></div>'+(snap?'<section class="pp-card sd-notice-provenance"><b>Saved official snapshot · not a live refresh</b><p>Fetched '+esc(new Date(window.StudentDeskPublicSnapshot.checked).toLocaleString())+'. This saved copy may be outdated. A live refresh requires the official site to respond.</p>'+noticeSyncHtml('/category/notices?pageNo=1&pageSize=20')+'</section>':synced?'<p class="pp-note">Showing notices synced from an official-site tab. Refresh after syncing for new updates.</p>':'')+(failed?noticeUnavailable("/category/notices",(pages.filter(function(pg){return pg.unavailable;})[0]||{}).error):"")+(all.length?'<section class="pp-card pp-bulletin"><div class="pp-bulletin-label"><span>Latest updates</span><span id="pp-notice-count">'+list.length+' of '+all.length+'</span></div><div class="pp-list" id="pp-notice-list">'+(noticeRows(list)||'<div class="pp-empty">No matching notices</div>')+'</div>'+(noticeState.pages<last?'<button type="button" class="pp-btn" id="pp-nmore">Load older notices</button>':'')+'</section>':"")+'</div>';
     });
   };
   VIEWS.notices.after=function(){
@@ -1567,24 +1604,61 @@
   /* ---------- What's new + update check ----------
      Reads the public file update.json from the GitHub repo (nothing is sent) at most every 6 hours.
      When a newer version exists, More shows the new features and a GitHub update link. */
-  var PP_VER = "3.9.9";
+  var PP_VER = "4.0.0";
   var PP_NEW = [
-    "Safari-specific nonpersistent background page, native public-page requests and bounded runtime responses fix the public notice transport compatibility path.",
-    "portable bounded DOCX/PPTX decoder and native ArrayBuffer attachment reads replace Safari-sensitive stream APIs.",
-    "Rebuilt Notices: dedicated in-app bulletin, search, pagination and sanitized article details. A temporary offscreen official-site bridge supports compatible userscript managers; the full website is never displayed inside Notices. No third-party proxy.",
-    "Portal Mail uses absolute same-origin JSON requests with session validation, readable recovery and persistent Outlook access.",
-    "New Focus interface: gradient header with a light content deck, navigation groups, launchpad shortcuts, file workspace and short reduced-motion-aware transitions. Off-day calendar remains red.",
-    "Customize and reorder Home quick actions separately for desktop and touch devices.",
-    "Optional class and exam reminders while the portal tab is open; optional desktop notifications.",
-    "Export the current routine as PNG, print/Save as PDF, or an 8-week calendar file.",
-    "Liquid Glass header with glossy edges and a readable frosted surface on scroll in light/dark themes; solid fallback in Performance mode.",
-    "Phone rendering avoids stacked blur and repeated card animations; navigation uses one brief opacity fade. Footer position is unchanged.",
-    "Data freshness badges distinguish cached data and offline snapshots.",
-    "Preview teacher attachments in memory: PDF, images, plain text, and text-only DOCX/PPTX, with download fallback.",
-    "Bounded retries for temporary read failures; failed refresh keeps saved data and clearly labels it.",
-    "Notices stay usable when one page fails, with Retry and official-site fallback.",
-    "Added developer Facebook profile.",
-    "Portal login and server-side captcha validation remain unchanged."
+    "Added a dedicated Course planner in desktop navigation, More, and a Home invitation card on phone and PC.",
+    "Uses the student's portal curriculum and registration data with source-attributed official AIUB catalog snapshots.",
+    "Matches courses by exact unique code/name rather than guessing a department or borrowing another program's prerequisites.",
+    "Shows verified prerequisite groups (ALL / ONE OF), course names, passed/missing/current status, credit thresholds and source wording/links.",
+    "Explains each course's priority: retake, direct prerequisite bottleneck or curriculum sequence.",
+    "Lists named direct successor courses and any other requirements still missing. A prerequisite relationship is not a promise of future availability.",
+    "Requires the user to check the catalog/version against their own batch for academic recommendations. Missing, ambiguous or unavailable rules remain unverified.",
+    "Excludes passed and currently enrolled courses from the remaining-course suggestions.",
+    "Lets students mark current courses they expect to pass; dependent suggestions are labeled conditional, not currently eligible.",
+    "Unticking a dropped/uncertain current course recalculates dependent status immediately; it does not submit a portal drop.",
+    "Separates completed, running and projected credits. Registration credit values are preferred where available; missing credits stay unverified.",
+    "Does not chain suggested future courses together as if they were already passed.",
+    "Every remaining-course card has Add to plan, including blocked/unverified courses saved as reminders.",
+    "Keeps up to 30 saved courses in this browser across navigation/reloads. Changes in eligibility do not silently delete reminders.",
+    "Preserves older saved entries for rechecking if they are no longer in the remaining-course list.",
+    "Shows prerequisite, verification, unknown-credit and over-target warnings without blocking manual reminder saves.",
+    "Added direct Download PDF (paginated, image-backed A4) and Download JPG (styled plan image).",
+    "Downloads include course codes, names, known credits, status warnings, current-pass conditions and planned section details when available.",
+    "PDF/JPG generation happens locally; no third-party document service receives student data.",
+    "Moved JSON export to Optional backup. Automatic starting-plan replacement asks before replacing existing reminders.",
+    "Added a read-only registration/availability panel with portal start-page status and an official-registration entry point.",
+    "Shows exact-matched sections on each course card: reported status, remaining/total seats, theory/lab meetings and room.",
+    "Distinguishes available, full, closed and unknown seat counts; invalid/missing counts are not invented as zero.",
+    "Displays the offering term and snapshot time. Saved/current-term data is not represented as a guaranteed next-semester offering.",
+    "Added In loaded offerings and Sections reporting seats filters.",
+    "Optional offering-scoped starting plans require checking the displayed term; the setting resets if the source term changes.",
+    "Bounded manual refresh and focus-return refresh avoid continuous polling. Seats are snapshots, not reservations.",
+    "Uses the supplied portal offering snapshot, not invented sections.",
+    "Checks every lab/theory meeting, section capacity, overlaps, preferred time range and a hard blocked day.",
+    "Blocks automatic section search for unverified/ineligible reminders or an invalid search load. Saving a course never grants registration eligibility.",
+    "Saves explicitly confirmed complete semester offering snapshots locally.",
+    "Shows historical frequency only after at least three distinct comparable-season snapshots; no fabricated opening probability or guarantee.",
+    "Introduced a warm editorial Academic Studio design, clearer typography, restrained borders and a consistent light/dark palette.",
+    "Added original lightweight section illustrations; navigation/action icons remain functional and distinct from artwork.",
+    "Redesigned planner setup, current-course controls, eligibility summaries, course cards and saved-plan presentation for touch and desktop.",
+    "Collapsible setup/current-course sections reduce clutter; PDF/JPG controls are visible in the saved plan.",
+    "Added a native mobile Home planner invitation and persistent desktop access.",
+    "Kept a readable frosted header with solid/reduced-effect fallbacks, reduced-motion support and Performance mode.",
+    "Removed the legacy Appearance customization panel; retained a simple Light / Dark / System theme.",
+    "Fixed reminder labels/select layout being squeezed on desktop and phone, artwork/action overlap and dark-mode contrast issues.",
+    "Authenticated root redirects are no longer automatically treated as expired sessions; actual login responses still require normal sign-in.",
+    "Unavailable/redirected registration pages are not parsed as successful empty course lists.",
+    "Failed forced registration/offering refreshes preserve existing information and show actionable, durable recovery rather than a raw SESSION-only toast.",
+    "Improved bounded public-page transport, typed HTTP/network failures, public-tab notice synchronization and cache boundaries.",
+    "Bundled a clearly labeled saved official notice snapshot so the bulletin is usable when the public server does not respond. Live refresh remains dependent on the official site.",
+    "Added bundled public faculty thumbnails with remote/initial fallback for All reviews.",
+    "Regression-checked real compressed DOCX preview fixtures, offline notice labeling, faculty photos and performance/theme controls. Existing file-type limits remain unchanged.",
+    "Academic recommendations are local/deterministic; no grades are sent to an external AI service.",
+    "Plans, pass assumptions, imported rules, credit confirmations and offering history remain local to the browser. Clearing site data removes them.",
+    "No automatic registration, course submission, drop action, login/CAPTCHA bypass or queue/wait bypass was added.",
+    "Source coverage varies by department/intake. Incomplete catalogs are explicitly unverified; advisor/official portal approval remains authoritative.",
+    "Release fixtures were checked in Chromium at 320, 390, 820 and 1440px. Real authenticated Safari/iPhone and an active pre-registration session still require on-device verification.",
+    "Firefox and Microsoft Edge distribution depends on each store's validation/review. A submitted update is not necessarily approved or live."
   ];
   var GH_REPO = "https://github.com/amitsami/studentdesk-aiub",
       UPD_URL = "https://raw.githubusercontent.com/amitsami/studentdesk-aiub/main/update.json",
@@ -1664,6 +1738,7 @@
       var initials = NAME.split(" ").filter(Boolean).slice(0, 2).map(function (x) { return x[0]; }).join("");
       return '<div class="pp-view"><div class="pp-card" style="margin-bottom:16px"><div class="pp-row" style="gap:16px;margin-bottom:14px"><span class="pp-avatar" style="width:64px;height:64px;font-size:22px">' + esc(initials) + '</span><div><h2 style="font-size:22px">' + esc(NAME) + '</h2><div style="color:var(--ap-muted)">' + esc(fl["Program"] || "") + '</div></div><a class="pp-btn sm" style="margin-left:auto" href="' + classic("/Student/Home/Profile") + '">' + ic("user") + " Full profile</a></div>" +
         '<div class="pp-grid pp-g3" style="margin:0">' + keys.filter(function (k) { return fl[k]; }).map(function (k) { return '<div class="pp-item"><div class="pp-t"><small>' + esc(k) + "</small>" + (k === "CGPA" ? cgB(esc(fl[k]), "b") : "<b" + (/Contact|Email/.test(k) ? ' class="ap-private"' : "") + ">" + esc(fl[k]) + "</b>") + "</div></div>"; }).join("") + "</div></div>" + updCard() +
+        '<a class="pp-card pp-facard sd-more-planner" href="#/planner"><span class="pp-qi">' + ic("spark") + '</span><div class="pp-t"><b>Course planner</b><small>Plan next semester · check prerequisites · find conflict-free sections</small></div>' + ic("ext") + '</a>' +
         '<a class="pp-card pp-facard" href="#/reviews" data-r="reviews"><span class="pp-qi">' + ic("star") + '</span><div class="pp-t"><b>Faculty review</b><small>Rate your faculty anonymously · see everyone’s reviews</small></div>' + ic("back", "flip") + "</a>" +
         '<a class="pp-card pp-facard" href="#/faculty"><span class="pp-qi">' + ic("user") + '</span><div class="pp-t"><b>Faculty list</b><small>Find any AIUB faculty — room, email, department, research interests</small></div>' + ic("back", "flip") + "</a>" +
         '<div class="pp-grid pp-g3">' + MENU.map(function (g) { var items = g.items.filter(function (it) { return norm(g.g) !== "ACADEMICS" || !isCoursesResult(it.t); }); if (!items.length) return ""; return '<div class="pp-card"><h3>' + ic(GROUP_IC[g.g] || "grid") + " " + esc(g.g) + '</h3><div class="pp-list">' + items.map(function (it) { return '<a class="pp-item" style="padding:10px 12px" href="' + classic(it.h) + '"><div class="pp-t"><b style="font-size:13.5px">' + esc(it.t) + "</b></div>" + ic("back", "flip") + "</a>"; }).join("") + "</div></div>"; }).join("") +
@@ -1681,15 +1756,14 @@
   VIEWS.settings = function () {
     setHead("Settings", "Your portal, your style");
     var sp = API.get().startPage || "home";
-    return '<div class="pp-view"><div class="pp-grid pp-g2"><div class="pp-card"><h3>' + ic("gear") + ' Appearance</h3><div id="pp-setslot"></div></div><div class="pp-card"><h3>' + ic("grid") + ' App</h3><div class="pp-list">' +
+    return '<div class="pp-view"><div class="pp-grid pp-g2"><div class="pp-card sd-theme-card"><h3>' + ic("sun") + ' Theme</h3><p class="sd-muted">A quieter workspace, day or night.</p><div class="sd-theme-options">' + [["light","Light"],["dark","Dark"],["auto","System"]].map(function(t){return '<button type="button" class="pp-btn" data-sd-theme="'+t[0]+'" aria-pressed="'+(API.get().mode===t[0])+'">'+t[1]+'</button>';}).join("") + '</div></div><div class="pp-card"><h3>' + ic("grid") + ' App</h3><div class="pp-list">' +
       '<div class="pp-item" style="display:flex;align-items:center;gap:12px"><div class="pp-t" style="flex:1;min-width:0"><b>Start page</b><small>Page shown when the portal opens</small></div><select class="pp-input" id="pp-start" style="width:auto">' + NAV.map(function (n) { return '<option value="' + n.r + '"' + (n.r === sp ? " selected" : "") + ">" + n.t + "</option>"; }).join("") + "</select></div>" +
       '<button class="pp-item pp-click" data-act="refresh" style="text-align:left"><div class="pp-t"><b>Refresh all data</b><small>Reload everything from the portal</small></div>' + ic("refresh") + "</button>" +
       '<a class="pp-item" href="' + classic(location.pathname + location.search) + '"><div class="pp-t"><b>Classic portal view</b><small>Use the original layout</small></div>' + ic("layers") + "</a></div>" +
       '<p class="pp-note" style="margin-top:14px">🔒 StudentDesk runs only in your browser. All data comes directly from portal.aiub.edu and is never sent anywhere — except a faculty review you choose to submit (anonymous: no name, no ID). Settings are saved on this device only.<br><br>⌨️ Shortcuts: Alt+1…7 page change · Alt+D dark mode</p></div>' + rvSetCard() + '</div></div>';
   };
   VIEWS.settings.after = function () {
-    var panel = document.getElementById("ap-panel"), slot = $("#pp-setslot", app);
-    if (panel && slot) { panel.classList.add("ap-inline", "open"); slot.appendChild(panel); }
+    $$("[data-sd-theme]",app).forEach(function(b){b.onclick=function(){API.set("mode",b.dataset.sdTheme);$$("[data-sd-theme]",app).forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});syncThemeIcon();};});
     var st = $("#pp-start", app); if (st) st.onchange = function () { API.set("startPage", st.value); toast("Saved ✓"); };
     rvSetWire();
   };
@@ -1793,7 +1867,7 @@
   }
   function workspaceSettingsHtml() {
     var lead = +jget("pp.reminder.minutes", 0);
-    return '<div class="pp-card pp-workspace"><h3>' + ic("spark") + ' Workspace tools <span class="pp-chip">New</span></h3><p class="pp-note">Useful extras. No new account, no external document viewer.</p><div class="pp-list"><button type="button" class="pp-item pp-click pp-performance-row" id="pp-performance" role="switch" aria-checked="' + (!!API.get().performance) + '" aria-pressed="' + (!!API.get().performance) + '"><span class="pp-t"><b>Performance mode</b><small>Less blur and visual work on slower devices</small></span><span class="pp-mode-switch" aria-hidden="true"><i></i></span><span class="pp-performance-label">' + (API.get().performance ? "On" : "Off") + '</span></button><button class="pp-item pp-click" id="pp-edit-quick"><div class="pp-t"><b>Customize quick actions</b><small>Choose and reorder shortcuts for this screen type</small></div>' + ic("grid") + '</button><div class="pp-item"><div class="pp-t"><b>Class & exam reminders</b><small>Only while a logged-in portal tab is open. Campus time: Dhaka.</small></div><select class="pp-input" id="pp-reminder" aria-label="Reminder timing">' + [0, 5, 10, 15, 30].map(function (n) { return '<option value="' + n + '"' + (n === lead ? " selected" : "") + '>' + (n ? n + " min before" : "Off") + '</option>'; }).join("") + '</select></div><button class="pp-item pp-click" id="pp-notification-permission"><div class="pp-t"><b>Allow desktop notifications</b><small>Optional browser permission; in-app reminders still work without it</small></div>' + ic("bell") + '</button></div><p class="pp-note">Routine → Export: PNG, Print / Save as PDF, or an 8-week calendar file. Teacher notes → Preview: PDF, images, plain text, and text-only DOCX/PPTX. Unsupported files keep their normal download.</p></div>';
+    return '<div class="pp-card pp-workspace"><h3>' + ic("spark") + ' Workspace tools <span class="pp-chip">New</span></h3><p class="pp-note">Useful extras. No new account, no external document viewer.</p><div class="pp-list"><button type="button" class="pp-item pp-click pp-performance-row" id="pp-performance" role="switch" aria-checked="' + (!!API.get().performance) + '" aria-pressed="' + (!!API.get().performance) + '"><span class="pp-t"><b>Performance mode</b><small>Less blur and visual work on slower devices</small></span><span class="pp-mode-switch" aria-hidden="true"><i></i></span><span class="pp-performance-label">' + (API.get().performance ? "On" : "Off") + '</span></button><button class="pp-item pp-click" id="pp-edit-quick"><div class="pp-t"><b>Customize quick actions</b><small>Choose and reorder shortcuts for this screen type</small></div>' + ic("grid") + '</button><div class="pp-item sd-reminder-row"><div class="pp-t"><b>Class & exam reminders</b><small>Only while a logged-in portal tab is open. Campus time: Dhaka.</small></div><select class="pp-input" id="pp-reminder" aria-label="Reminder timing">' + [0, 5, 10, 15, 30].map(function (n) { return '<option value="' + n + '"' + (n === lead ? " selected" : "") + '>' + (n ? n + " min before" : "Off") + '</option>'; }).join("") + '</select></div><button class="pp-item pp-click" id="pp-notification-permission"><div class="pp-t"><b>Allow desktop notifications</b><small>Optional browser permission; in-app reminders still work without it</small></div>' + ic("bell") + '</button></div><p class="pp-note">Routine → Export: PNG, Print / Save as PDF, or an 8-week calendar file. Teacher notes → Preview: PDF, images, plain text, and text-only DOCX/PPTX. Unsupported files keep their normal download.</p></div>';
   }
   function workspaceSettingsWire() {
     var p = $("#pp-performance", app); if (!p) return;
@@ -1923,6 +1997,16 @@
       else throw new Error("This file type cannot be previewed here. PDF, images, text, DOCX and PPTX text are supported. Use the original download for other formats.");
     }).catch(function (e) { if (!box.isConnected || (e.name === "AbortError" && !timedOut)) return; var c = $("#pp-preview-content", box); c.textContent = ""; var p = document.createElement("p"); p.className = "pp-preview-error"; p.textContent = timedOut ? "The attachment server did not respond in time. Retry or use the original download." : e.message || "Preview unavailable. Use the original download."; c.appendChild(p); }).finally(function () { clearTimeout(previewTimer); });
   }
+  function studioArtPaint(){
+    if(!window.StudentDeskArt)return;
+    var type={home:"home",schedule:"routine",courses:"courses",grades:"grades",finance:"finance",notices:"notices",notice:"notices",mail:"mail",settings:"settings",more:"more",reviews:"grades",faculty:"courses"}[current];if(!type)return;
+    var view=$("#pp-scroll>.pp-view",app);if(!view)return;
+    var targets=[];
+    if(current==="home")targets=$$(".pp-quick-card,.pp-wxcard,.pp-g2>.pp-card",view);
+    else if(current==="notices")targets=$$(".pp-bulletin-head",view);
+    else targets=$$(".pp-card",view).filter(function(c){return c.parentNode===view||c.parentNode.parentNode===view;}).slice(0,3);
+    targets.forEach(function(c,i){if($(".sd-portion-art",c))return;var heading=$("h3,h2",c);if(!heading)return;var art=document.createElement("span");art.className="sd-portion-art";art.innerHTML=window.StudentDeskArt(current==="home"?["planner","weather","routine","notices"][i%4]:type);c.insertBefore(art,c.firstChild);c.classList.add("sd-art-section");heading.classList.add("sd-illustrated-title");});
+  }
   function workspacePaint() {
     syncPaint();
     var wkeys = { home: "home", schedule: "reg", courses: "curr", grades: "sem", finance: "acc", notices: "notices1" }, warning = requestWarnings[wkeys[current]], view = $("#pp-scroll > .pp-view", app);
@@ -1931,10 +2015,12 @@
     if (current === "home") { var quick = $(".pp-quick", app), h = quick && quick.parentNode.querySelector("h3"); if (h && !$("[data-custom-quick]", h)) { var b = document.createElement("button"); b.className = "pp-btn sm pp-custom-quick"; b.dataset.customQuick = "1"; b.textContent = "Customize"; b.onclick = editQuickActions; h.appendChild(b); } }
     if (current === "schedule") { var view = $("#pp-scroll > .pp-view", app); if (view && !$("#pp-export-bar", view)) { var bar = document.createElement("div"); bar.id = "pp-export-bar"; bar.className = "pp-toolstrip"; bar.innerHTML = '<div><b>Your week, anywhere</b><small>Save a routine image, PDF or calendar snapshot</small></div><button class="pp-btn sm" id="pp-export-routine">' + ic("ext") + ' Export</button>'; view.insertBefore(bar, view.firstChild); $("#pp-export-routine", bar).onclick = routineExport; } }
     if (current === "settings") { var view = $("#pp-scroll > .pp-view", app); if (view && !$(".pp-workspace", view)) { var wrap = document.createElement("div"); wrap.innerHTML = workspaceSettingsHtml(); view.insertBefore(wrap.firstChild, view.firstChild); } workspaceSettingsWire(); }
+    studioArtPaint();
     if (current === "classic") { var fr = $("#pp-frame", app); if (fr && !fr.__ppNoteHook) { fr.__ppNoteHook = true; fr.addEventListener("load", function () { try { attachNotePreviews(fr.contentDocument); } catch (e) {} }); try { if (fr.contentDocument && fr.contentDocument.body) attachNotePreviews(fr.contentDocument); } catch (e) {} } }
   }
   function workspaceStart() {
     workspacePaint(); setInterval(syncPaint, 60000); setInterval(reminderTick, 20000);
+    window.addEventListener("focus",function(){if(current!=="notices"&&current!=="notice")return;var path=current==="notices"?"/category/notices?pageNo=1&pageSize=20":new URLSearchParams(location.hash.split("?")[1]||"").get("u");if(!path)return;noticeCachedData(path).then(function(d){var k=current==="notices"?"notices1":"notice:"+path;var prev=cacheRaw(k);if(!prev||d.syncedAt>prev.t){cacheSet(k,d);route();}},function(){});});
     window.addEventListener("online", syncPaint); window.addEventListener("offline", syncPaint);
     document.addEventListener("visibilitychange", function () { if (!document.hidden) { syncPaint(); reminderTick(); } });
   }

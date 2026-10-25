@@ -1,0 +1,388 @@
+/* StudentDesk 4 · Quiet precision.
+   Warm editorial canvas, typographic hierarchy, tactile controls.
+   No blur on scrolling content, only the small fixed navigation surfaces. */
+html.ap {
+  --sd-paper:#f5f4ef;--sd-surface:#fffefa;--sd-raised:#f0eee7;
+  --sd-ink:#2c302c;--sd-muted:#6b7068;--sd-line:#e4e5dc;
+  --sd-accent:#8d4d36;--sd-tint:#f3e8df;--sd-good:#24614a;--sd-good-bg:#e9f2e9;
+  --sd-risk:#9b4239;--sd-risk-bg:#faeae5;--sd-glass:rgba(250,250,245,.87);
+  --ap-bg:var(--sd-paper);--ap-text:var(--sd-ink);--ap-muted:var(--sd-muted);--ap-hair:var(--sd-line);
+}
+html.ap[data-ap-mode="dark"] {
+  --sd-paper:#171b19;--sd-surface:#202622;--sd-raised:#2b332d;
+  --sd-ink:#f0f0e8;--sd-muted:#b7bcb1;--sd-line:#3a443c;
+  --sd-accent:#e3b59d;--sd-tint:#3c3029;--sd-good:#b0dbb8;--sd-good-bg:#263c2c;
+  --sd-risk:#f0b3a6;--sd-risk-bg:#452e2a;--sd-glass:rgba(30,38,32,.9);
+  --ap-bg:var(--sd-paper);--ap-text:var(--sd-ink);--ap-muted:var(--sd-muted);--ap-hair:var(--sd-line);
+}
+html.ap #ap-bg {background:var(--sd-paper)!important}
+html.ap #pp-app {font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important;color:var(--sd-ink)!important;letter-spacing:-.012em}
+html.ap #pp-app .pp-scroll {background:var(--sd-paper)!important}
+html.ap #pp-app .pp-card,html.ap #pp-app .pp-home .pp-overview {background:var(--sd-surface)!important;border:1px solid var(--sd-line)!important;border-radius:20px!important;box-shadow:0 2px 2px rgba(25,33,25,.015)!important;color:var(--sd-ink)}
+html.ap #pp-app .pp-item {background:transparent!important;border-radius:10px!important;box-shadow:none!important}
+html.ap #pp-app .pp-item+.pp-item {border-top:1px solid var(--sd-line)!important}
+html.ap #pp-app .pp-side {background:var(--sd-surface)!important;border:1px solid var(--sd-line)!important;border-radius:20px!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html.ap #pp-app .pp-brand {padding-bottom:25px}
+html.ap #pp-app .pp-brand b {font-size:16px;letter-spacing:-.045em}
+html.ap #pp-app .pp-brand small {font-size:12px;color:var(--sd-muted)!important}
+html.ap #pp-app .pp-nav-label {font-size:10px;letter-spacing:.15em;color:var(--sd-muted);padding-top:6px}
+html.ap #pp-app .pp-nav a {min-height:44px;color:var(--sd-muted)!important;font-size:14px;font-weight:500;border-radius:10px!important}
+html.ap #pp-app .pp-nav a.on {background:var(--sd-raised)!important;color:var(--sd-ink)!important;box-shadow:none!important;font-weight:650}
+html.ap #pp-app .pp-nav a:hover {background:var(--sd-raised)!important;color:var(--sd-ink)!important}
+html.ap #pp-app .pp-nav a[data-r="planner"] {color:var(--sd-accent)!important}
+html.ap #pp-app .pp-nav a[data-r="planner"] span::after {content:"NEW";font-size:8px;letter-spacing:.08em;margin-left:8px;padding:3px 5px;border:1px solid var(--sd-line);border-radius:4px}
+html.ap #pp-app .pp-top h1 {font-size:26px!important;font-weight:650;letter-spacing:-.045em;color:var(--sd-ink)}
+html.ap #pp-app .pp-sub,html.ap #pp-app header.pp-top .pp-sub,html.ap #pp-app header.pp-top .pp-sub a {color:var(--sd-muted)!important;font-size:13px}
+html.ap #pp-app header.pp-top,html.ap #pp-app header.pp-top.pp-scrolled {background:var(--sd-glass)!important;border-radius:0 0 16px 16px!important;box-shadow:0 1px 0 var(--sd-line)!important;backdrop-filter:blur(12px) saturate(130%)!important;-webkit-backdrop-filter:blur(12px) saturate(130%)!important}
+html.ap #pp-app .pp-header-tools {gap:6px}
+html.ap #pp-app .pp-iconbtn {width:44px;height:44px;background:var(--sd-surface)!important;color:var(--sd-ink)!important;border:1px solid var(--sd-line)!important;border-radius:13px!important;box-shadow:none!important}
+html.ap #pp-app .pp-eyebrow {font-size:10px!important;line-height:1.6;letter-spacing:.16em!important;font-weight:650;color:var(--sd-muted)!important}
+html.ap #pp-app h3 {font-size:17px!important;font-weight:600;letter-spacing:-.03em;line-height:1.4;color:var(--sd-ink)}
+html.ap #pp-app .pp-overview-intro {background:var(--sd-surface)!important;border-radius:0!important;padding:30px 28px 24px!important;overflow:visible}
+html.ap #pp-app .pp-overview-intro::after,html.ap #pp-app .pp-hero::before,html.ap #pp-app .pp-hero::after {display:none!important}
+html.ap #pp-app .pp-home .pp-hero h2 {font-family:Georgia,"Times New Roman",serif!important;font-size:38px!important;line-height:1.12!important;font-weight:400!important;letter-spacing:-.055em!important;color:var(--sd-ink)!important;margin-top:14px!important}
+html.ap #pp-app .pp-home .pp-hero .pp-overview-intro p {color:var(--sd-muted)!important;font-size:14px!important;margin-top:14px}
+html.ap #pp-app .pp-home .pp-date-tile {background:var(--sd-raised)!important;border:1px solid var(--sd-line)!important;box-shadow:none!important;border-radius:14px!important;width:62px;min-width:62px}
+html.ap #pp-app .pp-home .pp-date-tile small {background:transparent!important;color:var(--sd-muted)!important;font-size:10px;font-weight:600;padding-top:7px}
+html.ap #pp-app .pp-home .pp-date-tile b {color:var(--sd-ink)!important;font-weight:400;font-size:30px;padding:4px 0 8px}
+html.ap #pp-app .pp-home .pp-date-tile.pp-day-off {background:var(--sd-risk-bg)!important;border-color:color-mix(in srgb,var(--sd-risk) 20%,transparent)!important}
+html.ap #pp-app .pp-home .pp-date-tile.pp-day-off small,html.ap #pp-app .pp-home .pp-date-tile.pp-day-off b {color:var(--sd-risk)!important}
+html.ap #pp-app .pp-overview-body {padding:0 24px 24px!important;background:var(--sd-surface)!important}
+html.ap #pp-app .pp-home .pp-hero .pp-next {background:var(--sd-good-bg)!important;border:1px solid color-mix(in srgb,var(--sd-good) 12%,transparent)!important;border-radius:13px!important;padding:16px!important;gap:12px}
+html.ap #pp-app .pp-home .pp-next .pp-nl,html.ap #pp-app .pp-home .pp-next .pp-nl b,html.ap #pp-app .pp-home .pp-next .pp-cd {color:var(--sd-good)!important;font-size:13px;line-height:1.6}
+html.ap #pp-app .pp-next>.i {background:transparent!important;color:var(--sd-good)!important;box-shadow:none!important}
+html.ap #pp-app .pp-home-links {margin-top:18px!important;gap:10px!important}
+html.ap #pp-app .pp-home .pp-hero .pp-home-links>a {background:transparent!important;border:1px solid var(--sd-line)!important;border-radius:12px!important;box-shadow:none!important;min-height:70px}
+html.ap #pp-app .pp-home .pp-hero .pp-home-links .pp-t b {color:var(--sd-ink)!important}
+html.ap #pp-app .pp-home .pp-hero .pp-home-links small {color:var(--sd-muted)!important}
+html.ap #pp-app .pp-home .pp-hero .pp-home-links .pp-qi {background:var(--sd-raised)!important;color:var(--sd-accent)!important}
+html.ap #pp-app .pp-home .pp-hero .pp-home-links .pp-chip {background:var(--sd-raised)!important;color:var(--sd-muted)!important}
+html.ap #pp-app .pp-quick-card {padding:26px 24px!important}
+html.ap #pp-app .pp-quick-card h3 {font-size:20px!important;margin-top:10px}
+html.ap #pp-app .pp-section-caption {font-size:13px!important;color:var(--sd-muted)!important}
+html.ap #pp-app .pp-quick a {border:0!important;box-shadow:none!important;background:transparent!important;border-radius:12px!important;min-height:100px}
+html.ap #pp-app .pp-quick a:hover {background:var(--sd-raised)!important}
+html.ap #pp-app .pp-quick a .pp-qi,html.ap #pp-app .pp-home .pp-hero .pp-home-links .pp-qi,html.ap #pp-app .pp-file-glyph {background:var(--sd-raised)!important;color:var(--sd-accent)!important;border-radius:12px!important}
+html.ap #pp-app .pp-quick .pp-ql {color:var(--sd-ink)!important;font-size:12px}
+html.ap #pp-app .pp-btn {background:var(--sd-raised)!important;color:var(--sd-ink)!important;border:1px solid transparent!important;border-radius:10px!important;box-shadow:none!important;min-height:44px;font-weight:600}
+html.ap #pp-app .pp-btn.pri {background:var(--sd-ink)!important;color:var(--sd-surface)!important}
+html.ap #pp-app .pp-btn:disabled {opacity:.5;cursor:not-allowed}
+html.ap #pp-app button:focus-visible,html.ap #pp-app a:focus-visible,html.ap #pp-app input:focus-visible,html.ap #pp-app select:focus-visible,html.ap #pp-app summary:focus-visible {outline:2px solid var(--sd-accent)!important;outline-offset:3px}
+html.ap #pp-app .pp-input {background:var(--sd-surface)!important;color:var(--sd-ink)!important;border:1px solid var(--sd-line)!important;border-radius:10px!important;box-shadow:none!important;min-height:46px;font-size:15px;max-width:100%;width:100%}
+html.ap #pp-app .pp-tabs {background:var(--sd-raised)!important;border-radius:12px!important}
+html.ap #pp-app .pp-tabs button.on {background:var(--sd-surface)!important;color:var(--sd-ink)!important;box-shadow:0 1px 3px #0001!important}
+html.ap #pp-app .pp-tabbar {background:var(--sd-glass)!important;border:1px solid var(--sd-line)!important;box-shadow:0 2px 10px #0001!important}
+html.ap #pp-app .pp-tabbar .pp-pill {background:var(--sd-raised)!important}
+html.ap #pp-app .pp-tabbar a {color:var(--sd-muted)!important}
+html.ap #pp-app .pp-tabbar a.on {color:var(--sd-accent)!important}
+html.ap #pp-app .pp-ndate {background:var(--sd-raised)!important;color:var(--sd-accent)!important;border-radius:12px!important}
+html.ap #pp-app .pp-note,html.ap #pp-app .pp-file-meta,html.ap #pp-app .pp-preview-content>section,html.ap #pp-app .pp-sheet>header,html.ap #pp-app .pp-sheet-actions {background:var(--sd-raised)!important;color:var(--sd-muted)!important;border-color:var(--sd-line)!important}
+html.ap #pp-app .pp-sheet-body {background:var(--sd-surface)!important}
+html.ap #pp-app .pp-sheet {background:var(--sd-surface)!important;color:var(--sd-ink)!important}
+html.ap #pp-app .pp-me .pp-avatar {background:var(--sd-tint)!important;color:var(--sd-accent)!important}
+/* New studio: CSS is scoped so the original portal stays untouched. */
+html.ap #pp-app .sd-planner-banner {display:flex;align-items:center;gap:18px;padding:24px 26px;border:1px solid var(--sd-line);border-radius:18px;background:var(--sd-tint);color:var(--sd-ink);text-decoration:none}
+html.ap #pp-app .sd-banner-mark {width:48px;height:48px;flex:none;border:1px solid color-mix(in srgb,var(--sd-accent) 20%,transparent);border-radius:50%;display:grid;place-items:center;color:var(--sd-accent)}
+html.ap #pp-app .sd-planner-banner>div {flex:1;min-width:0}
+html.ap #pp-app .sd-planner-banner b {display:block;font-family:Georgia,serif;font-size:25px;line-height:1.25;font-weight:400;letter-spacing:-.035em;margin:5px 0 6px}
+html.ap #pp-app .sd-planner-banner small {color:var(--sd-muted);font-size:13px}
+html.ap #pp-app .sd-banner-cta {font-size:13px;font-weight:600;flex:none}
+html.ap #pp-app .sd-planner {max-width:1320px;margin-inline:auto}
+html.ap #pp-app .sd-planner-intro {display:flex;align-items:center;justify-content:space-between;gap:32px;padding:28px 0 36px}
+html.ap #pp-app .sd-planner-intro h2 {font-family:Georgia,"Times New Roman",serif;font-size:clamp(36px,3.8vw,57px);font-weight:400;line-height:1.04;letter-spacing:-.055em;margin:18px 0 20px;color:var(--sd-ink)}
+html.ap #pp-app .sd-planner-intro p {font-size:15px;color:var(--sd-muted);max-width:47ch;line-height:1.6;margin:0}
+html.ap #pp-app .sd-local-note {border-left:1px solid var(--sd-line);padding:16px 0 16px 24px;max-width:240px}
+html.ap #pp-app .sd-local-note>.i {color:var(--sd-accent);width:22px;height:22px;margin-bottom:16px}
+html.ap #pp-app .sd-local-note b {display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+html.ap #pp-app .sd-local-note span {font-size:13px;color:var(--sd-muted);line-height:1.5}
+html.ap #pp-app .sd-setup {padding:26px!important}
+html.ap #pp-app .sd-section-title {display:flex;align-items:start;justify-content:space-between;gap:16px;margin-bottom:18px}
+html.ap #pp-app .sd-section-title h3 {font-size:23px!important;font-weight:500;margin:7px 0 0}
+html.ap #pp-app .sd-status {display:inline-block;font-size:11px;line-height:1.45;font-weight:600;color:var(--sd-muted);background:var(--sd-raised);padding:6px 9px;border-radius:7px}
+html.ap #pp-app .sd-status.eligible {color:var(--sd-good);background:var(--sd-good-bg)}
+html.ap #pp-app .sd-status.blocked {color:var(--sd-risk);background:var(--sd-risk-bg)}
+html.ap #pp-app .sd-status.unknown {color:var(--sd-accent);background:var(--sd-tint)}
+html.ap #pp-app .sd-muted {font-size:14px;color:var(--sd-muted);line-height:1.65;margin:10px 0 16px}
+html.ap #pp-app .sd-small {font-size:12px}
+html.ap #pp-app .sd-form-grid {display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px;margin:22px 0}
+html.ap #pp-app .sd-field {display:block;min-width:0;font-size:13px;color:var(--sd-ink);line-height:1.5}
+html.ap #pp-app .sd-field>span {display:block;margin-bottom:8px;font-weight:550}
+html.ap #pp-app .sd-source {display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px;border:1px solid var(--sd-line);border-radius:12px;background:var(--sd-paper)}
+html.ap #pp-app .sd-source p {font-size:13px;line-height:1.6;color:var(--sd-muted);margin:8px 0 0;max-width:76ch}
+html.ap #pp-app .sd-source b {color:var(--sd-ink);font-weight:550}
+html.ap #pp-app .sd-source a {flex:none;color:var(--sd-accent);font-size:13px}
+html.ap #pp-app .sd-check {display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.6;margin-top:18px;font-weight:500;cursor:pointer}
+html.ap #pp-app .sd-check input {width:19px;height:19px;flex:none;accent-color:var(--sd-accent);margin:1px 0 0}
+html.ap #pp-app .sd-metrics {display:grid;grid-template-columns:repeat(3,1fr);border-block:1px solid var(--sd-line);margin:26px 0 32px;padding:24px 0}
+html.ap #pp-app .sd-metrics>div {display:flex;gap:16px;align-items:center;border-right:1px solid var(--sd-line);padding:0 24px}
+html.ap #pp-app .sd-metrics>div:first-child {padding-left:4px}
+html.ap #pp-app .sd-metrics>div:last-child {border:0}
+html.ap #pp-app .sd-metrics b {font-family:Georgia,serif;font-weight:400;font-size:35px}
+html.ap #pp-app .sd-metrics span {font-size:13px;color:var(--sd-muted)}
+html.ap #pp-app .sd-workspace {display:grid;grid-template-columns:minmax(0,1fr) 286px;gap:24px;align-items:start;margin-bottom:26px}
+html.ap #pp-app .sd-work-main {min-width:0}
+html.ap #pp-app .sd-tabs {display:flex;border-bottom:1px solid var(--sd-line);gap:24px;overflow-x:auto;margin-bottom:26px;scrollbar-width:thin}
+html.ap #pp-app .sd-tabs button {border:0;border-bottom:2px solid transparent;background:none;color:var(--sd-muted);font-size:14px;white-space:nowrap;padding:14px 0;min-height:48px;cursor:pointer;font-weight:500}
+html.ap #pp-app .sd-tabs button.on {color:var(--sd-ink);border-color:var(--sd-accent)}
+html.ap #pp-app .sd-search-row {display:grid;grid-template-columns:minmax(0,1fr) 185px;gap:12px;margin:20px 0}
+html.ap #pp-app #sd-course-list {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+html.ap #pp-app .sd-course {padding:20px!important;margin:0!important;display:flex;flex-direction:column;gap:0;min-width:0}
+html.ap #pp-app .sd-course-top {display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+html.ap #pp-app .sd-code {font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.04em;color:var(--sd-muted)}
+html.ap #pp-app .sd-course h4 {font-size:18px;font-weight:550;line-height:1.35;margin:20px 0 8px;letter-spacing:-.035em;overflow-wrap:anywhere}
+html.ap #pp-app .sd-course-reason {font-size:13px;line-height:1.6;color:var(--sd-muted);margin:0 0 20px;flex:1}
+html.ap #pp-app .sd-course-bottom {display:flex;gap:8px;align-items:center;justify-content:space-between}
+html.ap #pp-app .sd-course-bottom>span {font-size:11px;line-height:1.5;color:var(--sd-muted)}
+html.ap #pp-app .sd-course-bottom .pp-btn {font-size:12px;min-height:40px;white-space:nowrap}
+html.ap #pp-app .sd-added {color:var(--sd-good)!important}
+html.ap #pp-app .sd-course details {border-top:1px solid var(--sd-line);margin-top:16px;padding-top:10px;font-size:12px;color:var(--sd-muted);line-height:1.6}
+html.ap #pp-app .sd-course summary {cursor:pointer;min-height:36px;display:flex;align-items:center}
+html.ap #pp-app .sd-course summary::after {content:"+";margin-left:auto}
+html.ap #pp-app .sd-course details[open] summary::after {content:"−"}
+html.ap #pp-app .sd-course details a {color:var(--sd-accent)}
+html.ap #pp-app .sd-plan {position:sticky;top:0;padding:24px!important;border-color:color-mix(in srgb,var(--sd-accent) 22%,var(--sd-line))!important}
+html.ap #pp-app .sd-plan h3 {font-family:Georgia,serif;font-size:28px!important;font-weight:400;margin:12px 0}
+html.ap #pp-app .sd-plan-total {display:flex;align-items:center;gap:12px;padding:20px 0;border-block:1px solid var(--sd-line);margin:20px 0}
+html.ap #pp-app .sd-plan-total b {font-family:Georgia,serif;font-size:36px;font-weight:400}
+html.ap #pp-app .sd-plan-total span {font-size:12px;line-height:1.5;color:var(--sd-muted)}
+html.ap #pp-app .sd-plan>.pp-btn {width:100%;margin-top:12px;font-size:12px}
+html.ap #pp-app .sd-plan-item {display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--sd-line);padding:14px 0}
+html.ap #pp-app .sd-plan-item>div {flex:1;min-width:0}
+html.ap #pp-app .sd-plan-item b {display:block;font-size:13px;line-height:1.4;font-weight:550;overflow-wrap:anywhere}
+html.ap #pp-app .sd-plan-item small {display:block;font-size:11px;color:var(--sd-muted);margin-top:5px}
+html.ap #pp-app .sd-plan-item button {width:38px;height:44px;flex:none;border:0;background:transparent;color:var(--sd-muted);font-size:21px;cursor:pointer}
+html.ap #pp-app .sd-import {font-size:14px;line-height:1.7;padding:24px!important}
+html.ap #pp-app .sd-import summary {cursor:pointer;min-height:28px;font-weight:550}
+html.ap #pp-app .sd-import p {color:var(--sd-muted);overflow-wrap:anywhere}
+html.ap #pp-app .sd-import input[type=file] {max-width:100%;padding:12px 0}
+html.ap #pp-app .sd-empty {grid-column:1/-1;padding:30px!important}
+html.ap #pp-app #sd-result {margin-top:24px}
+html.ap #pp-app .sd-result h4,html.ap #pp-app .sd-result-fail h4 {font-size:20px;font-weight:500;margin:0 0 12px}
+html.ap #pp-app .sd-result p,html.ap #pp-app .sd-result-fail p {font-size:13px;color:var(--sd-muted);line-height:1.7}
+html.ap #pp-app .sd-agenda-day {display:grid;grid-template-columns:45px 1fr;gap:16px;padding:20px 0;border-top:1px solid var(--sd-line)}
+html.ap #pp-app .sd-agenda-day>b {font-size:13px;color:var(--sd-accent)}
+html.ap #pp-app .sd-meeting {border-left:2px solid var(--sd-accent);padding:0 0 0 16px;margin-bottom:20px}
+html.ap #pp-app .sd-meeting:last-child {margin:0}
+html.ap #pp-app .sd-meeting small,html.ap #pp-app .sd-meeting strong,html.ap #pp-app .sd-meeting span {display:block;line-height:1.6}
+html.ap #pp-app .sd-meeting small,html.ap #pp-app .sd-meeting span {font-size:12px;color:var(--sd-muted)}
+html.ap #pp-app .sd-meeting strong {font-size:15px;font-weight:550;margin:4px 0}
+html.ap #pp-app .sd-history-list article {border-top:1px solid var(--sd-line);padding:18px 0}
+html.ap #pp-app .sd-history-list b {font-size:15px;font-weight:550}
+html.ap #pp-app .sd-history-list p {font-size:13px;color:var(--sd-muted);line-height:1.65;margin:8px 0 0}
+html.ap #pp-app .sd-notice-provenance {margin-bottom:20px;color:var(--sd-ink)}
+html.ap #pp-app .sd-notice-provenance>p {font-size:13px;line-height:1.6;color:var(--sd-muted)}
+html.ap #pp-app .sd-sync-public {margin:8px 0}
+html.ap #pp-app .pp-rvpic img {width:100%;height:100%;object-fit:cover;display:block}
+html.ap #pp-app .pp-rvpic {overflow:hidden}
+/* Motion should feel immediate, not heavy. Only opacity/transform; never layout or filter. */
+@media (hover:hover) and (pointer:fine) {
+ html.ap[data-ap-performance="0"][data-ap-anim="1"] #pp-app .pp-btn,html.ap[data-ap-performance="0"][data-ap-anim="1"] #pp-app .sd-planner-banner {transition:transform 140ms ease-out,background-color 140ms ease-out!important}
+ html.ap[data-ap-performance="0"][data-ap-anim="1"] #pp-app .pp-btn:active {transform:scale(.98)}
+}
+@media (max-width:1200px) and (min-width:901px) {
+ html.ap #pp-app .sd-workspace {grid-template-columns:minmax(0,1fr) 245px;gap:18px}
+ html.ap #pp-app #sd-course-list {grid-template-columns:1fr}
+}
+@media (max-width:900px) {
+ html.ap #pp-app .pp-top h1 {font-size:23px!important}
+ html.ap #pp-app .pp-top {gap:10px}
+ html.ap #pp-app .pp-header-tools {gap:4px}
+ html.ap #pp-app .pp-header-tools .pp-iconbtn {width:38px;height:42px}
+ html.ap #pp-app .pp-home .pp-hero h2 {font-size:33px!important;line-height:1.12!important}
+ html.ap #pp-app .pp-overview-intro {padding:24px 20px!important}
+ html.ap #pp-app .pp-overview-body {padding:0 16px 20px!important}
+ html.ap #pp-app .pp-home .pp-next .pp-nl,html.ap #pp-app .pp-home .pp-next .pp-nl b {font-size:13px!important}
+ html.ap #pp-app .pp-quick-card {padding:24px 18px!important}
+ html.ap #pp-app .sd-planner-banner {gap:14px;padding:22px 18px;flex-wrap:wrap}
+ html.ap #pp-app .sd-banner-mark {width:40px;height:40px}
+ html.ap #pp-app .sd-planner-banner b {font-size:23px}
+ html.ap #pp-app .sd-planner-banner small {font-size:12px;line-height:1.6;display:block}
+ html.ap #pp-app .sd-banner-cta {margin-left:54px;font-size:13px}
+ html.ap #pp-app .sd-planner-intro {padding:20px 4px 28px;display:block}
+ html.ap #pp-app .sd-planner-intro h2 {font-size:41px}
+ html.ap #pp-app .sd-planner-intro p {font-size:14px}
+ html.ap #pp-app .sd-local-note {border-left:0;border-top:1px solid var(--sd-line);padding:16px 0 0;max-width:none;margin-top:24px}
+ html.ap #pp-app .sd-local-note>.i {margin:0 10px 0 0;display:inline-block;vertical-align:middle;width:18px;height:18px}
+ html.ap #pp-app .sd-local-note b {display:inline;font-size:13px}
+ html.ap #pp-app .sd-local-note span {display:block;margin:8px 0 0 28px;font-size:12px}
+ html.ap #pp-app .sd-setup {padding:22px 18px!important}
+ html.ap #pp-app .sd-section-title {flex-wrap:wrap}
+ html.ap #pp-app .sd-section-title h3 {font-size:22px!important}
+ html.ap #pp-app .sd-form-grid {grid-template-columns:1fr 1fr;gap:18px 12px}
+ html.ap #pp-app .sd-form-grid>.sd-field:first-child {grid-column:1/-1}
+ html.ap #pp-app .sd-source {display:block;padding:16px}
+ html.ap #pp-app .sd-source a {display:inline-block;min-height:44px;line-height:44px;margin-top:4px}
+ html.ap #pp-app .sd-source p {font-size:12px}
+ html.ap #pp-app .sd-field {font-size:12px}
+ html.ap #pp-app .pp-input {font-size:16px!important}
+ html.ap #pp-app .sd-metrics {gap:0;padding:20px 0;margin:24px 0}
+ html.ap #pp-app .sd-metrics>div {display:block;padding:0 12px}
+ html.ap #pp-app .sd-metrics b {font-size:31px}
+ html.ap #pp-app .sd-metrics span {display:block;font-size:11px;line-height:1.5;margin-top:5px}
+ html.ap #pp-app .sd-workspace {display:flex;flex-direction:column;gap:24px}
+ html.ap #pp-app .sd-work-main {width:100%}
+ html.ap #pp-app .sd-plan {position:static;width:100%;order:-1}
+ html.ap #pp-app .sd-plan h3 {font-size:26px!important}
+ html.ap #pp-app .sd-plan-total {margin:15px 0;padding:15px 0}
+ html.ap #pp-app .sd-tabs {gap:24px}
+ html.ap #pp-app .sd-tabs button {font-size:13px}
+ html.ap #pp-app #sd-course-list {grid-template-columns:1fr}
+ html.ap #pp-app .sd-search-row {grid-template-columns:1fr}
+ html.ap #pp-app .sd-course h4 {font-size:20px}
+ html.ap #pp-app .sd-course {padding:22px!important}
+ html.ap #pp-app .sd-course details {font-size:13px}
+ html.ap #pp-app .sd-course summary {min-height:44px}
+ html.ap #pp-app .sd-import {padding:20px!important;font-size:13px}
+ html.ap #pp-app .sd-import summary {line-height:1.6;min-height:44px}
+}
+html.ap[data-ap-performance="1"] #pp-app header.pp-top,html.ap[data-ap-performance="1"] #pp-app .pp-tabbar {background:var(--sd-surface)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+@media (prefers-reduced-motion:reduce) {
+ html.ap #pp-app *,html.ap #pp-app *::before,html.ap #pp-app *::after {transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+html.ap #pp-app .sd-planner-banner {margin:0 0 16px}
+/* Explicit final overrides keep legacy dark rules from leaking through. */
+html.ap #pp-app .pp-home .pp-date-tile b {background:transparent!important}
+html.ap[data-ap-mode="dark"] #pp-app header.pp-top,html.ap[data-ap-mode="dark"] #pp-app header.pp-top.pp-scrolled {background:var(--sd-glass)!important;box-shadow:0 1px 0 var(--sd-line)!important}
+html.ap[data-ap-performance="1"] #pp-app header.pp-top,html.ap[data-ap-performance="1"][data-ap-mode="dark"] #pp-app header.pp-top {background:var(--sd-surface)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+@media(max-width:900px){html.ap #pp-app #pp-h {white-space:normal!important;line-height:1.1!important;font-size:20px!important;max-height:46px;overflow:hidden!important;text-overflow:clip!important}}
+/* Phone/tablet planner invitation: the desktop card, intentionally reflowed. */
+@media(max-width:900px){
+ html.ap #pp-app .sd-planner-banner {display:grid;grid-template-columns:42px minmax(0,1fr);align-items:start;gap:14px;padding:22px 20px;margin-bottom:16px;border-radius:20px}
+ html.ap #pp-app .sd-banner-mark {width:42px;height:42px;margin-top:4px}
+ html.ap #pp-app .sd-planner-banner>div {min-width:0}
+ html.ap #pp-app .sd-planner-banner .pp-eyebrow {font-size:9px!important;letter-spacing:.13em!important;line-height:1.7}
+ html.ap #pp-app .sd-planner-banner b {font-size:24px;line-height:1.22;margin:9px 0 12px;letter-spacing:-.035em;overflow-wrap:normal}
+ html.ap #pp-app .sd-planner-banner small {display:block;font-size:13px;line-height:1.65}
+ html.ap #pp-app .sd-banner-cta {grid-column:2;margin:0;display:flex;align-items:center;min-height:44px;border-top:1px solid color-mix(in srgb,var(--sd-accent) 16%,transparent);padding-top:10px;font-size:13px;color:var(--sd-accent)}
+}
+/* Current-to-next semester assumptions, separate from completed academic results. */
+html.ap #pp-app .sd-current {padding:26px!important;margin:0 0 24px}
+html.ap #pp-app .sd-current>p {font-size:14px;line-height:1.7}
+html.ap #pp-app .sd-current-row {display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px 0;border-top:1px solid var(--sd-line);cursor:pointer}
+html.ap #pp-app .sd-current-row input {width:20px;height:20px;accent-color:var(--sd-accent);margin:0}
+html.ap #pp-app .sd-current-row b {display:block;font-size:15px;font-weight:600;line-height:1.45}
+html.ap #pp-app .sd-current-row small {display:block;font-size:12px;color:var(--sd-muted);line-height:1.6;margin-top:5px}
+html.ap #pp-app .sd-status.conditional {background:var(--sd-tint);color:var(--sd-accent)}
+html.ap #pp-app .sd-course:has(.sd-status.conditional) {border-left:3px solid var(--sd-accent)!important}
+html.ap #pp-app .sd-theme-options {display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 6px}
+html.ap #pp-app .sd-theme-options .pp-btn {flex:1;min-width:80px}
+html.ap #pp-app .sd-theme-options .pp-btn[aria-pressed="true"] {background:var(--sd-ink)!important;color:var(--sd-surface)!important}
+/* Prevent full-width select controls from crushing their sibling text (Safari too). */
+html.ap #pp-app .pp-workspace .pp-item {display:flex!important;align-items:center!important;gap:16px!important;width:100%;text-align:left;box-sizing:border-box}
+html.ap #pp-app .pp-workspace .pp-item>.pp-t {flex:1 1 0%!important;min-width:0!important;width:auto!important}
+html.ap #pp-app .pp-workspace .pp-t b,html.ap #pp-app .pp-workspace .pp-t small {white-space:normal!important;overflow-wrap:break-word;line-height:1.55}
+html.ap #pp-app .pp-workspace #pp-reminder {width:165px!important;max-width:100%!important;flex:0 0 165px!important;min-width:0!important;margin:0!important}
+html.ap #pp-app .pp-workspace .pp-mode-switch,html.ap #pp-app .pp-workspace .pp-performance-label,html.ap #pp-app .pp-workspace .pp-item>.i {flex-shrink:0}
+html.ap #pp-app .pp-workspace .pp-item>.i {width:22px;height:22px}
+html.ap #pp-app .pp-workspace .pp-note {font-size:13px;line-height:1.7}
+@media(max-width:600px){
+ html.ap #pp-app .sd-current {padding:22px 18px!important}
+ html.ap #pp-app .sd-current-row {grid-template-columns:22px minmax(0,1fr);gap:10px}
+ html.ap #pp-app .sd-current-row .sd-status {grid-column:2;justify-self:start}
+ html.ap #pp-app .pp-workspace .sd-reminder-row {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:12px!important}
+ html.ap #pp-app .pp-workspace #pp-reminder {width:100%!important;max-width:100%!important;flex:none!important;min-height:46px}
+ html.ap #pp-app .pp-workspace .pp-item {gap:10px!important;padding:16px 10px!important}
+ html.ap #pp-app .pp-workspace .pp-t small {font-size:13px!important}
+}
+@media(prefers-reduced-motion:reduce){html.ap #pp-app .sd-current-row,html.ap #pp-app .sd-course {transition:none!important;animation:none!important}}
+/* Progressive disclosure: essentials first, source/assumption detail one tap away. */
+html.ap #pp-app .sd-planner-intro {padding:18px 0 26px;gap:20px}
+html.ap #pp-app .sd-planner-intro h2 {font-size:42px;line-height:1.08;margin:12px 0}
+html.ap #pp-app .sd-setup {padding:20px 24px!important;margin-bottom:14px}
+html.ap #pp-app .sd-setup-summary {display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer;list-style:none;min-height:48px;color:var(--sd-ink)}
+html.ap #pp-app .sd-setup-summary::-webkit-details-marker {display:none}
+html.ap #pp-app .sd-setup-summary b {display:block;font-size:14px;font-weight:600;line-height:1.5}
+html.ap #pp-app .sd-setup-summary small {display:block;font-size:13px;color:var(--sd-muted);line-height:1.6;margin-top:5px}
+html.ap #pp-app .sd-fold-hint {font-size:12px;color:var(--sd-accent);white-space:nowrap}
+html.ap #pp-app .sd-setup[open]>.sd-setup-summary,html.ap #pp-app #sd-current-details[open]>.sd-setup-summary {padding-bottom:20px;border-bottom:1px solid var(--sd-line);margin-bottom:20px}
+html.ap #pp-app .sd-current {padding:20px 24px!important;margin-bottom:14px}
+html.ap #pp-app .sd-metrics.sd-metrics-four {grid-template-columns:repeat(4,minmax(0,1fr));padding:20px 0;margin:22px 0}
+html.ap #pp-app .sd-metrics-four>div {gap:12px;padding:0 18px}
+html.ap #pp-app .sd-metric-conditional b {color:var(--sd-accent)}
+html.ap #pp-app .sd-metric-eligible b {color:var(--sd-good)}
+/* Original line art, consistent with small functional icons; no image requests. */
+html.ap #pp-app .sd-art {width:68px;height:68px;color:var(--sd-accent);flex:none;vertical-align:middle}
+html.ap #pp-app .sd-art-wash {fill:var(--sd-tint)}
+html.ap #pp-app .sd-art-token {display:inline-flex;align-items:center;justify-content:center;flex:none;margin-right:10px;vertical-align:middle}
+html.ap #pp-app .sd-art-token .sd-art {width:38px;height:38px}
+html.ap #pp-app .sd-art-heading {gap:8px}
+html.ap #pp-app .sd-art-heading>.i {display:none}
+html.ap #pp-app .sd-local-note {padding-block:0}
+html.ap #pp-app .sd-local-note>.sd-art {margin-bottom:8px}
+html.ap #pp-app .pp-bulletin-head .sd-art-token {float:right;margin:0}
+html.ap #pp-app .pp-bulletin-head .sd-art-token .sd-art {width:72px;height:72px}
+@media(max-width:900px){
+ html.ap #pp-app .sd-planner-intro {display:flex;align-items:center;padding:12px 2px 22px}
+ html.ap #pp-app .sd-planner-intro h2 {font-size:31px;letter-spacing:-.045em}
+ html.ap #pp-app .sd-planner-intro p {font-size:13px;line-height:1.6}
+ html.ap #pp-app .sd-local-note {border:0;margin:0;padding:0;flex:none}
+ html.ap #pp-app .sd-local-note b,html.ap #pp-app .sd-local-note span {display:none}
+ html.ap #pp-app .sd-local-note>.sd-art {width:60px;height:60px;margin:0}
+ html.ap #pp-app .sd-setup,html.ap #pp-app .sd-current {padding:16px!important}
+ html.ap #pp-app .sd-setup-summary {gap:10px}
+ html.ap #pp-app .sd-fold-hint {font-size:11px}
+ html.ap #pp-app .sd-metrics.sd-metrics-four {grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 0}
+ html.ap #pp-app .sd-metrics-four>div {display:flex;align-items:center;padding:0 14px!important;gap:10px}
+ html.ap #pp-app .sd-metrics-four>div:nth-child(2) {border-right:0}
+ html.ap #pp-app .sd-metrics-four b {font-size:29px}
+ html.ap #pp-app .sd-metrics-four span {font-size:11px;margin:0;line-height:1.5}
+ html.ap #pp-app .sd-art-token .sd-art {width:32px;height:32px}
+}
+html.ap #pp-app #sd-draft-details[open]>.sd-setup-summary {padding-bottom:14px;border-bottom:1px solid var(--sd-line);margin-bottom:10px}
+html.ap #pp-app #sd-draft-details .pp-btn {width:100%;margin-top:12px}
+html.ap #pp-app .sd-plan .sd-setup-summary small {font-size:12px}
+/* Section artwork, not replacement button/sidebar icons. Each scene has its own space. */
+html.ap #pp-app .sd-art-section {position:relative}
+html.ap #pp-app .sd-portion-art {position:absolute;right:18px;top:16px;display:block;width:88px;height:88px;pointer-events:none;user-select:none}
+html.ap #pp-app .sd-portion-art .sd-art {width:100%;height:100%;color:var(--sd-accent)}
+html.ap #pp-app .sd-art-section>.sd-illustrated-title {min-height:76px!important;padding-right:100px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;box-sizing:border-box}
+html.ap #pp-app .sd-illustrated-title>.pp-more {position:static!important;float:none!important;margin-left:0!important;font-size:12px;line-height:1.6}
+html.ap #pp-app .pp-bulletin-head.sd-art-section {padding-right:118px;min-height:112px}
+html.ap #pp-app .pp-bulletin-head .sd-portion-art {right:0;top:0;width:106px;height:106px}
+html.ap #pp-app .sd-local-note>.sd-art {width:136px;height:136px}
+@media(max-width:900px){
+ html.ap #pp-app .sd-portion-art {width:82px;height:82px;right:14px;top:16px}
+ html.ap #pp-app .sd-art-section>.sd-illustrated-title {min-height:76px!important;padding-right:88px}
+ html.ap #pp-app .sd-local-note>.sd-art {width:86px;height:86px}
+ html.ap #pp-app .pp-bulletin-head.sd-art-section {padding-right:100px;min-height:118px}
+ html.ap #pp-app .pp-bulletin-head .sd-portion-art {width:90px;height:90px}
+}
+/* Keep heading actions in the text column, outside the illustration's reserved area. */
+html.ap #pp-app .sd-illustrated-title>.pp-custom-quick {position:static!important;inset:auto!important;margin:5px 0 0!important;align-self:flex-start;transform:none!important}
+/* v4 course intelligence: evidence stays readable on every screen. */
+html.ap #pp-app .sd-credit-strip{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:18px;background:var(--sd-raised);border:1px solid var(--sd-line);border-radius:14px;margin:0 0 20px}
+html.ap #pp-app .sd-credit-strip small,html.ap #pp-app .sd-credit-strip b{display:block}
+html.ap #pp-app .sd-credit-strip small{font-size:12px;color:var(--sd-muted);margin-bottom:7px}
+html.ap #pp-app .sd-credit-strip b{font-size:19px;font-weight:500}
+html.ap #pp-app .sd-credit-strip>span{grid-column:1/-1;font-size:12px;line-height:1.7;color:var(--sd-muted)}
+html.ap #pp-app .sd-market{margin-bottom:24px}
+html.ap #pp-app .sd-market .sd-section-title{flex-wrap:wrap;gap:14px}
+html.ap #pp-app .sd-market-actions{display:flex;gap:10px;flex-wrap:wrap}
+html.ap #pp-app .sd-snapshot{font-size:13px;line-height:1.8;padding:16px;border-left:3px solid var(--sd-accent);background:var(--sd-raised);border-radius:0 10px 10px 0}
+html.ap #pp-app .sd-course-availability{border:1px solid var(--sd-line);background:var(--sd-raised);border-radius:12px;padding:14px;margin:18px 0 2px;font-size:13px;line-height:1.7}
+html.ap #pp-app .sd-course-availability>small{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--sd-muted)}
+html.ap #pp-app .sd-course-availability>p{margin:6px 0}
+html.ap #pp-app .sd-course-availability details{border-top:0;margin:6px 0 0;padding:0}
+html.ap #pp-app .sd-section-cards{display:grid;gap:8px;margin-top:12px}
+html.ap #pp-app .sd-section-cards>div{border:1px solid var(--sd-line);border-radius:10px;padding:12px;background:var(--sd-surface)}
+html.ap #pp-app .sd-section-cards b,html.ap #pp-app .sd-section-cards span,html.ap #pp-app .sd-section-cards small{display:block;overflow-wrap:anywhere}
+html.ap #pp-app .sd-section-cards small{font-size:12px;color:var(--sd-muted);margin-top:5px;line-height:1.7}
+html.ap #pp-app .sd-course-insight h5{font-size:13px;margin:20px 0 8px;font-weight:650}
+html.ap #pp-app .sd-course-insight p{font-size:13px;line-height:1.85;margin:8px 0}
+html.ap #pp-app .sd-course-insight ul{list-style:none;padding:0;margin:8px 0}
+html.ap #pp-app .sd-course-insight li{padding:10px 0;border-bottom:1px solid var(--sd-line);font-size:13px;line-height:1.7}
+html.ap #pp-app .sd-course-insight li small{display:block;color:var(--sd-muted);font-size:12px}
+html.ap #pp-app .sd-rule-group{padding-left:12px;border-left:2px solid var(--sd-line);margin:10px 0}
+html.ap #pp-app .sd-rule-group>small{font-size:10px;letter-spacing:.06em;color:var(--sd-muted)}
+html.ap #pp-app .sd-confirm-note{font-size:12px;line-height:1.8;color:var(--sd-accent)}
+html.ap #pp-app #sd-current-error{margin:16px 0;line-height:1.8;font-size:13px}
+html.ap #pp-app #sd-current-error a{display:block;margin-top:8px}
+html.ap #pp-app .sd-course-bottom{flex-wrap:wrap;gap:12px}
+@media(max-width:900px){html.ap #pp-app .sd-credit-strip{gap:12px;padding:14px}html.ap #pp-app .sd-market .sd-section-title{align-items:flex-start}html.ap #pp-app .sd-market-actions>.pp-btn{font-size:12px;min-height:44px}html.ap #pp-app .sd-course-insight li b{overflow-wrap:anywhere}}
+html.ap #pp-app #sd-course-list>.sd-course:only-child{grid-column:1/-1}
+html.ap #pp-app .sd-export-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
+html.ap #pp-app .sd-export-actions .pp-btn{width:100%;font-size:12px;min-height:44px;padding:10px}
+html.ap #pp-app .sd-export-actions #sd-export{grid-column:1/-1}
+html.ap #pp-app .sd-plan-warning{font-size:12px;line-height:1.8;overflow-wrap:anywhere}
+html.ap #pp-app .sd-plan-backup{grid-column:1/-1;font-size:12px;color:var(--sd-muted);padding-top:6px}
+html.ap #pp-app .sd-plan-backup summary{cursor:pointer;margin-bottom:8px}

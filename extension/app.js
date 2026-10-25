@@ -7,6 +7,7 @@
   var DEF = { app: true, startPage: "home", mode: "light", accent: "#3b82f6", bg: "aurora", v: 3, blur: 22, scale: 100, anim: true, trans: true, compact: false, radius: 18, grades: true, privacy: false, performance: false };
   var PRESETS = ["#3b82f6", "#8b5cf6", "#ec4899", "#f43f5e", "#f97316", "#eab308", "#10b981", "#06b6d4", "#64748b"];
   var S = load();
+  if(!S.studio4){S.scale=100;S.bg="solid";S.blur=12;S.radius=20;S.accent="#8d4d36";S.compact=false;S.studio4=true;save();}
   var root = document.documentElement;
 
   function load() { try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); if (o.v !== 3) { o.mode = "light"; o.v = 3; } return Object.assign({}, DEF, o); } catch (e) { return Object.assign({}, DEF); } }
@@ -92,36 +93,9 @@
   function preview() { return '<div class="ap-pv" aria-hidden="true"><i></i><i></i><i></i><span class="ap-pv-bgt">StudentDesk AIUB</span><div class="ap-pv-glass"><b>Live preview</b><small>Glass blur · Roundness · Text size</small><span class="ap-pv-chip">A</span></div></div>'; }
 
   function renderPanel(p) {
-    p.innerHTML =
-      "<h3>✨ StudentDesk Settings</h3><div class='ap-sub'>Your portal, your style. Settings are saved in this browser only.</div>" +
-      "<div class='ap-sec'>Appearance</div>" + seg("mode", [["light", "☀️ Light"], ["dark", "🌙 Dark"], ["auto", "🖥️ Auto"]]) +
-      "<div class='ap-sec'>Accent color</div><div class='ap-sw'>" +
-        PRESETS.map(function (c) { return '<button type="button" data-c="' + c + '" class="' + (S.accent.toLowerCase() === c ? "on" : "") + '" style="background:' + c + '" aria-label="' + c + '"></button>'; }).join("") +
-        '<label title="Custom color"><input type="color" value="' + S.accent + '"></label></div>' +
-      "<div class='ap-sec'>Background</div>" + seg("bg", [["aurora", "🌌 Aurora"], ["mesh", "🎨 Mesh"], ["solid", "⬜ Solid"]]) +
-      "<div class='ap-sec'>Layout</div>" + toggle("app", "✨ StudentDesk App layout") +
-      "<div class='ap-sec'>Customize</div>" + preview() +
-        range("blur", "Glass blur", 0, 40, 1) + range("radius", "Roundness", 4, 28, 1) + range("scale", "Text size", 85, 125, 5) +
-        toggle("anim", "Animations") + toggle("trans", "Page transitions") + toggle("compact", "Compact tables") + toggle("grades", "Colorful grade badges") + toggle("privacy", "Privacy blur (password/CGPA)") +
-      "<button type='button' class='ap-reset'>↺ Reset to default</button>" +
-      "<div class='ap-note'>Shortcut: Alt+S settings · Alt+D dark mode</div>";
-
-    p.querySelectorAll(".ap-seg").forEach(function (g) {
-      g.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; S[g.dataset.k] = b.dataset.v; save(); apply(); renderPanel(p); });
-    });
-    p.querySelectorAll(".ap-sw button").forEach(function (b) { b.addEventListener("click", function () { S.accent = b.dataset.c; save(); apply(); renderPanel(p); }); });
-    var cp = p.querySelector("input[type=color]");
-    cp.addEventListener("input", function () { S.accent = cp.value; save(); apply(); });
-    cp.addEventListener("change", function () { renderPanel(p); });
-    p.querySelectorAll("input[type=range]").forEach(function (r) {
-      var o = p.querySelector('output[data-o="' + r.dataset.k + '"]'), raf = 0;
-      r.addEventListener("input", function () { S[r.dataset.k] = +r.value; if (o) o.textContent = rangeVal(r.dataset.k);
-        if (!raf) raf = requestAnimationFrame(function () { raf = 0; apply(); });   // apply at most once per frame = smooth while dragging
-      });
-      r.addEventListener("change", function () { save(); apply(); });
-    });
-    p.querySelectorAll("input[type=checkbox]").forEach(function (c) { c.addEventListener("change", function () { S[c.dataset.k] = c.checked; save(); apply(); if (c.dataset.k === "grades") gradeChips(); if (c.dataset.k === "app") setTimeout(function () { location.reload(); }, 250); }); });
-    p.querySelector(".ap-reset").addEventListener("click", function () { S = Object.assign({}, DEF); save(); apply(); renderPanel(p); });
+    p.innerHTML = "<h3>StudentDesk · Theme</h3><div class='ap-sub'>Choose a comfortable workspace.</div>" + seg("mode", [["light","Light"],["dark","Dark"],["auto","System"]]) + (!S.app?"<button type='button' class='ap-reset' id='ap-enable-studio'>Open StudentDesk workspace</button>":"");
+    p.querySelectorAll(".ap-seg").forEach(function(g){g.onclick=function(e){var b=e.target.closest("button");if(!b)return;S.mode=b.dataset.v;save();apply();renderPanel(p);};});
+    var enable=p.querySelector('#ap-enable-studio');if(enable)enable.onclick=function(){S.app=true;save();location.reload();};
   }
 
   /* ---- login page enhancements (pure UI; the real form is untouched) ---- */

@@ -33,3 +33,18 @@ No analytics, no ads, no trackers, no selling or sharing of data.
 
 ## Contact
 Questions or requests: https://github.com/amitsami/studentdesk-aiub/issues
+
+## v4.0 local planner
+Course matching, prerequisite evaluation and timetable search run locally in your browser.
+The planner does not send grades to an external AI/LLM. Draft course codes, settings,
+user-confirmed credit overrides, imported catalogs and explicitly saved public offering
+history are stored locally. Clear them from the planner's advanced section.
+
+Public notice synchronization stores only public official-site notice text in extension
+storage (or the userscript manager's storage), and makes it readable from the portal UI.
+No student session, grades or credentials are sent to the official public site by this bridge.
+Bundled faculty thumbnails and curriculum/notices snapshots are public-source data.
+
+Current-course pass/drop assumptions are local planning preferences only. They do not submit a portal drop or change registration/results. Conditional successors are not represented as currently eligible.
+
+Saved reminder plans are kept in this browser’s local storage. PDF/JPG exports are generated locally with canvas; no third-party document service receives course or student data. JSON is an optional local backup. Saving a blocked/unverified course does not change its eligibility.

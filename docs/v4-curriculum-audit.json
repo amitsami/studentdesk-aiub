@@ -1,0 +1,179 @@
+{
+  "checked": "2026-10-25T12:52:39.829698+00:00",
+  "programs": [
+    {
+      "program": "cse",
+      "courses": 96,
+      "unknown": 5,
+      "conflicts": [],
+      "sha256": "536faf0d1ce7b979bcf5e9f4663aeb67f5d79c3b0fa783ff9b6da2d140e7b47d"
+    },
+    {
+      "program": "ds",
+      "courses": 151,
+      "unknown": 117,
+      "conflicts": [
+        "BSE4112",
+        "CNE4220",
+        "BDS4109",
+        "CNE4220",
+        "CNE4220"
+      ],
+      "sha256": "159ed8feeb118f3bb13c3bc05b5352ad2bba1106ef8ecfdf42c925bb4edabe08"
+    },
+    {
+      "program": "cncs",
+      "courses": 146,
+      "unknown": 122,
+      "conflicts": [
+        "BSE4112",
+        "COE2166",
+        "CNE2203",
+        "CNE3107",
+        "CNE3211",
+        "CNE3212",
+        "CNE4116",
+        "CNE4117",
+        "CNE4118",
+        "CNE4220",
+        "CNE4220",
+        "CNE4220",
+        "CYS3103",
+        "CNE4116",
+        "CNE4117"
+      ],
+      "sha256": "119a991a85fa6453bf64d45dd7cf76e02d25a544156baeff73c6afa6a4157357"
+    },
+    {
+      "program": "eee-obe",
+      "courses": 82,
+      "unknown": 2,
+      "conflicts": [
+        "EEE4000"
+      ],
+      "sha256": "d6e66e3fd8310b91769e5a5d1077870777cc7d21f6d8d361c2f41d110f135e3b"
+    },
+    {
+      "program": "eee-sem",
+      "courses": 79,
+      "unknown": 2,
+      "conflicts": [
+        "EEE4000",
+        "EEE4241"
+      ],
+      "sha256": "0a519f7c2c20606e1416c522da34becd3e8a8f206acb21969345481795a15c3c"
+    },
+    {
+      "program": "ipe",
+      "courses": 0,
+      "unknown": 0,
+      "conflicts": [],
+      "sha256": "152b89d4cd5c5519213194258eac95b89211ac58a5763b3ad4c99b1bf1ec69f6"
+    },
+    {
+      "program": "arch",
+      "courses": 0,
+      "unknown": 0,
+      "conflicts": [],
+      "sha256": "4c0ab91bd6ea17f79f14aa29895820cab4ccb44f1128fe04045ea1c176d8995a"
+    },
+    {
+      "program": "english",
+      "courses": 65,
+      "unknown": 0,
+      "conflicts": [],
+      "sha256": "bad5e1bfd61031c03969661b4cbdb0c735aba8a2cfab6e7872caa7e255a1fb92"
+    },
+    {
+      "program": "llb",
+      "courses": 45,
+      "unknown": 0,
+      "conflicts": [],
+      "sha256": "d1588f5f68b91ee03abd5cc5aab97c5371f8278cf7580147016beb28226822fc"
+    },
+    {
+      "program": "economics",
+      "courses": 55,
+      "unknown": 21,
+      "conflicts": [],
+      "sha256": "5d9015ad7c1044113732b170689ff6a44bab6e6ddb22028a4e9e8efc22b81a45"
+    },
+    {
+      "program": "jmc",
+      "courses": 67,
+      "unknown": 54,
+      "conflicts": [
+        "GED1101",
+        "GED1102",
+        "GED1103",
+        "GED1104",
+        "GED1105",
+        "GED1206",
+        "GED1207",
+        "GED1208",
+        "JMC1201",
+        "JMC1202",
+        "JMC1203",
+        "JMC2104",
+        "JMC2105",
+        "JMC2106",
+        "JMC2107",
+        "JMC2108",
+        "GED2109",
+        "JMC2209",
+        "JMC2210",
+        "JMC2211",
+        "JMC2212",
+        "JMC2213",
+        "GED3111",
+        "JMC3114",
+        "JMC3115",
+        "JMC3116",
+        "JMC3117",
+        "JMC3127",
+        "JMC3145",
+        "JMC3218",
+        "JMC3219",
+        "JMC3220",
+        "JMC3247",
+        "JMC4121",
+        "JMC4122",
+        "JMC4123",
+        "JMC4134",
+        "JMC4150",
+        "JMC4151",
+        "GED4213",
+        "JMC4224",
+        "JMC4225",
+        "JMC4236",
+        "JMC4252",
+        "JMC4254",
+        "JMC4239"
+      ],
+      "sha256": "f03a5fc496b49c70c6fc6f3d0994d2d63dc68fa3835ed66c2f7b987b979f95bf"
+    },
+    {
+      "program": "pharm",
+      "courses": 72,
+      "unknown": 72,
+      "conflicts": [],
+      "sha256": "cf973a2d1e30ba568004e32b2a54c27bed9813e5c8c1ffd47d64e2fcd7aad078"
+    },
+    {
+      "program": "bmb",
+      "courses": 51,
+      "unknown": 51,
+      "conflicts": [],
+      "sha256": "c1954e82bc9cd1fd25430078eeb98465fd8a974550d2a16e1880e98e36638f03"
+    },
+    {
+      "program": "microbiology",
+      "courses": 50,
+      "unknown": 50,
+      "conflicts": [],
+      "sha256": "948620cbc3eac22a5edbd19bb08527de92694d5557d6a83c4290c209e0dc19d9"
+    }
+  ],
+  "bba_courses": 172,
+  "scope": "Undergraduate public catalogs only; unknown versions/prerequisites fail closed."
+}

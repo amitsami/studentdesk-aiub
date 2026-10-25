@@ -1,9 +1,8 @@
-/* Official AIUB public-page bridge. Runs only in a frame requested by the portal.
-   Shares only public notice text with its verified portal parent; no private portal
-   data is sent to aiub.edu. The temporary offscreen frame is removed after extraction or timeout. */
+/* Official AIUB public-page bridge. Caches public notices for the portal reader.
+   Only public notice text is shared; no private portal data is sent to aiub.edu. */
 (function () {
   "use strict";
-  if (location.origin !== "https://www.aiub.edu" || window.parent === window) return;
+  if (location.origin !== "https://www.aiub.edu") return;
   var PARENT = "https://portal.aiub.edu";
   function text(e) { return e ? e.textContent.replace(/\s+/g," ").trim() : ""; }
   function noticePath(href) { try { var u=new URL(href,location.href); return u.origin===location.origin && /^\/[\w\-\/.%]+$/.test(u.pathname) ? u.pathname : ""; } catch(e) { return ""; } }
@@ -25,7 +24,14 @@
     var clone=body.cloneNode(true);clone.querySelectorAll("script,style,iframe,object,embed,form,input,button,link,meta").forEach(function(e){e.remove();});
     return {kind:"detail",title:text(document.querySelector("#dynamicHeading")||document.querySelector("h1")).slice(0,2000),date:text(document.querySelector(".date-box")).slice(0,120),body:clone.innerHTML.slice(0,600000)};
   }
-  function send() {var data=extract();if(data)window.parent.postMessage({t:"studentdesk:public-notice:v1",path:location.pathname,search:location.search,data:data},PARENT);}
+  function send() {var data=extract();if(data){
+    var path=/^\/category\/notices/.test(location.pathname)?"/category/notices?pageNo="+(new URLSearchParams(location.search).get("pageNo")||"1")+"&pageSize=20":location.pathname;
+    var rt=typeof browser!=="undefined"&&browser.runtime?browser.runtime:typeof chrome!=="undefined"&&chrome.runtime;
+    var key="sd.public."+path,entry={at:Date.now(),data:data};
+    try{if(typeof GM_setValue==="function")GM_setValue(key,entry);else if(typeof GM!=="undefined"&&GM&&GM.setValue){var stored=GM.setValue(key,entry);if(stored&&stored.catch)stored.catch(function(){});}}catch(e){}
+    if(rt&&rt.sendMessage)try{var promise=rt.sendMessage({t:"sd-public-cache-put",path:path,data:data});if(promise&&promise.catch)promise.catch(function(){});}catch(e){}
+    if(window.parent===window)return;
+    window.parent.postMessage({t:"studentdesk:public-notice:v1",path:location.pathname,search:location.search,data:data},PARENT);}}
   window.addEventListener("message",function(e){if(e.origin!==PARENT || e.source!==window.parent || !e.data || e.data.t!=="studentdesk:read-public:v1")return;send();});
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",send,{once:true});else send();
 })();
