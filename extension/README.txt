@@ -1,8 +1,8 @@
-StudentDesk AIUB v4.5.0 — REFINED WORKSPACE
-Based on your v4.5.3. Version intentionally labeled 4.5.0 at your request.
+StudentDesk AIUB v4.5.1 — REFINED WORKSPACE
+Based on your v4.5.3. Maintenance release 4.5.1 with corrected product wording.
 
 FOOTER PATCH
-Restores the rounded mobile capsule footer and soft sliding active pill from your reference. All five destinations, Times New Roman, keyboard behavior, reduced motion and Performance mode retained. No other UI or feature changes in this patch. Version remains 4.5.0.
+Restores the rounded mobile capsule footer and soft sliding active pill from your reference. All five destinations, Times New Roman, keyboard behavior, reduced motion and Performance mode retained. No other UI or feature changes in this patch. Layout and behavior remain unchanged.
 
 CHANGES
 - Keep the original warm palette, all pages, illustrations, Home two-part card and planner NEW badge. No aqua/navy palette.
@@ -15,7 +15,7 @@ CHANGES
 - DOCX/PPTX preview is TEXT ONLY, not a full slide/document renderer. Images, equations and original layout may require Original download. Legacy DOC/PPT, encrypted/large files and absent direct links may remain unsupported.
 
 VERSION / UPDATE IMPORTANT
-4.5.0 is numerically LOWER than 4.5.3. This is a user-requested relabel, not a loss of features. Browser/store/userscript auto-updaters may reject a downgrade or not offer it automatically. Store distribution depends on approval.
+4.5.1 is newer than public 4.5.0 but lower than local test builds 4.5.2/4.5.3; those local builds may require manual replacement. Browser/store/userscript auto-updaters may reject a downgrade or not offer it automatically. Store distribution depends on approval.
 Back up the current extension files and important plan exports. Disable duplicates. Replace contents of your SAME existing unpacked extension folder, then Reload and reload portal.aiub.edu. Do not clear portal site storage.
 For a userscript, open the SAME installed script entry, replace its source with this .user.js, save, and reload the portal. Avoid importing a second active copy. If your loader refuses the lower version, keep the existing install and report the message; don't clear data to force it.
 

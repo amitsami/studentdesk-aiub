@@ -1,6 +1,6 @@
 # StudentDesk AIUB
 
-> **v4.5.0 — Refined Workspace.** Warm responsive UI, redesigned login, smooth phone dock and strict next-semester planner. Store delivery depends on approval.
+> **v4.5.1 — Refined Workspace.** Warm responsive UI, redesigned login, smooth phone dock and strict next-semester planner. Store delivery depends on approval.
 
 Fast, modern app-style UI for the [AIUB Student Portal](https://portal.aiub.edu) on phone and PC. Your data never leaves your browser.
 
@@ -8,7 +8,7 @@ Fast, modern app-style UI for the [AIUB Student Portal](https://portal.aiub.edu)
 
 **Windows PC (Microsoft Edge):** [Install from Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/studentdesk-aiub-%E2%80%94-modern/meogjhmphdkglfabjonfjbdjlfpcpbpa). Click **Get → Add extension**. No ZIP or Developer mode needed. The store delivers the version currently approved by Microsoft.
 
-## v4.5.0 — Refined Workspace
+## v4.5.1 — Refined Workspace
 
 - Refined warm interface with consistent Times New Roman typography, original illustrations, responsive phone/tablet/desktop layouts and restrained motion.
 - Redesigned native login, flatter readable routine events and a restored smooth capsule phone footer.
@@ -16,7 +16,7 @@ Fast, modern app-style UI for the [AIUB Student Portal](https://portal.aiub.edu)
 - Improved safe attachment resolution, text-only Office preview recovery, review-draft preservation and accessible search/keyboard behavior.
 - All existing pages, saved plans, snapshots, PDF/JPG/JSON exports, light/dark themes and Performance mode retained.
 
-**[Full v4.5.0 release notes](docs/RELEASE-v4.5.0.md)** · **[All version history](CHANGELOG.md)** · **[Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/studentdesk-aiub/)**
+**[v4.5.1 release notes](docs/RELEASE-v4.5.1.md)** · **[Full feature changelog](docs/RELEASE-v4.5.0.md)** · **[All version history](CHANGELOG.md)** · **[Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/studentdesk-aiub/)**
 
 Local Chromium/synthetic fixture tests passed; live authenticated portal, physical phones and native Safari/Firefox engines were not verified. DOCX/PPTX previews are text-only. Safari files are developer source, not a signed application. Store approval and update schedules apply. Higher-numbered local test installations require manual replacement without clearing saved storage.
 
