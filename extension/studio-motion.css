@@ -239,7 +239,7 @@ html.ap #pp-app .pp-home .pp-home-links{margin:0!important;gap:10px!important}
 html.ap #pp-app .pp-home .pp-home-links>a{border-radius:15px!important;background:var(--sd-demo-lower)!important;box-shadow:0 1px 2px #00000002!important;min-height:72px!important}
 html.ap #pp-app .pp-home-links .pp-qi{border-radius:12px!important}
 html.ap #pp-app .sd-live-mascot{width:128px;height:140px;flex-shrink:0}
-/* Claude's warm editorial surfaces, restrained Apple-like alignment and edge detail. */
+/* Warm editorial surfaces with consistent alignment and subtle edge detail. */
 html.ap #pp-app .pp-card{box-shadow:var(--sd-demo-shadow)!important}
 html.ap #pp-app .pp-iconbtn{border-radius:13px!important;box-shadow:inset 0 1px 0 #ffffff12!important}
 html.ap #pp-app .pp-input{border-radius:12px!important}
@@ -257,7 +257,7 @@ html.ap #pp-app .pp-nav-label{letter-spacing:.16em!important;font-size:9px!impor
 @media(max-width:900px){html.ap #pp-app .pp-home .pp-overview-intro{padding:25px 21px!important;gap:12px!important;min-height:210px}html.ap #pp-app .pp-home .pp-overview-intro h2{font-size:34px!important}html.ap #pp-app .pp-home .pp-overview-body{padding:19px 17px 20px!important;gap:16px}html.ap #pp-app .sd-live-mascot{width:84px;height:104px}html.ap #pp-app .pp-home .pp-home-links>a{min-height:75px!important}html.ap #pp-app .pp-home .pp-overview-body .pp-next{min-height:76px}}
 @media(max-width:350px){html.ap #pp-app .pp-home .pp-overview-intro{padding:23px 17px!important;gap:8px!important}html.ap #pp-app .pp-home .pp-overview-intro h2{font-size:29px!important}html.ap #pp-app .sd-live-mascot{width:65px;height:90px}}
 @media(min-width:1201px){html.ap #pp-app .pp-me{gap:9px!important}html.ap #pp-app .pp-me>div{flex:1;min-width:0}html.ap #pp-app .pp-me b{font-size:12px!important;line-height:1.4;white-space:normal!important;overflow:visible!important;text-overflow:clip!important}html.ap #pp-app .pp-me>.pp-avatar{width:34px;height:34px;min-width:34px;font-size:12px}html.ap #pp-app .pp-me>.pp-signout{width:34px;height:36px;min-width:34px}}
-/* Subtle Apple finish over the approved warm Claude-style layout. No layout/academic logic changes. */
+/* Subtle finish over the approved warm layout. No layout or academic logic changes. */
 html.ap #pp-app{--sd-control-highlight:rgba(255,255,255,.65);--sd-control-shadow:0 1px 2px rgba(32,28,21,.035)}
 html.ap[data-ap-mode=dark] #pp-app{--sd-control-highlight:rgba(255,255,255,.065);--sd-control-shadow:0 1px 2px rgba(0,0,0,.10)}
 html.ap #pp-app .pp-btn{border-radius:12px!important;font-weight:600;letter-spacing:-.012em;box-shadow:inset 0 1px 0 var(--sd-control-highlight),var(--sd-control-shadow)!important}

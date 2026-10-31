@@ -20,7 +20,7 @@
         "glass.css",
         "v4.css",
         "studio-motion.css",
-        "apple-ui.css"
+        "workspace-ui.css"
       ],
       "js": [
         "zip-inflate.js",

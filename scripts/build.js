@@ -62,7 +62,7 @@ let prevUpd = {}; try { prevUpd = JSON.parse(fs.readFileSync(path.join(root, "up
 const upd = { version: manifest.version, date: prevUpd.version === manifest.version && prevUpd.date ? prevUpd.date : today, title: top[2].trim(), notes: notes, release: "https://github.com/amitsami/studentdesk-aiub/releases/latest" };
 fs.writeFileSync(path.join(root, "update.json"), JSON.stringify(upd, null, 2) + "\n");
 
-const css = ["theme.css", "shell.css", "glass.css", "v4.css", "studio-motion.css", "apple-ui.css"].map(ext).join("\n");
+const css = ["theme.css", "shell.css", "glass.css", "v4.css", "studio-motion.css", "workspace-ui.css"].map(ext).join("\n");
 const style =
   '(function(){var s=document.createElement("style");s.id="ap-css";s.textContent=' +
   JSON.stringify(css) +
