@@ -1,8 +1,8 @@
-# StudentDesk AIUB v4.5.0 — Apple Studio
+# StudentDesk AIUB v4.5.0 — Refined Workspace
 
 
 ### Design and navigation
-- Preserve the warm Claude-inspired palette and original illustrated workspace, with restrained Apple-style surfaces, borders, shadows and focus states.
+- Refine the warm color palette and illustrated workspace with clean surfaces, subtle depth, consistent spacing and clear focus states.
 - Refine Home, navigation, cards, buttons, fields, segmented filters, dialogs and light/dark themes.
 - Apply Times New Roman consistently across pages, sidebar and login; retain monospace course identifiers where appropriate.
 - Improve phone, tablet and desktop layouts, touch targets, safe areas, compact-height views and tablet navigation.

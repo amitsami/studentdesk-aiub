@@ -1,11 +1,11 @@
-StudentDesk AIUB v4.5.0 — APPLE STUDIO / LOCAL TEST
+StudentDesk AIUB v4.5.0 — REFINED WORKSPACE
 Based on your v4.5.3. Version intentionally labeled 4.5.0 at your request.
 
 FOOTER PATCH
 Restores the rounded mobile capsule footer and soft sliding active pill from your reference. All five destinations, Times New Roman, keyboard behavior, reduced motion and Performance mode retained. No other UI or feature changes in this patch. Version remains 4.5.0.
 
 CHANGES
-- Keep original warm Claude palette, all pages, illustrations, Home two-part card and planner NEW badge. No aqua/navy palette.
+- Keep the original warm palette, all pages, illustrations, Home two-part card and planner NEW badge. No aqua/navy palette.
 - Consistent Times New Roman across sidebar, page typography and login. Codes retain monospace for readability.
 - Refined desktop sidebar, tablet rail, cards, lists, controls, segmented tabs, forms, dialogs and light/dark surfaces.
 - Phone: readable stacked Home actions, 44px touch targets, 16px inputs, safe-area dock, dock hidden while typing, clearer preview actions.
@@ -15,7 +15,7 @@ CHANGES
 - DOCX/PPTX preview is TEXT ONLY, not a full slide/document renderer. Images, equations and original layout may require Original download. Legacy DOC/PPT, encrypted/large files and absent direct links may remain unsupported.
 
 VERSION / UPDATE IMPORTANT
-4.5.0 is numerically LOWER than 4.5.3. This is a user-requested relabel, not a loss of features. Browser/store/userscript auto-updaters may reject a downgrade or not offer it automatically. This is store distribution depends on approval.
+4.5.0 is numerically LOWER than 4.5.3. This is a user-requested relabel, not a loss of features. Browser/store/userscript auto-updaters may reject a downgrade or not offer it automatically. Store distribution depends on approval.
 Back up the current extension files and important plan exports. Disable duplicates. Replace contents of your SAME existing unpacked extension folder, then Reload and reload portal.aiub.edu. Do not clear portal site storage.
 For a userscript, open the SAME installed script entry, replace its source with this .user.js, save, and reload the portal. Avoid importing a second active copy. If your loader refuses the lower version, keep the existing install and report the message; don't clear data to force it.
 
@@ -31,4 +31,4 @@ PLANNER GUARANTEES PRESERVED
 Only remaining courses whose prerequisites are met by actual passed results + checked CURRENT-semester expected passes can enter a NEXT-semester draft, after batch/catalog confirmation. Others remain locked with prerequisites shown. Adding B to next term never unlocks C for that same term. Old invalid references remain separately retained, excluded from active totals/exports. Passing prerequisites never guarantees future course offering, seats or registration approval.
 
 VALIDATION SCOPE
-Automated local Chromium fixtures at 320/390/768/1024/1190/1440 widths, light/dark; login control structure and validation, keyboard search, notes wrappers, Office text extraction, PDF/JPG/JSON exports, review drafts and strict planner locks. Review requests mocked; no real review submitted. Real university authentication, actual Safari/Firefox engines and physical phones are NOT verified. No GitHub/store publication was performed.
+Automated local Chromium fixtures at 320/390/768/1024/1190/1440 widths, light/dark; login control structure and validation, keyboard search, notes wrappers, Office text extraction, PDF/JPG/JSON exports, review drafts and strict planner locks. Review requests mocked; no real review submitted. Real university authentication, actual Safari/Firefox engines and physical phones are NOT verified. Validation is local; store submission and approval are separate from device testing.

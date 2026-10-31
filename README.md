@@ -1,6 +1,6 @@
 # StudentDesk AIUB
 
-> **v4.5.0 — Apple Studio.** Warm responsive UI, redesigned login, smooth phone dock and strict next-semester planner. Store delivery depends on approval.
+> **v4.5.0 — Refined Workspace.** Warm responsive UI, redesigned login, smooth phone dock and strict next-semester planner. Store delivery depends on approval.
 
 Fast, modern app-style UI for the [AIUB Student Portal](https://portal.aiub.edu) on phone and PC. Your data never leaves your browser.
 
@@ -8,7 +8,7 @@ Fast, modern app-style UI for the [AIUB Student Portal](https://portal.aiub.edu)
 
 **Windows PC (Microsoft Edge):** [Install from Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/studentdesk-aiub-%E2%80%94-modern/meogjhmphdkglfabjonfjbdjlfpcpbpa). Click **Get → Add extension**. No ZIP or Developer mode needed. The store delivers the version currently approved by Microsoft.
 
-## v4.5.0 — Apple Studio
+## v4.5.0 — Refined Workspace
 
 - Refined warm interface with consistent Times New Roman typography, original illustrations, responsive phone/tablet/desktop layouts and restrained motion.
 - Redesigned native login, flatter readable routine events and a restored smooth capsule phone footer.
