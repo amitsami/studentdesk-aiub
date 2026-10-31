@@ -16,7 +16,7 @@ Fast, modern app-style UI for the [AIUB Student Portal](https://portal.aiub.edu)
 - Improved safe attachment resolution, text-only Office preview recovery, review-draft preservation and accessible search/keyboard behavior.
 - All existing pages, saved plans, snapshots, PDF/JPG/JSON exports, light/dark themes and Performance mode retained.
 
-**[v4.5.1 release notes](docs/RELEASE-v4.5.1.md)** · **[Full feature changelog](docs/RELEASE-v4.5.0.md)** · **[All version history](CHANGELOG.md)** · **[Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/studentdesk-aiub/)**
+**[Full v4.5.0 release notes](docs/RELEASE-v4.5.0.md)** · **[All version history](CHANGELOG.md)** · **[Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/studentdesk-aiub/)**
 
 Local Chromium/synthetic fixture tests passed; live authenticated portal, physical phones and native Safari/Firefox engines were not verified. DOCX/PPTX previews are text-only. Safari files are developer source, not a signed application. Store approval and update schedules apply. Higher-numbered local test installations require manual replacement without clearing saved storage.
 
