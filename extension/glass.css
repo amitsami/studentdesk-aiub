@@ -37,7 +37,7 @@ html.ap[data-ap-mode="dark"] #ap-bg { background:
 html.ap[data-ap-bg="solid"] #ap-bg { background: var(--ap-bg) !important; }
 
 /* ---- typography ---- */
-#pp-app, html.ap body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, "Noto Sans", "Hind Siliguri", sans-serif !important; }
+#pp-app, html.ap body { font-family:"Times New Roman",Times,serif!important; }
 #pp-app { letter-spacing: -.005em; }
 #pp-app .pp-top h1 { font-size: 30px; font-weight: 700; letter-spacing: -.035em; }
 #pp-app h2 { letter-spacing: -.03em; } #pp-app h3 { font-size: 15px; font-weight: 650; letter-spacing: -.01em; }
@@ -448,7 +448,7 @@ html[data-ap-anim="0"] #pp-app .pp-quick a,
 html[data-ap-anim="0"] #pp-app .pp-quick .pp-qi { animation: none !important; transition: none !important; }
 
 /* ===== v3.9.9: quiet surfaces, deliberate motion, useful tools ===== */
-#pp-app { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+#pp-app { font-family:"Times New Roman",Times,serif; }
 #pp-app .pp-card { transition:transform .18s cubic-bezier(.22,.8,.24,1),box-shadow .18s ease; }
 #pp-app .pp-view { animation:pp-workspace-in .18s cubic-bezier(.2,.8,.2,1) both !important; }
 #pp-app .pp-view > * { animation:none !important; }
@@ -540,7 +540,7 @@ html[data-ap-performance="1"] #pp-app .pp-tabbar .pp-pill { transition:transform
 
 /* ===== FOCUS / Release candidate — redesigned components, unchanged destinations ===== */
 html.ap { --focus-hair:rgba(32,55,89,.085);--focus-canvas:#f4f6fa; }
-html.ap #pp-app { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;color:#1c2b42;letter-spacing:-.015em; }
+html.ap #pp-app { font-family:"Times New Roman",Times,serif;color:#1c2b42;letter-spacing:-.015em; }
 html.ap.pp-on body,html.ap #ap-bg { background:var(--focus-canvas) !important; }
 #pp-app .pp-main { background:transparent !important; }
 #pp-app .pp-card { background:rgba(255,255,255,.94) !important;border-radius:22px !important;border:1px solid rgba(255,255,255,.8);box-shadow:0 2px 4px rgba(23,39,70,.018),0 12px 36px -26px rgba(23,39,70,.16) !important;backdrop-filter:none !important;-webkit-backdrop-filter:none !important; }

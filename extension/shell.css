@@ -11,7 +11,7 @@ html.pp-on body > #ap-fab, html.pp-on body > #ap-panel { display: none !importan
 html.pp-on, html.pp-on body { overflow: hidden !important; height: 100%; }
 
 #pp-app { position: fixed; inset: 0; display: flex; color: var(--ap-text); font-size: 15px; line-height: 1.45; z-index: 10;
-  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", sans-serif; }
+  font-family:"Times New Roman",Times,serif; }
 #pp-app *, #pp-app *::before, #pp-app *::after { box-sizing: border-box; }
 #pp-app a { color: inherit; text-decoration: none; }
 #pp-app button { font: inherit; color: inherit; cursor: pointer; }

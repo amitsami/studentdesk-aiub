@@ -16,7 +16,7 @@ html.ap[data-ap-mode="dark"] {
   --ap-bg:var(--sd-paper);--ap-text:var(--sd-ink);--ap-muted:var(--sd-muted);--ap-hair:var(--sd-line);
 }
 html.ap #ap-bg {background:var(--sd-paper)!important}
-html.ap #pp-app {font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important;color:var(--sd-ink)!important;letter-spacing:-.012em}
+html.ap #pp-app {font-family:"Times New Roman",Times,serif!important;color:var(--sd-ink)!important;letter-spacing:-.012em}
 html.ap #pp-app .pp-scroll {background:var(--sd-paper)!important}
 html.ap #pp-app .pp-card,html.ap #pp-app .pp-home .pp-overview {background:var(--sd-surface)!important;border:1px solid var(--sd-line)!important;border-radius:20px!important;box-shadow:0 2px 2px rgba(25,33,25,.015)!important;color:var(--sd-ink)}
 html.ap #pp-app .pp-item {background:transparent!important;border-radius:10px!important;box-shadow:none!important}
@@ -40,7 +40,7 @@ html.ap #pp-app .pp-eyebrow {font-size:10px!important;line-height:1.6;letter-spa
 html.ap #pp-app h3 {font-size:17px!important;font-weight:600;letter-spacing:-.03em;line-height:1.4;color:var(--sd-ink)}
 html.ap #pp-app .pp-overview-intro {background:var(--sd-surface)!important;border-radius:0!important;padding:30px 28px 24px!important;overflow:visible}
 html.ap #pp-app .pp-overview-intro::after,html.ap #pp-app .pp-hero::before,html.ap #pp-app .pp-hero::after {display:none!important}
-html.ap #pp-app .pp-home .pp-hero h2 {font-family:Georgia,"Times New Roman",serif!important;font-size:38px!important;line-height:1.12!important;font-weight:400!important;letter-spacing:-.055em!important;color:var(--sd-ink)!important;margin-top:14px!important}
+html.ap #pp-app .pp-home .pp-hero h2 {font-family:"Times New Roman",Times,serif!important;font-size:38px!important;line-height:1.12!important;font-weight:400!important;letter-spacing:-.055em!important;color:var(--sd-ink)!important;margin-top:14px!important}
 html.ap #pp-app .pp-home .pp-hero .pp-overview-intro p {color:var(--sd-muted)!important;font-size:14px!important;margin-top:14px}
 html.ap #pp-app .pp-home .pp-date-tile {background:var(--sd-raised)!important;border:1px solid var(--sd-line)!important;box-shadow:none!important;border-radius:14px!important;width:62px;min-width:62px}
 html.ap #pp-app .pp-home .pp-date-tile small {background:transparent!important;color:var(--sd-muted)!important;font-size:10px;font-weight:600;padding-top:7px}
@@ -84,12 +84,12 @@ html.ap #pp-app .pp-me .pp-avatar {background:var(--sd-tint)!important;color:var
 html.ap #pp-app .sd-planner-banner {display:flex;align-items:center;gap:18px;padding:24px 26px;border:1px solid var(--sd-line);border-radius:18px;background:var(--sd-tint);color:var(--sd-ink);text-decoration:none}
 html.ap #pp-app .sd-banner-mark {width:48px;height:48px;flex:none;border:1px solid color-mix(in srgb,var(--sd-accent) 20%,transparent);border-radius:50%;display:grid;place-items:center;color:var(--sd-accent)}
 html.ap #pp-app .sd-planner-banner>div {flex:1;min-width:0}
-html.ap #pp-app .sd-planner-banner b {display:block;font-family:Georgia,serif;font-size:25px;line-height:1.25;font-weight:400;letter-spacing:-.035em;margin:5px 0 6px}
+html.ap #pp-app .sd-planner-banner b {display:block;font-family:"Times New Roman",Times,serif;font-size:25px;line-height:1.25;font-weight:400;letter-spacing:-.035em;margin:5px 0 6px}
 html.ap #pp-app .sd-planner-banner small {color:var(--sd-muted);font-size:13px}
 html.ap #pp-app .sd-banner-cta {font-size:13px;font-weight:600;flex:none}
 html.ap #pp-app .sd-planner {max-width:1320px;margin-inline:auto}
 html.ap #pp-app .sd-planner-intro {display:flex;align-items:center;justify-content:space-between;gap:32px;padding:28px 0 36px}
-html.ap #pp-app .sd-planner-intro h2 {font-family:Georgia,"Times New Roman",serif;font-size:clamp(36px,3.8vw,57px);font-weight:400;line-height:1.04;letter-spacing:-.055em;margin:18px 0 20px;color:var(--sd-ink)}
+html.ap #pp-app .sd-planner-intro h2 {font-family:"Times New Roman",Times,serif;font-size:clamp(36px,3.8vw,57px);font-weight:400;line-height:1.04;letter-spacing:-.055em;margin:18px 0 20px;color:var(--sd-ink)}
 html.ap #pp-app .sd-planner-intro p {font-size:15px;color:var(--sd-muted);max-width:47ch;line-height:1.6;margin:0}
 html.ap #pp-app .sd-local-note {border-left:1px solid var(--sd-line);padding:16px 0 16px 24px;max-width:240px}
 html.ap #pp-app .sd-local-note>.i {color:var(--sd-accent);width:22px;height:22px;margin-bottom:16px}
@@ -117,7 +117,7 @@ html.ap #pp-app .sd-metrics {display:grid;grid-template-columns:repeat(3,1fr);bo
 html.ap #pp-app .sd-metrics>div {display:flex;gap:16px;align-items:center;border-right:1px solid var(--sd-line);padding:0 24px}
 html.ap #pp-app .sd-metrics>div:first-child {padding-left:4px}
 html.ap #pp-app .sd-metrics>div:last-child {border:0}
-html.ap #pp-app .sd-metrics b {font-family:Georgia,serif;font-weight:400;font-size:35px}
+html.ap #pp-app .sd-metrics b {font-family:"Times New Roman",Times,serif;font-weight:400;font-size:35px}
 html.ap #pp-app .sd-metrics span {font-size:13px;color:var(--sd-muted)}
 html.ap #pp-app .sd-workspace {display:grid;grid-template-columns:minmax(0,1fr) 286px;gap:24px;align-items:start;margin-bottom:26px}
 html.ap #pp-app .sd-work-main {min-width:0}
@@ -141,9 +141,9 @@ html.ap #pp-app .sd-course summary::after {content:"+";margin-left:auto}
 html.ap #pp-app .sd-course details[open] summary::after {content:"−"}
 html.ap #pp-app .sd-course details a {color:var(--sd-accent)}
 html.ap #pp-app .sd-plan {position:sticky;top:0;padding:24px!important;border-color:color-mix(in srgb,var(--sd-accent) 22%,var(--sd-line))!important}
-html.ap #pp-app .sd-plan h3 {font-family:Georgia,serif;font-size:28px!important;font-weight:400;margin:12px 0}
+html.ap #pp-app .sd-plan h3 {font-family:"Times New Roman",Times,serif;font-size:28px!important;font-weight:400;margin:12px 0}
 html.ap #pp-app .sd-plan-total {display:flex;align-items:center;gap:12px;padding:20px 0;border-block:1px solid var(--sd-line);margin:20px 0}
-html.ap #pp-app .sd-plan-total b {font-family:Georgia,serif;font-size:36px;font-weight:400}
+html.ap #pp-app .sd-plan-total b {font-family:"Times New Roman",Times,serif;font-size:36px;font-weight:400}
 html.ap #pp-app .sd-plan-total span {font-size:12px;line-height:1.5;color:var(--sd-muted)}
 html.ap #pp-app .sd-plan>.pp-btn {width:100%;margin-top:12px;font-size:12px}
 html.ap #pp-app .sd-plan-item {display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--sd-line);padding:14px 0}
@@ -386,3 +386,64 @@ html.ap #pp-app .sd-export-actions #sd-export{grid-column:1/-1}
 html.ap #pp-app .sd-plan-warning{font-size:12px;line-height:1.8;overflow-wrap:anywhere}
 html.ap #pp-app .sd-plan-backup{grid-column:1/-1;font-size:12px;color:var(--sd-muted);padding-top:6px}
 html.ap #pp-app .sd-plan-backup summary{cursor:pointer;margin-bottom:8px}
+
+/* Header refresh preview — clear hierarchy, a reachable theme switch, quiet depth. */
+html.ap #pp-app header.pp-top{padding:18px 30px 17px!important;gap:18px!important;border-radius:0 0 22px 22px!important;border-bottom:1px solid color-mix(in srgb,var(--sd-line) 75%,transparent)!important;box-shadow:0 6px 22px -20px #19211966!important;flex:none}
+html.ap #pp-app .pp-top-kicker{display:block;font-size:9px;font-weight:650;letter-spacing:.17em;color:var(--sd-accent);margin-bottom:5px}
+html.ap #pp-app .pp-top h1{font-size:27px!important;line-height:1.1;letter-spacing:-.05em}
+html.ap #pp-app .pp-top .pp-sub{margin-top:6px;font-size:12px}
+html.ap #pp-app .pp-header-tools{display:flex;align-items:center;gap:7px;order:2;flex:none}
+html.ap #pp-app .pp-appearance-tools{display:flex;align-items:center;gap:7px;order:3;padding-left:16px;border-left:1px solid var(--sd-line)}
+html.ap #pp-app .pp-appearance-tools .pp-gear{display:grid!important}
+html.ap #pp-app .pp-top .pp-iconbtn{width:44px;height:44px;border-radius:14px!important;background:color-mix(in srgb,var(--sd-surface) 70%,transparent)!important;box-shadow:inset 0 1px 0 #ffffff12!important}
+html.ap #pp-app .pp-theme-toggle{background:var(--sd-tint)!important;color:var(--sd-accent)!important;border-color:color-mix(in srgb,var(--sd-accent) 19%,var(--sd-line))!important}
+html.ap #pp-app .pp-top .pp-search-trigger{display:flex;gap:10px;width:190px;padding:0 13px;justify-content:flex-start;color:var(--sd-muted)!important}
+html.ap #pp-app .pp-search-trigger>span{font-size:12px;font-weight:500;white-space:nowrap}
+html.ap #pp-app .pp-search-trigger>kbd{font:10px ui-monospace,monospace;border:1px solid var(--sd-line);background:var(--sd-paper);border-radius:5px;padding:3px 5px;margin-left:auto;color:var(--sd-muted)}
+html.ap #pp-app #pp-tr:empty{display:none}
+html.ap #pp-app .pp-side{margin:14px 0 14px 14px;padding:22px 14px 14px!important;border-radius:24px!important}
+html.ap #pp-app .pp-nav a.on::before{left:0;top:13px;bottom:13px;width:3px;background:var(--sd-accent);border-radius:3px}
+html.ap #pp-app .pp-nav a.on{box-shadow:inset 0 1px 0 #ffffff18!important}
+html.ap #pp-app .pp-me{margin-top:14px;padding:15px 6px 4px;gap:10px}
+html.ap #pp-app .pp-me .pp-signout{width:42px;height:42px;background:var(--sd-risk-bg)!important;border-color:color-mix(in srgb,var(--sd-risk) 15%,var(--sd-line))!important;color:var(--sd-risk)!important;border-radius:13px!important}
+html.ap #pp-app .pp-home .pp-overview-intro{background:linear-gradient(115deg,var(--sd-surface) 30%,color-mix(in srgb,var(--sd-tint) 47%,var(--sd-surface)))!important;padding-bottom:28px!important}
+html.ap #pp-app .pp-home .pp-overview{border-color:color-mix(in srgb,var(--sd-accent) 14%,var(--sd-line))!important}
+html.ap #pp-app .pp-home .pp-date-tile{border-radius:17px!important}
+html.ap #pp-app .pp-home-links>a{transition:background-color 130ms ease!important}
+html.ap #pp-app .pp-quick a .pp-qi{border:1px solid color-mix(in srgb,var(--sd-accent) 7%,var(--sd-line));box-shadow:inset 0 1px 0 #ffffff14!important}
+html.ap #pp-app .sd-planner-banner{background:linear-gradient(110deg,var(--sd-tint),color-mix(in srgb,var(--sd-tint) 68%,var(--sd-surface)));border-color:color-mix(in srgb,var(--sd-accent) 12%,var(--sd-line));border-radius:22px}
+html.ap #pp-app .pp-logout-dialog{width:min(430px,calc(100vw - 36px));max-width:430px;padding:30px;border:1px solid var(--sd-line);border-radius:25px;background:var(--sd-surface);color:var(--sd-ink);box-shadow:0 30px 90px #0003;margin:auto;font:14px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+html.ap #pp-app .pp-logout-dialog::backdrop{background:rgba(15,23,18,.48)}
+html.ap #pp-app .pp-logout-mark{width:52px;height:52px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--sd-risk) 15%,var(--sd-line));border-radius:17px;background:var(--sd-risk-bg);color:var(--sd-risk);margin-bottom:20px}
+html.ap #pp-app .pp-logout-dialog .pp-eyebrow{display:block;margin-bottom:9px}
+html.ap #pp-app .pp-logout-dialog h2{font-family:"Times New Roman",Times,serif;font-size:31px;line-height:1.15;font-weight:400;letter-spacing:-.04em}
+html.ap #pp-app .pp-logout-dialog p{font-size:13px;line-height:1.8;color:var(--sd-muted);margin:15px 0 24px}
+html.ap #pp-app .pp-logout-actions{display:flex;gap:10px}
+html.ap #pp-app .pp-logout-actions button{flex:1;font-size:12px;display:flex;align-items:center;justify-content:center;gap:8px}
+html.ap #pp-app .pp-logout-actions .pp-logout-confirm{background:var(--sd-risk)!important;color:var(--sd-surface)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-logout-actions .pp-logout-confirm{color:#241b18!important}
+@media(hover:hover) and (pointer:fine){html.ap #pp-app .pp-top .pp-iconbtn:hover{border-color:var(--sd-accent)!important;background:var(--sd-raised)!important}html.ap #pp-app .pp-home-links>a:hover{background:var(--sd-raised)!important}}
+@media(max-width:1200px) and (min-width:901px){html.ap #pp-app .pp-search-trigger>span,html.ap #pp-app .pp-search-trigger>kbd{display:none}html.ap #pp-app .pp-top .pp-search-trigger{width:44px;justify-content:center;padding:0}}
+@media(max-width:900px){
+ html.ap #pp-app header.pp-top{display:grid!important;grid-template-columns:34px minmax(0,1fr) auto;grid-template-areas:"logo title appearance" "tools tools tools";gap:12px 11px!important;padding:12px 16px 13px!important;border-radius:0 0 23px 23px!important}
+ html.ap #pp-app .pp-top>.pp-hlogo{grid-area:logo;width:34px;height:34px}
+ html.ap #pp-app .pp-top>.pp-grow{grid-area:title;min-width:0}
+ html.ap #pp-app .pp-top h1{font-size:24px!important;white-space:normal!important;line-height:1.08}
+ html.ap #pp-app .pp-top-kicker{display:none}
+ html.ap #pp-app .pp-top .pp-sub{font-size:11px!important;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ html.ap #pp-app .pp-top>.pp-appearance-tools{grid-area:appearance;border:0;padding:0;gap:6px}
+ html.ap #pp-app .pp-top>.pp-header-tools{grid-area:tools;display:flex;width:100%;gap:8px}
+ html.ap #pp-app .pp-top .pp-iconbtn{width:44px;height:44px;border-radius:13px!important}
+ html.ap #pp-app .pp-top .pp-search-trigger{width:auto;flex:1;min-width:0;background:var(--sd-raised)!important;border-color:transparent!important;padding:0 12px}
+ html.ap #pp-app .pp-search-trigger>kbd{display:none}
+ html.ap #pp-app #pp-tr:not(:empty){grid-column:1/-1;grid-row:3;justify-content:flex-end}
+ html.ap #pp-app .pp-scroll{padding-top:16px!important}
+ html.ap #pp-app .pp-home .pp-overview-intro{padding:24px 20px 25px!important}
+ html.ap #pp-app .pp-logout-dialog{padding:26px 23px}
+}
+@media(prefers-reduced-motion:reduce){html.ap #pp-app .pp-home-links>a{transition:none!important}}
+/* Avoid legacy navy surfaces showing through the new olive/cream canvas. */
+html.ap #pp-app{background:var(--sd-paper)!important}
+html.ap[data-ap-mode] #pp-app .pp-main>header.pp-top,html.ap[data-ap-mode] #pp-app .pp-main>header.pp-top.pp-scrolled{background:var(--sd-glass)!important}
+html.ap[data-ap-mode] #pp-app>nav.pp-tabbar{background:var(--sd-glass)!important}
+html.ap[data-ap-performance="1"] #pp-app .pp-main>header.pp-top,html.ap[data-ap-performance="1"] #pp-app .pp-main>header.pp-top.pp-scrolled{background:var(--sd-surface)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important}

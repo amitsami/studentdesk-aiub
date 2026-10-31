@@ -1,22 +1,24 @@
 # StudentDesk AIUB
 
+> **v4.5.0 — Apple Studio.** Warm responsive UI, redesigned login, smooth phone dock and strict next-semester planner. Store delivery depends on approval.
+
 Fast, modern app-style UI for the [AIUB Student Portal](https://portal.aiub.edu) on phone and PC. Your data never leaves your browser.
 
 **[Install the userscript](https://raw.githubusercontent.com/amitsami/studentdesk-aiub/main/userscript/StudentDesk-AIUB.user.js)** · **[Download the latest release](https://github.com/amitsami/studentdesk-aiub/releases/latest)** · **[Install guide](docs/INSTALL.md)**
 
 **Windows PC (Microsoft Edge):** [Install from Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/studentdesk-aiub-%E2%80%94-modern/meogjhmphdkglfabjonfjbdjlfpcpbpa). Click **Get → Add extension**. No ZIP or Developer mode needed. The store delivers the version currently approved by Microsoft.
 
-## v4.0.0 — Academic Studio
+## v4.5.0 — Apple Studio
 
-- New next-semester **Course planner** with prerequisite explanations, named successor courses and conditional suggestions based on current-semester pass assumptions.
-- Save any remaining course as a reminder, then **download a styled PDF or JPG**. Blocked/unverified reminders stay clearly marked; saving is not registration approval.
-- Read-only portal section, seat and timetable snapshots with source/term labels, conflict checking and historical offering context when enough data exists.
-- A calmer editorial interface, original section illustrations, responsive phone/PC layouts, light/dark themes and Performance mode.
-- Improved Notices caching/sync, faculty-photo fallbacks, session error handling and simplified Settings.
+- Refined warm interface with consistent Times New Roman typography, original illustrations, responsive phone/tablet/desktop layouts and restrained motion.
+- Redesigned native login, flatter readable routine events and a restored smooth capsule phone footer.
+- Strict next-semester prerequisite gates; blocked/unverified courses cannot enter the active plan, and future selections do not unlock successors.
+- Improved safe attachment resolution, text-only Office preview recovery, review-draft preservation and accessible search/keyboard behavior.
+- All existing pages, saved plans, snapshots, PDF/JPG/JSON exports, light/dark themes and Performance mode retained.
 
-**[Full v4.0 changelog](docs/RELEASE-v4.0.md)** · **[All version history](CHANGELOG.md)** · **[Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/studentdesk-aiub/)**
+**[Full v4.5.0 release notes](docs/RELEASE-v4.5.0.md)** · **[All version history](CHANGELOG.md)** · **[Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/studentdesk-aiub/)**
 
-Catalog coverage varies by department and curriculum version; unknown prerequisites remain unverified. Planning is local and does not submit registration or bypass the portal queue. Chromium fixture/responsive tests were run; real authenticated Safari and active pre-registration were not available for validation. Store delivery depends on approval.
+Local Chromium/synthetic fixture tests passed; live authenticated portal, physical phones and native Safari/Firefox engines were not verified. DOCX/PPTX previews are text-only. Safari files are developer source, not a signed application. Store approval and update schedules apply. Higher-numbered local test installations require manual replacement without clearing saved storage.
 
 ## Contents
 

@@ -49,7 +49,7 @@
     st.setProperty("--ap-radius-sm", Math.max(4, S.radius - 6) + "px");
     var meta = document.querySelector('meta[name="theme-color"]');
     if (!meta && document.head) { meta = document.createElement("meta"); meta.name = "theme-color"; document.head.appendChild(meta); }
-    if (meta) meta.content = dark ? "#070b16" : "#eef2fb";
+    if (meta) meta.content = dark ? "#171b19" : "#f5f4ef";
   }
   try { if (window.top !== window) root.classList.add("pp-embed"); } catch (e) { root.classList.add("pp-embed"); }
   apply(); // runs at document_start → no flash of old design
@@ -108,25 +108,29 @@
     if (u && !u.parentNode.querySelector(".ap-ico")) u.insertAdjacentHTML("beforebegin", ICON.user);
     if (pw && !pw.parentNode.querySelector(".ap-ico")) {
       pw.insertAdjacentHTML("beforebegin", ICON.lock);
-      var eye = el('<button type="button" class="ap-eye" aria-label="Show password" tabindex="-1">' + ICON.eye + "</button>");
+      var eye = el('<button type="button" class="ap-eye" aria-label="Show password" aria-pressed="false">' + ICON.eye + "</button>");
       pw.insertAdjacentElement("afterend", eye);
-      eye.addEventListener("click", function () { var show = pw.type === "password"; pw.type = show ? "text" : "password"; eye.innerHTML = show ? ICON.eyeOff : ICON.eye; pw.focus(); });
+      eye.addEventListener("click", function () { var show = pw.type === "password"; pw.type = show ? "text" : "password"; eye.setAttribute("aria-label",show?"Hide password":"Show password");eye.setAttribute("aria-pressed",String(show)); eye.innerHTML = show ? ICON.eyeOff : ICON.eye; pw.focus(); });
     }
+    // Add programmatic labels without replacing controls, names, tokens or portal handlers.
+    [[u,"AIUB ID","username"],[pw,"Password","current-password"]].forEach(function(item){var field=item[0];if(!field)return;if(!field.getAttribute("autocomplete"))field.setAttribute("autocomplete",item[2]);if(!form.querySelector('label[for="'+field.id+'"]')){var label=document.createElement("label");label.className="ap-login-label";label.htmlFor=field.id;label.textContent=item[1];field.parentNode.insertBefore(label,field.parentNode.firstChild);}field.setAttribute("autocapitalize","off");field.setAttribute("spellcheck","false");});
     var hdr = document.querySelector(".login_header");
     if (hdr && !document.getElementById("ap-greet")) {
-      hdr.insertAdjacentHTML("beforebegin", '<div id="ap-greet"></div>');
+      hdr.insertAdjacentHTML("beforebegin", '<div id="ap-login-brand">STUDENTDESK · AIUB</div><div id="ap-greet" role="heading" aria-level="1"></div>');
       var greet = function () {
         var h = new Date().getHours(); // user's own device time
         document.getElementById("ap-greet").textContent =
-          h >= 5 && h < 12 ? "Good morning ☀️" : h >= 12 && h < 14 ? "Good noon 🌞" :
-          h >= 14 && h < 17 ? "Good afternoon 🌤️" : h >= 17 && h < 20 ? "Good evening 🌆" : "Good night 🌙";
+          h >= 5 && h < 12 ? "Good morning." : h >= 12 && h < 14 ? "Good afternoon." :
+          h >= 14 && h < 17 ? "Good afternoon." : h >= 17 && h < 20 ? "Good evening." : "Good evening.";
       };
       greet(); setInterval(greet, 60000);
       hdr.textContent = "Sign in with your AIUB ID to continue";
     }
-    if (!document.getElementById("ap-foot")) form.insertAdjacentHTML("afterend", '<div id="ap-foot">🔒 Secure login directly to portal.aiub.edu</div>');
-    var lf = document.querySelector(".login-form"); if (lf) lf.style.top = "";
+    if (!document.getElementById("ap-foot")) form.insertAdjacentHTML("afterend", '<div id="ap-foot">Sign-in is handled by AIUB. StudentDesk is an unofficial interface.</div>');
+    var lf = document.querySelector(".login-form"); if (lf) {lf.style.top = "";var pane=form.parentElement,brand=lf.firstElementChild;if(pane&&pane!==lf&&brand&&brand!==pane){lf.classList.add("ap-login-studio");pane.classList.add("ap-login-entry");brand.classList.add("ap-login-identity");if(!brand.querySelector(".ap-login-story")){var story=document.createElement("div");story.className="ap-login-story";var art=window.StudentDeskArt?window.StudentDeskArt("home"):"";story.innerHTML='<span class="ap-login-kicker">YOUR STUDENT WORKSPACE</span><h2>Less clutter. <br>More clarity.</h2><div class="ap-login-illustration" aria-hidden="true">'+art+'</div><p>A little space to plan <br>what comes next.</p>';brand.appendChild(story);var note=document.createElement("small");note.className="ap-login-identity-note";note.textContent="Your day. Your courses. One thoughtful workspace.";brand.appendChild(note);}}}
     var cap = document.getElementById("captcha"), capIn = document.getElementById("CaptchaInputText");
+    if(capIn){var capLabel=cap&&cap.querySelector("label");if(capLabel)capLabel.htmlFor=capIn.id;else capIn.setAttribute("aria-label","Captcha answer");}
+    if(cap){var refresh=cap.querySelector("a.btn,button.btn");if(refresh){refresh.setAttribute("aria-label","Refresh captcha");refresh.setAttribute("title","Refresh captcha");refresh.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6 7a7 7 0 0 1 12 1l2 4M4 12l2 4a7 7 0 0 0 12 1"/></svg>';}}
     if (cap && capIn && window.MutationObserver) {
       var focusCap = function () { if (cap.style.display !== "none" && document.activeElement !== capIn) { capIn.setAttribute("inputmode", "numeric"); capIn.placeholder = "Answer"; } };
       focusCap(); new MutationObserver(focusCap).observe(cap, { attributes: true, attributeFilter: ["style"] });

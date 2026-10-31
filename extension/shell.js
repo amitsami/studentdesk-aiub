@@ -29,19 +29,21 @@
   var GP = { "A+": 4, "A": 3.75, "B+": 3.5, "B": 3.25, "C+": 3, "C": 2.75, "D+": 2.5, "D": 2.25, "F": 0 };
 
   var ICONS = {
-    home: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/>',
-    cal: '<rect x="3" y="4.5" width="18" height="17" rx="3"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/><path d="M8 14h2M14 14h2M8 18h2"/>',
-    book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20v3H6.5"/>',
-    award: '<circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 8 5-3 5 3-1.5-8"/>',
-    wallet: '<rect x="2.5" y="5.5" width="19" height="15" rx="3"/><path d="M2.5 9.5h19"/><circle cx="16.5" cy="15" r="1.3"/>',
-    mail: '<rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/>',
+    drop: '<path d="M12 3c-2 4-7 8-7 12a7 7 0 0 0 14 0c0-4-5-8-7-12Z"/><path d="M8 15a4 4 0 0 0 4 4"/>',
+    wind: '<path d="M3 8h12a3 3 0 1 0-3-3M2 12h17a3 3 0 1 1-3 3M4 17h5a2 2 0 1 1-2 2"/>',
+    home: '<path d="m3.5 10 8.5-7 8.5 7v9a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2Z"/><path d="M9 21v-7.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1V21"/>',
+    cal: '<rect x="3" y="5" width="18" height="16" rx="4"/><path d="M7.5 3v4m9-4v4M3 11h18m-13 4h.1m4.9 0h.1m-5.1 3h.1m4.9 0h.1m3.9-3h.1"/>',
+    book: '<path d="M12 5C8 2 4 3 2.5 4v15c3-1.5 6.5-1.5 9.5 1.5 3-3 6.5-3 9.5-1.5V4C19 3 15 2 12 5Zm0 0v15.5M5.5 7h3m7 0h3"/>',
+    award: '<circle cx="12" cy="8.5" r="5.5"/><path d="m8 13-1.5 8 5.5-3 5.5 3-1.5-8"/><path d="m10 8.5 1.5 1.5L14 7"/>',
+    wallet: '<path d="M19.5 8V5.5a2 2 0 0 0-2.3-2L5 5.5A2.5 2.5 0 0 0 3 8v10a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-7a3 3 0 0 0-3-3H5"/><path d="M21 13h-5a2 2 0 0 0 0 4h5m-4-2h.1"/>',
+    mail: '<rect x="3" y="5" width="18" height="15" rx="4"/><path d="m4 7 6.5 5a2.5 2.5 0 0 0 3 0L20 7m-16 11 5-5m11 5-5-5"/>',
     grid: '<rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/>',
-    gear: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+    gear: '<path d="M9.53 4.39 L10.47 4.15 L10.61 2.10 L13.39 2.10 L13.53 4.15 L14.47 4.39 L15.63 4.87 L16.47 5.37 L18.02 4.01 L19.99 5.98 L18.63 7.53 L19.13 8.37 L19.61 9.53 L19.85 10.47 L21.90 10.61 L21.90 13.39 L19.85 13.53 L19.61 14.47 L19.13 15.63 L18.63 16.47 L19.99 18.02 L18.02 19.99 L16.47 18.63 L15.63 19.13 L14.47 19.61 L13.53 19.85 L13.39 21.90 L10.61 21.90 L10.47 19.85 L9.53 19.61 L8.37 19.13 L7.53 18.63 L5.98 19.99 L4.01 18.02 L5.37 16.47 L4.87 15.63 L4.39 14.47 L4.15 13.53 L2.10 13.39 L2.10 10.61 L4.15 10.47 L4.39 9.53 L4.87 8.37 L5.37 7.53 L4.01 5.98 L5.98 4.01 L7.53 5.37 L8.37 4.87 Z"/><circle cx="12" cy="12" r="3.3"/>',
     clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
     pin: '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
-    coffee: '<path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><path d="M6 2v3M10 2v3M14 2v3"/>',
+    coffee: '<path d="M4 8h12v9a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4Zm12 1h2a3 3 0 0 1 0 6h-2"/><path d="M7 2v3m5-3v3M3 22h14"/>',
     ext: '<path d="M14 3h7v7"/><path d="M10 14 21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/>',
-    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/>',
     out: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>',
     user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
     refresh: '<path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/>',
@@ -51,17 +53,17 @@
     check: '<path d="M20 6 9 17l-5-5"/>', alert: '<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>',
     plus: '<path d="M12 5v14M5 12h14"/>', x: '<path d="M18 6 6 18M6 6l12 12"/>', back: '<path d="m15 18-6-6 6-6"/>', down: '<path d="m6 9 6 6 6-6"/>', lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
     lib: '<path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/>', file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
-    megaphone: '<path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>',
+    megaphone: '<path d="m4 9 14-5v15L4 14Z"/><path d="M4 9v5m3 1 2 6h4l-2-5m10-9 1-1m-1 6h2m-2 5 1 1"/>',
     key: '<circle cx="8" cy="15" r="4"/><path d="m10.8 12.2 9.2-9.2"/><path d="m17 6 3 3"/><path d="m14.5 8.5 2 2"/>',
     calc: '<rect x="5" y="2.5" width="14" height="19" rx="3"/><path d="M8.5 7h7"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/>',
-    spark: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/>',
+    spark: '<rect x="5" y="4" width="15" height="17" rx="3"/><path d="M9 3v3m7-3v3m-8 5 1.5 1.5L12 10m2 2h3m-9 4 1.5 1.5L12 15m2 2h3"/>',
     minus: '<circle cx="12" cy="12" r="9"/><path d="M8 12h8"/>',
     cloud: '<path d="M7 18a5 5 0 1 1 .9-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 8z"/>',
     star: '<path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>',
     github: '<path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/>',
-    bell: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/>', flash: '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>', list: '<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>'
+    bell: '<path d="M5 9a7 7 0 0 1 14 0c0 5 1.5 6 2 8H3c.5-2 2-3 2-8Z"/><path d="M10 21h4m-4-4v1a2 2 0 0 0 4 0v-1"/>', flash: '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>', list: '<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>'
   };
-  function ic(n, cls) { return '<svg class="i ' + (cls || "") + '" viewBox="0 0 24 24">' + (ICONS[n] || "") + "</svg>"; }
+  function ic(n, cls) { return '<svg class="i ' + (cls || "") + '" data-sd-icon="' + esc(n) + '" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' + (ICONS[n] || "") + "</svg>"; }
 
   /* ------------------------------------------------------------ portal links (from the real menu) */
   var LINKS = {}, MENU = [];
@@ -297,15 +299,14 @@
     app = document.createElement("div"); app.id = "pp-app";
     app.innerHTML =
       '<aside class="pp-side"><div class="pp-brand"><span class="pp-logo"><img src="/Content/Images/aiub_logo_92x92.png" alt="AIUB" decoding="async"></span><div><b>StudentDesk AIUB</b><small>Student workspace</small></div></div>' +
-      '<nav class="pp-nav">' + NAV.map(function (n, i) { return (i === 0 ? '<div class="pp-nav-label">WORKSPACE</div>' : n.r === "notices" ? '<div class="pp-sep"></div><div class="pp-nav-label">CAMPUS</div>' : "") + '<a href="#/' + n.r + '" data-r="' + n.r + '">' + ic(n.i) + "<span>" + n.t + "</span></a>"; }).join("") +
-      '<div class="pp-sep"></div><a href="#/settings" data-r="settings">' + ic("gear") + "<span>Settings</span></a></nav>" +
-      '<div class="pp-me"><span class="pp-avatar">' + esc(initials) + '</span><div><b>' + esc(NAME) + '</b><small>' + esc((L("Change Password") ? "" : "") + (location.host)) + '</small></div><button class="pp-iconbtn" data-act="theme" title="Dark / Light (Alt+D)">' + ic("moon") + "</button></div></aside>" +
-      '<main class="pp-main"><header class="pp-top"><a class="pp-hlogo" href="#/home" aria-label="Home"><img src="/Content/Images/aiub_logo_92x92.png" alt="AIUB" decoding="async"></a><div class="pp-grow"><h1 id="pp-h"></h1><div class="pp-sub" id="pp-s"></div></div><div class="pp-row" id="pp-tr"></div>' +
-      '<button class="pp-iconbtn" data-act="search" title="Search (Ctrl+K)">' + ic("search") + '</button><button class="pp-iconbtn pp-bell" data-act="noti" data-r="notifications" title="Notifications">' + ic("bell") + '</button><button class="pp-iconbtn pp-gear" data-act="settings" title="Settings">' + ic("gear") + '</button><button class="pp-iconbtn" data-act="refresh" title="Refresh data">' + ic("refresh") + '</button></header><div class="pp-scroll" id="pp-scroll"></div></main>' +
+      '<nav class="pp-nav" aria-label="Workspace navigation">' + NAV.map(function (n, i) { return (i === 0 ? '<div class="pp-nav-label">WORKSPACE</div>' : n.r === "notices" ? '<div class="pp-sep"></div><div class="pp-nav-label">CAMPUS</div>' : "") + '<a href="#/' + n.r + '" data-r="' + n.r + '" aria-label="' + esc(n.t) + '" title="' + esc(n.t) + '">' + ic(n.i) + "<span>" + n.t + "</span></a>"; }).join("") +
+      '</nav>' +
+      '<div class="pp-me"><span class="pp-avatar">' + esc(initials) + '</span><div><b>' + esc(NAME) + '</b><small>' + esc((L("Change Password") ? "" : "") + (location.host)) + '</small></div><a class="pp-iconbtn pp-signout" data-act="logout" href="/Login/Logout" title="Log out" aria-label="Log out">' + ic("out") + "</a></div></aside>" +
+      '<main class="pp-main"><header class="pp-top"><a class="pp-hlogo" href="#/home" aria-label="Home"><img src="/Content/Images/aiub_logo_92x92.png" alt="AIUB" decoding="async"></a><div class="pp-grow"><span class="pp-top-kicker">YOUR STUDENT WORKSPACE</span><h1 id="pp-h"></h1><div class="pp-sub" id="pp-s"></div></div><div class="pp-row" id="pp-tr"></div>' +
+      '<div class="pp-appearance-tools" role="group" aria-label="Appearance and settings"><button type="button" class="pp-iconbtn pp-theme-toggle" data-act="theme" aria-label="Switch to dark mode" aria-pressed="false">' + ic("moon") + '</button><button type="button" class="pp-iconbtn pp-gear" data-act="settings" title="Settings" aria-label="Settings">' + ic("gear") + '</button></div>' +
+      '<div class="pp-header-tools" role="group" aria-label="Page tools"><button type="button" class="pp-iconbtn pp-search-trigger" data-act="search" title="Search (Ctrl+K)" aria-label="Search portal">' + ic("search") + '<span>Search portal</span><kbd>Ctrl K</kbd></button><button type="button" class="pp-iconbtn pp-bell" data-act="noti" data-r="notifications" title="Notifications" aria-label="Notifications">' + ic("bell") + '</button><button type="button" class="pp-iconbtn" data-act="refresh" title="Refresh data" aria-label="Refresh data">' + ic("refresh") + '</button></div></header><div class="pp-scroll" id="pp-scroll" tabindex="-1" role="region" aria-label="Page content"></div></main>' +
       '<nav class="pp-tabbar"><span class="pp-pill"></span>' + NAV.filter(function (n) { return n.tab; }).map(function (n) { return '<a href="#/' + n.r + '" data-r="' + n.r + '">' + ic(n.i) + "<span>" + n.tab + "</span></a>"; }).join("") + "</nav>" +
-      '<div class="pp-toast" id="pp-toast"></div>';
-    var toolbar = document.createElement("div"); toolbar.className = "pp-header-tools"; toolbar.setAttribute("role", "group"); toolbar.setAttribute("aria-label", "Page tools");
-    $$(".pp-top > button", app).forEach(function (b) { toolbar.appendChild(b); }); $(".pp-top", app).appendChild(toolbar);
+      '<div class="pp-toast" id="pp-toast" role="status" aria-live="polite" aria-atomic="true"></div>';
     document.body.appendChild(app);
     root.classList.add("pp-on");
     var ff = /Firefox\//.test(navigator.userAgent), mob = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent);
@@ -316,6 +317,7 @@
     app.addEventListener("click", function (e) {
       var b = e.target.closest("[data-act]"); if (!b) return; var a = b.getAttribute("data-act");
       if (a === "theme") { var dark = root.getAttribute("data-ap-mode") === "dark"; API.set("mode", dark ? "light" : "dark"); syncThemeIcon(); }
+      if (a === "logout") { e.preventDefault(); requestLogout(b); }
       if (a === "search") openSearch();
       if (a === "settings") go("#/settings");
       if (a === "noti") go("#/notifications");
@@ -343,6 +345,7 @@
       VIEWS.planner = planner.render; VIEWS.planner.after = planner.after;
     }
     syncThemeIcon();
+    new MutationObserver(syncThemeIcon).observe(root, {attributes:true, attributeFilter:["data-ap-mode"]});
     if (!/^#\//.test(location.hash)) history.replaceState(null, "", "#/" + (API.get().startPage || "home"));
     route();
     gestures();
@@ -353,7 +356,32 @@
     document.addEventListener("visibilitychange", function () { if (!document.hidden && current === "home") wxPaint(); });
     setInterval(function () { var t = $(".pp-tick", app); if (t) tick(); }, 30000);
   }
-  function syncThemeIcon() { var b = $('[data-act="theme"]', app); if (b) b.innerHTML = ic(root.getAttribute("data-ap-mode") === "dark" ? "sun" : "moon"); }
+  function syncThemeIcon() {
+    var dark = root.getAttribute("data-ap-mode") === "dark";
+    $$('[data-act="theme"]', app).forEach(function (b) {
+      b.innerHTML = ic(dark ? "sun" : "moon");
+      b.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+      b.setAttribute("title", (dark ? "Switch to light mode" : "Switch to dark mode") + " (Alt+D)");
+      b.setAttribute("aria-pressed", dark ? "true" : "false");
+    });
+  }
+  function requestLogout(trigger) {
+    var old = $("#pp-logout-dialog", app); if (old) { if (old.open) return; old.remove(); }
+    var d = document.createElement("dialog"); d.id = "pp-logout-dialog"; d.className = "pp-logout-dialog";
+    d.setAttribute("aria-labelledby", "pp-logout-title"); d.setAttribute("aria-describedby", "pp-logout-description");
+    d.innerHTML = '<span class="pp-logout-mark">' + ic("out") + '</span><span class="pp-eyebrow">YOUR ACCOUNT</span><h2 id="pp-logout-title">Ready to sign out?</h2><p id="pp-logout-description">You’ll be signed out of the AIUB portal. Cached portal data will be cleared from this browser.</p><div class="pp-logout-actions"><button type="button" class="pp-btn" data-logout-cancel>Stay signed in</button><button type="button" class="pp-btn pp-logout-confirm" data-logout-confirm>Log out ' + ic("out") + '</button></div>';
+    app.appendChild(d);
+    function close() { d.close(); d.remove(); if (trigger && trigger.isConnected) trigger.focus(); }
+    $("[data-logout-cancel]", d).onclick = close;
+    d.addEventListener("cancel", function(e) { e.preventDefault(); close(); });
+    $("[data-logout-confirm]", d).onclick = function() {
+      clearCache(); try { localStorage.removeItem(MF_KEY); mf = null; } catch(e) {}
+      try { sessionStorage.clear(); } catch(e) {}
+      location.assign("/Login/Logout");
+    };
+    if (d.showModal) d.showModal(); else { d.setAttribute("open", ""); d.setAttribute("role", "dialog"); d.setAttribute("aria-modal", "true"); }
+    $("[data-logout-cancel]", d).focus();
+  }
   function toast(m) { var t = $("#pp-toast", app); t.textContent = m; t.classList.add("on"); clearTimeout(t._t); t._t = setTimeout(function () { t.classList.remove("on"); }, 2200); }
   function movePill() {
     var bar = $(".pp-tabbar", app); if (!bar) return; var on = $("a.on", bar), pill = $(".pp-pill", bar);
@@ -391,6 +419,7 @@
   function swap(html, after) {
     // Animate only the new view in CSS, not a snapshot of the entire browser page.
     // Synchronous replacement also prevents an older queued transition winning a fast tab switch.
+    rvCapture($("#pp-rvbody",app));
     scroller.innerHTML = html;
     $$("button:not([type])",scroller).forEach(function(b){b.type="button";});
     if (after) after();
@@ -404,7 +433,7 @@
     lastHash = location.hash;
     var h = location.hash.replace(/^#\//, ""), q = ""; var qi = h.indexOf("?"); if (qi >= 0) { q = h.slice(qi + 1); h = h.slice(0, qi); }
     var r = h || "home"; if (!VIEWS[r]) r = "home";
-    $$(".pp-nav a, .pp-tabbar a", app).forEach(function (a) { var ar = a.getAttribute("data-r"); a.classList.toggle("on", ar === r || (r !== "home" && !NAV.some(function (n) { return n.tab && n.r === r; }) && ar === "more" && a.closest(".pp-tabbar"))); });
+    $$(".pp-nav a, .pp-tabbar a", app).forEach(function (a) { var ar = a.getAttribute("data-r"); a.classList.toggle("on", ar === r || (r !== "home" && !NAV.some(function (n) { return n.tab && n.r === r; }) && ar === "more" && a.closest(".pp-tabbar"))); if(a.classList.contains("on"))a.setAttribute("aria-current",ar===r?"page":"location");else a.removeAttribute("aria-current"); });
     movePill();
     var params = {}; q.split("&").forEach(function (kv) { if (!kv) return; var p = kv.split("="); params[decodeURIComponent(p[0])] = decodeURIComponent(p[1] || ""); });
     var id = ++renderId, prevR = current; current = r;
@@ -434,7 +463,7 @@
     if (!peek("home") && !peek("reg")) { lab.textContent = "Waiting for your schedule"; cd.textContent = ""; return; }
     if (info.live) { lab.innerHTML = '<span>Now · <b>' + esc(title(info.live.name)) + "</b> · Room " + esc(info.live.room) + "</span>"; cd.textContent = dur(info.live.end - n) + " left"; }
     else if (info.next && !info.next._in) { lab.innerHTML = '<span>Next · <b>' + esc(title(info.next.name)) + "</b> · Room " + esc(info.next.room) + " · " + fmtT(info.next.start) + "</span>"; cd.textContent = "in " + dur(info.next.start - n); }
-    else if (info.next) { lab.innerHTML = '<span>No more classes today 🎉 Next: <b>' + esc(title(info.next.name)) + "</b> · " + DAYFULL[info.next.day] + " " + fmtT(info.next.start) + "</span>"; cd.textContent = ""; }
+    else if (info.next) { lab.innerHTML = '<span>No more classes today. Next: <b>' + esc(title(info.next.name)) + "</b> · " + DAYFULL[info.next.day] + " " + fmtT(info.next.start) + "</span>"; cd.textContent = ""; }
     else { lab.innerHTML = "<span>No classes found</span>"; cd.textContent = ""; }
   }
 
@@ -461,8 +490,8 @@
           '<div class="pp-overview-body"><div class="pp-next pp-tick">' + ic("clock") + '<div class="pp-nl"></div><div class="pp-cd"></div></div>' +
           '<div class="pp-home-links">' + regBtnHtml(reg) + rvHeroBtn() + "</div></div></section>" +
           '<section class="pp-card pp-quick-card"><span class="pp-eyebrow">AT YOUR FINGERTIPS</span><h3>Quick actions</h3><p class="pp-section-caption">A little less searching. A little more doing.</p><div class="pp-quick">' + quickActionsHtml() + "</div></section></div>" +
-        (examUpcoming().length ? '<div class="pp-card pp-examcard"><h3>📝 Exam routine is out<a class="pp-more" href="#/schedule?view=exams">All exams →</a></h3><div class="pp-list">' + examRows(examUpcoming(), 3) + "</div></div>" : "") +
-        '<a class="sd-planner-banner" href="#/planner"><span class="sd-banner-mark">' + ic("spark") + '</span><div><span class="pp-eyebrow">NEW IN STUDENTDESK 4</span><b>Your next semester starts with a plan.</b><small>Prerequisites, course priorities and a timetable that fits.</small></div><span class="sd-banner-cta">Open planner ↗</span></a>' +
+        (examUpcoming().length ? '<div class="pp-card pp-examcard"><h3>' + ic("cal") + ' Exam routine is out<a class="pp-more" href="#/schedule?view=exams">All exams →</a></h3><div class="pp-list">' + examRows(examUpcoming(), 3) + "</div></div>" : "") +
+        '<a class="sd-planner-banner" href="#/planner"><span class="sd-banner-mark">' + ic("spark") + '</span><div><span class="pp-eyebrow">NEW IN STUDENTDESK 4.5</span><b>Your next semester starts with a plan.</b><small>Prerequisites, course priorities and a timetable that fits.</small></div><span class="sd-banner-cta">Open planner ↗</span></a>' +
         '<div class="pp-card pp-wxcard"><h3>Campus weather<span class="pp-more" style="color:var(--ap-muted)">AIUB · Kuratoli, Dhaka</span></h3><div id="pp-wx">' + (peek("wx") ? wxCard(peek("wx")) : '<div class="pp-sk" style="height:120px"></div>') + "</div></div>" +
         '<div class="pp-grid pp-g2"><div class="pp-card"><h3>Today · ' + DAYFULL[todayKey()] + '<a class="pp-more" href="#/schedule">Routine →</a></h3>' + todayHtml + "</div>" +
           '<div class="pp-card"><h3>Coming up<a class="pp-more" href="#/schedule">Week →</a></h3><div class="pp-list">' + (up || '<div class="pp-empty">—</div>') + "</div></div></div>" +
@@ -574,14 +603,15 @@
       .then(function (j) { if (!j || !j.current) throw new Error("No weather"); cacheSet("wx", j); return j; });
     return pr.catch(function(error) { if(c&&c.d)return c.d;var snapshot=window.StudentDeskPublicSnapshot&&window.StudentDeskPublicSnapshot.faculty;if(snapshot&&snapshot.list&&snapshot.list.length){cacheSet("faculty",snapshot);return snapshot;}throw error; });
   }
+  function wxSymbol(c,day){return ic(c>=95?"flash":c>=2?"cloud":day?"sun":"moon");}
   function wxCard(j) {
     if (!j || !j.current) return '<div class="pp-wx-empty">Weather unavailable right now</div>';
     var cu = j.current, w = wxInfo(cu.weather_code, cu.is_day), dl = j.daily || {}, hr = j.hourly || {}, t = function (s) { return s ? fmtT((+s.slice(11, 13)) * 60 + (+s.slice(14, 16))) : ""; };
     var rain = (dl.precipitation_probability_max || [])[0], hot = cu.apparent_temperature >= 38, wet = cu.precipitation > 0 || /rain|drizzle|shower|thunder/i.test(w[0]);
-    var tip = wet ? "☔ Take an umbrella" : rain >= 60 ? "🌂 Rain likely later today" : hot ? "💧 Very hot — carry water" : cu.is_day ? "👍 Good weather on campus" : "🌙 Calm night";
-    var hrs = (hr.time || []).slice(1, 7).map(function (tm, i) { var k = i + 1, ww = wxInfo(hr.weather_code[k], hr.is_day ? hr.is_day[k] : 1); return '<div><small>' + ((+tm.slice(11, 13)) % 12 || 12) + (+tm.slice(11, 13) < 12 ? " am" : " pm") + "</small><span>" + ww[1] + "</span><b>" + Math.round(hr.temperature_2m[k]) + "°</b>" + (hr.precipitation_probability[k] >= 20 ? "<i>" + hr.precipitation_probability[k] + "%</i>" : "<i></i>") + "</div>"; }).join("");
-    return '<div class="pp-wx-main"><span class="pp-wx-ic">' + w[1] + '</span><div><div class="pp-wx-t">' + Math.round(cu.temperature_2m) + '°<small>C</small></div><div class="pp-wx-c">' + esc(w[0]) + " · feels " + Math.round(cu.apparent_temperature) + "°</div></div>" +
-      '<div class="pp-wx-meta"><span>💧 ' + cu.relative_humidity_2m + "%</span><span>🌬️ " + Math.round(cu.wind_speed_10m) + " km/h</span>" + (rain != null ? "<span>☔ " + rain + "% today</span>" : "") + (dl.temperature_2m_max ? "<span>↑" + Math.round(dl.temperature_2m_max[0]) + "° ↓" + Math.round(dl.temperature_2m_min[0]) + "°</span>" : "") + (dl.sunset ? "<span>🌇 " + t(dl.sunset[0]) + "</span>" : "") + "</div></div>" +
+    var tip = wet ? "Take an umbrella" : rain >= 60 ? "Rain likely later today" : hot ? "Very hot — carry water" : cu.is_day ? "Good weather on campus" : "Calm night";
+    var hrs = (hr.time || []).slice(1, 7).map(function (tm, i) { var k = i + 1, ww = wxInfo(hr.weather_code[k], hr.is_day ? hr.is_day[k] : 1); return '<div><small>' + ((+tm.slice(11, 13)) % 12 || 12) + (+tm.slice(11, 13) < 12 ? " am" : " pm") + "</small><span>" + wxSymbol(hr.weather_code[k],hr.is_day?hr.is_day[k]:1) + "</span><b>" + Math.round(hr.temperature_2m[k]) + "°</b>" + (hr.precipitation_probability[k] >= 20 ? "<i>" + hr.precipitation_probability[k] + "%</i>" : "<i></i>") + "</div>"; }).join("");
+    return '<div class="pp-wx-main"><span class="pp-wx-ic">' + wxSymbol(cu.weather_code,cu.is_day) + '</span><div><div class="pp-wx-t">' + Math.round(cu.temperature_2m) + '°<small>C</small></div><div class="pp-wx-c">' + esc(w[0]) + " · feels " + Math.round(cu.apparent_temperature) + "°</div></div>" +
+      '<div class="pp-wx-meta"><span>' + ic("drop") +  cu.relative_humidity_2m + "%</span><span>" + ic("wind") +  Math.round(cu.wind_speed_10m) + " km/h</span>" + (rain != null ? "<span>" + ic("cloud") + rain + "% today</span>" : "") + (dl.temperature_2m_max ? "<span>↑" + Math.round(dl.temperature_2m_max[0]) + "° ↓" + Math.round(dl.temperature_2m_min[0]) + "°</span>" : "") + (dl.sunset ? "<span>" + ic("sun") + t(dl.sunset[0]) + "</span>" : "") + "</div></div>" +
       '<div class="pp-wx-hrs">' + hrs + '</div><div class="pp-wx-tip">' + tip + '<small>Updated ' + t(cu.time) + " · Open-Meteo</small></div>";
   }
   function wxPaint(force) { wxLoad(force).then(function (j) { var b = $("#pp-wx", app); if (b) b.innerHTML = wxCard(j); }, function () { var b = $("#pp-wx", app); if (b && !b.querySelector(".pp-wx-main")) b.innerHTML = '<div class="pp-wx-empty">Weather unavailable right now</div>'; }); }
@@ -858,12 +888,40 @@
     var srv = rvCfg();
     return '<div class="pp-view pp-rv">' +
       (srv ? "" : '<div class="pp-card pp-rvwarn">⚠️ <b>Review server not connected.</b> Reviews can’t be shared yet. If you are the developer, add the server in <a href="#/settings">Settings → Faculty review server</a>.</div>') +
-      '<div class="pp-tabs" id="pp-rvtabs"><button data-rt="give" class="' + (rvState.tab === "give" ? "on" : "") + '">✍️ Give review</button><button data-rt="all" class="' + (rvState.tab === "all" ? "on" : "") + '">⭐ All reviews <span class="pp-n" id="pp-rvn">' + (rvAll ? rvAll.length : "") + "</span></button></div>" +
+      '<div class="pp-tabs" id="pp-rvtabs"><button data-rt="give" class="' + (rvState.tab === "give" ? "on" : "") + '">' + ic("file") + ' Give review</button><button data-rt="all" class="' + (rvState.tab === "all" ? "on" : "") + '">' + ic("star") + ' All reviews <span class="pp-n" id="pp-rvn">' + (rvAll ? rvAll.length : "") + "</span></button></div>" +
       '<div id="pp-rvbody"></div></div>';
   };
   var rvPoll = 0;
-  var rvDirty = false;
-  function rvPaint(force) { if (current !== "reviews") return; var b = $("#pp-rvbody", app); if (!b) return; if (rvState.tab === "give" && rvDirty && force !== true) return; rvDirty = false; if (rvState.tab === "give") giveDraw(b); else allDraw(b); var n = $("#pp-rvn", app); if (n && rvAll) n.textContent = rvAll.length; }
+  var rvDirty = false, rvDrafts = Object.create(null), rvPending = Object.create(null);
+  function rvCapture(box) {
+    if (!box || box.dataset.reviewTab !== "give") return;
+    $$(".pp-rvc", box).forEach(function(card) {
+      var key=card.getAttribute("data-k"), ta=$("textarea",card), form=$(".pp-rvform",card);
+      if(!ta || !form || rvPending[key] || card.dataset.suppressCapture || !form.classList.contains("open"))return;
+      var saved=myMap()[key]||{}, rating=+(card.getAttribute("data-sel")||saved.s||0);
+      if(ta.value!==(saved.c||"") || rating!==+(saved.s||0) || rvDrafts[key])rvDrafts[key]={s:rating,c:ta.value,open:true};
+    });
+  }
+  function rvRestore(box) {
+    $$(".pp-rvc",box).forEach(function(card) {
+      var key=card.getAttribute("data-k"), d=rvDrafts[key];
+      if(d){card.setAttribute("data-sel",d.s);$("textarea",card).value=d.c;$(".pp-rvform",card).classList.add("open");var mine=$(".pp-rvmine",card);if(mine)mine.style.display="none";
+        $$("[data-s]",card).forEach(function(b){b.classList.toggle("on",+b.dataset.s<=d.s);b.setAttribute("aria-checked",String(+b.dataset.s===d.s));});
+        $(".pp-slab",card).textContent=["Tap to rate","Poor","Fair","Good","Very good","Excellent"][d.s]||"Tap to rate";
+        $(".pp-rvlen",card).textContent=d.c.length+" / 500";
+      }
+      if(rvPending[key]){card.setAttribute("aria-busy","true");$$("button,textarea",card).forEach(function(b){b.disabled=true;});}
+    });
+  }
+  function rvPaint(force) { if (current !== "reviews") return; var b = $("#pp-rvbody", app); if (!b) return;
+    rvCapture(b);
+    if (rvState.tab === "give" && b.dataset.reviewTab === "give" && rvDirty && $(".pp-rvc",b) && force !== true) return;
+    var active=document.activeElement, focusKey=active&&active.closest&&active.closest(".pp-rvc"), restoreFocus=focusKey&&active.tagName==="TEXTAREA"?{key:focusKey.dataset.k,start:active.selectionStart,end:active.selectionEnd}:null;
+    rvDirty = false; b.dataset.reviewTab=rvState.tab;
+    if (rvState.tab === "give") {giveDraw(b);rvRestore(b);} else allDraw(b);
+    if(restoreFocus&&rvState.tab==="give")$$(".pp-rvc",b).some(function(c){if(c.dataset.k!==restoreFocus.key)return false;var ta=$("textarea",c);if(ta&&!ta.disabled){ta.focus({preventScroll:true});ta.setSelectionRange(restoreFocus.start,restoreFocus.end);}return true;});
+    var n = $("#pp-rvn", app); if (n && rvAll) n.textContent = rvAll.length;
+  }
   VIEWS.reviews.after = function () {
     $$("[data-rt]", app).forEach(function (b) { b.onclick = function () { rvState.tab = b.getAttribute("data-rt"); $$("[data-rt]", app).forEach(function (x) { x.classList.toggle("on", x === b); }); rvPaint(true); }; });
     var rl = $('[data-rv="reload"]', app); if (rl) rl.onclick = function () { rl.disabled = true; Promise.all([rvList(true).catch(function () {}), rvState.tab === "give" ? mfLoad(true, givePaintSoon).catch(function () {}) : null]).then(function () { rl.disabled = false; rvPaint(true); toast("Updated ✓"); }); };
@@ -924,7 +982,7 @@
   function giveCard(x, m) {
     return '<div class="pp-card pp-rvc" data-k="' + esc(x.k) + '">' +
       '<div class="pp-rvhead">' + facPic(x.e, x.img, x.n) + '<div class="pp-t"><b>' + esc(x.n) + "</b><small>" + esc(x.course) + (x.sec ? " [" + esc(x.sec) + "]" : "") + (x.res && /[A-F]/.test(x.res) ? " · " + esc(x.res.replace(/\s*\(.*$/, "")) : " · Running") + "</small></div>" + (m ? '<span class="pp-chip ok">✓ Reviewed</span>' : "") + "</div>" +
-      '<div class="pp-rvform' + (m ? "" : " open") + '"><div class="pp-starpick" role="radiogroup" aria-label="Rating">' + [1, 2, 3, 4, 5].map(function (i) { return '<button type="button" data-s="' + i + '" class="' + (m && i <= m.s ? "on" : "") + '" aria-label="' + i + ' star">★</button>'; }).join("") + '<span class="pp-slab">' + (m ? ["", "Poor", "Fair", "Good", "Very good", "Excellent"][m.s] : "Tap to rate") + "</span></div>" +
+      '<div class="pp-rvform' + (m ? "" : " open") + '"><div class="pp-starpick" role="radiogroup" aria-label="Rating">' + [1, 2, 3, 4, 5].map(function (i) { return '<button type="button" data-s="' + i + '" class="' + (m && i <= m.s ? "on" : "") + '" role="radio" aria-checked="' + (m && i===m.s ? 'true' : 'false') + '" aria-label="' + i + ' star">★</button>'; }).join("") + '<span class="pp-slab">' + (m ? ["", "Poor", "Fair", "Good", "Very good", "Excellent"][m.s] : "Tap to rate") + "</span></div>" +
       '<textarea class="pp-input" maxlength="500" rows="2" placeholder="Comment (optional) — teaching, grading, behaviour…">' + esc(m ? m.c || "" : "") + '</textarea><div class="pp-row pp-rvact"><small class="pp-rvlen"></small>' + (m ? '<button class="pp-btn sm" data-del="1">Remove</button>' : "") + '<button class="pp-btn pri sm" data-sub="1">' + (m ? "Update review" : "Submit") + "</button></div></div>" +
       (m ? '<div class="pp-rvmine">' + starsHtml(m.s) + (m.c ? "<p>" + esc(m.c) + "</p>" : "") + '<button class="pp-btn sm" data-edit="1">Edit</button></div>' : "") + "</div>";
   }
@@ -951,7 +1009,7 @@
       (html || '<div class="pp-card pp-empty"><span class="pp-em">🧑‍🏫</span>No faculty found in your courses yet</div>') + (mfBusy ? '<p class="pp-note" style="text-align:center"><span class="pp-spin"></span> <span id="pp-mfprog">' + esc(mfProg) + "</span></p>" : "");
     $$(".pp-rvsem", box).forEach(function (dt) { dt.addEventListener("toggle", function () {
       var t = dt.getAttribute("data-sem"); so[t] = dt.open;
-      var sb = $(".pp-rvsb", dt); if (dt.open && sb && !sb.firstChild) { var g = groups.filter(function (x) { return x.t === t; })[0]; if (g) { sb.innerHTML = semBody(g, myMap()); rvPics(); } }
+      var sb = $(".pp-rvsb", dt); if (dt.open && sb && !sb.firstChild) { var g = groups.filter(function (x) { return x.t === t; })[0]; if (g) { sb.innerHTML = semBody(g, myMap()); rvRestore(sb); rvPics(); } }
     }); });
     rvPics();
     if (box.__wired) return; box.__wired = 1;
@@ -964,26 +1022,28 @@
       if (t.getAttribute("data-rv") === "retry") { t.disabled = true; mfLoad(true, givePaintSoon).then(function () { rvPaint(true); }, function () { t.disabled = false; }); rvPaint(true); return; }
       var card = cardOf(t); if (!card) return;
       var k = card.getAttribute("data-k"), info = infoOf(card), lab = $(".pp-slab", card), ta = $("textarea", card);
+      if(rvPending[k])return;
       if (t.hasAttribute("data-s")) { var sel = +t.getAttribute("data-s"); card.setAttribute("data-sel", sel); rvDirty = true;
-        $$("[data-s]", card).forEach(function (b) { b.classList.toggle("on", +b.getAttribute("data-s") <= sel); }); lab.textContent = ["", "Poor", "Fair", "Good", "Very good", "Excellent"][sel]; return; }
-      if (t.hasAttribute("data-edit")) { $(".pp-rvform", card).classList.add("open"); var mn = $(".pp-rvmine", card); if (mn) mn.style.display = "none"; return; }
+        $$("[data-s]", card).forEach(function (b) { b.classList.toggle("on", +b.getAttribute("data-s") <= sel); }); lab.textContent = ["", "Poor", "Fair", "Good", "Very good", "Excellent"][sel]; rvCapture(box); $$("[data-s]",card).forEach(function(b){b.setAttribute("aria-checked",String(+b.dataset.s===sel));}); return; }
+      if (t.hasAttribute("data-edit")) { $(".pp-rvform", card).classList.add("open"); var mn = $(".pp-rvmine", card); if (mn) mn.style.display = "none"; rvDrafts[k]={s:selOf(card),c:ta.value,open:true}; return; }
       if (!info) { toast("Please refresh and try again"); return; }
       if (t.hasAttribute("data-sub")) {
         var s2 = selOf(card); if (!s2) { toast("Tap the stars to rate first"); return; }
         if (!rvCfg()) { toast("Review server not connected"); return; }
-        var cm = ta.value.replace(/\s+/g, " ").trim().slice(0, 500), label = t.textContent, rk = (myMap()[k] || {}).rk; t.disabled = true; t.textContent = "Submitting…";
+        var cm = ta.value.replace(/\s+/g, " ").trim().slice(0, 500), label = t.textContent, rk = (myMap()[k] || {}).rk; rvCapture(box);rvPending[k]=true;card.setAttribute("aria-busy","true");$$("button,textarea",card).forEach(function(b){b.disabled=true;}); t.textContent = "Submitting…";
         ridFor(info, rk).then(function (rid) { return rvReq("rpc/submit_review", "POST", { p_rid: rid, p_email: info.e, p_name: info.n, p_course: info.course, p_sem: info.sem, p_stars: s2, p_comment: cm }); })
-          .then(function () { var mm = myMap(); mm[k] = { s: s2, c: cm, t: Date.now(), n: info.n }; if (rk) mm[k].rk = rk; mySave(mm); toast("Review submitted ✓ Everyone can see it now"); return rvList(true).catch(function () {}); })
-          .then(function () { rvPaint(true); }, function (e) { t.disabled = false; t.textContent = label; toast(e.message === "NOSERVER" ? "Review server not connected" : e.message); });
+          .then(function () { var mm = myMap(); mm[k] = { s: s2, c: cm, t: Date.now(), n: info.n }; if (rk) mm[k].rk = rk; mySave(mm);delete rvDrafts[k];delete rvPending[k];$$(".pp-rvc",app).forEach(function(c){if(c.dataset.k===k)c.dataset.suppressCapture="1";});card.dataset.suppressCapture="1"; toast("Review submitted ✓ Everyone can see it now"); return rvList(true).catch(function () {}); })
+          .then(function () { rvPaint(true); }, function (e) { delete rvPending[k];card.removeAttribute("aria-busy");$$("button,textarea",card).forEach(function(b){b.disabled=false;}); t.textContent = label;rvPaint(true); toast(e.message === "NOSERVER" ? "Review server not connected" : e.message); });
         return;
       }
       if (t.hasAttribute("data-del")) {
-        if (!confirm("Remove your review for " + info.n + "?")) return; t.disabled = true;
-        ridFor(info, (myMap()[k] || {}).rk).then(function (rid) { return rvReq("rpc/delete_review", "POST", { p_rid: rid }); }).then(function () { var mm = myMap(); delete mm[k]; mySave(mm); toast("Review removed"); return rvList(true).catch(function () {}); })
-          .then(function () { rvPaint(true); }, function (e) { t.disabled = false; toast(e.message); });
+        if (!confirm("Remove your review for " + info.n + "?")) return; rvPending[k]=true;$$("button,textarea",card).forEach(function(b){b.disabled=true;});
+        ridFor(info, (myMap()[k] || {}).rk).then(function (rid) { return rvReq("rpc/delete_review", "POST", { p_rid: rid }); }).then(function () { var mm = myMap(); delete mm[k]; mySave(mm);delete rvDrafts[k];delete rvPending[k];$$(".pp-rvc",app).forEach(function(c){if(c.dataset.k===k)c.dataset.suppressCapture="1";});card.dataset.suppressCapture="1"; toast("Review removed"); return rvList(true).catch(function () {}); })
+          .then(function () { rvPaint(true); }, function (e) {delete rvPending[k];$$("button,textarea",card).forEach(function(b){b.disabled=false;}); toast(e.message); });
       }
     });
-    box.addEventListener("input", function (ev) { var ta = ev.target; if (ta.tagName !== "TEXTAREA") return; var card = cardOf(ta); if (!card) return; rvDirty = true; var len = $(".pp-rvlen", card); len.textContent = ta.value.length > 380 ? 500 - ta.value.length + " left" : ""; });
+    box.addEventListener("keydown",function(ev){var b=ev.target.closest("[data-s]");if(!b||rvState.tab!=="give"||!/[A-Za-z]/.test(ev.key))return;var n=+b.dataset.s;if(["ArrowRight","ArrowUp"].includes(ev.key))n=Math.min(5,n+1);else if(["ArrowLeft","ArrowDown"].includes(ev.key))n=Math.max(1,n-1);else if(ev.key==="Home")n=1;else if(ev.key==="End")n=5;else return;ev.preventDefault();var next=$("[data-s='"+n+"']",b.closest(".pp-starpick"));if(next&&!next.disabled){next.focus();next.click();}});
+    box.addEventListener("input", function (ev) { var ta = ev.target; if (ta.tagName !== "TEXTAREA") return; var card = cardOf(ta); if (!card) return; rvDirty = true; var len = $(".pp-rvlen", card); len.textContent = ta.value.length + " / 500";rvCapture(box); });
   }
   /* part 2: everybody's reviews */
   function allDraw(box) {
@@ -1037,7 +1097,7 @@
         ag.slice(0, rvState.show).map(function (a) { var x = facBy(a.e), cms = (byF[a.e] || []).slice().sort(function (p, q) { return String(q.updated_at || q.created_at || "").localeCompare(String(p.updated_at || p.created_at || "")); }), op = !!rvState.fopen[a.e];
         return '<div class="pp-card pp-rvfw' + (op ? " open" : "") + '"><div class="pp-rvfrow"><button class="pp-rvf" data-fq="' + esc(a.n) + '">' + facPic(a.e, "", a.n) + '<div class="pp-t"><b>' + esc(a.n) + "</b><small>" + esc(x ? title(x[4].toLowerCase()) + " · " + title(x[3].toLowerCase()) : Object.keys(a.courses).slice(0, 2).join(" · ")) + '</small><div class="pp-rvavg">' + starsHtml(a.avg) + "<b>" + a.avg.toFixed(1) + "</b><small>" + a.cnt + (a.cnt > 1 ? " reviews" : " review") + (a.cm ? " · " + a.cm + " 💬" : "") + "</small></div></div></button>" +
           '<button class="pp-rvdd" data-dd="' + esc(a.e) + '" aria-expanded="' + op + '" title="' + (op ? "Hide comments" : "Show all comments") + '" aria-label="Comments">💬 ' + cms.length + ic("down") + "</button></div>" +
-          (op ? '<div class="pp-rvcms">' + (cms.length ? cms.map(function (r) { return '<div class="pp-rvci"><p class="pp-rvcm">' + esc(r.comment) + "</p><small>" + starsHtml(r.stars) + " " + esc(r.course) + " · " + esc(r.semester) + " · " + esc(agoIso(r.updated_at || r.created_at)) + "</small></div>"; }).join("") : '<div class="pp-rvci pp-rvc0">No written comments yet — only star ratings.</div>') + "</div>" : "") + "</div>"; }).join("");
+          ('<div class="pp-rvcms"'+(op?'':' hidden')+'> ' + (cms.length ? cms.map(function (r) { return '<div class="pp-rvci"><p class="pp-rvcm">' + esc(r.comment) + "</p><small>" + starsHtml(r.stars) + " " + esc(r.course) + " · " + esc(r.semester) + " · " + esc(agoIso(r.updated_at || r.created_at)) + "</small></div>"; }).join("") : '<div class="pp-rvci pp-rvc0">No written comments yet — only star ratings.</div>') + "</div>") + "</div>"; }).join("");
       var more = ag.length - rvState.show;
     } else {
       var one = qs.length ? facAgg(list) : []; var head = one.length === 1 ? '<div class="pp-card pp-rvsum">' + facPic(one[0].e, "", one[0].n, "lg") + '<div class="pp-t"><b>' + esc(one[0].n) + '</b><div class="pp-rvavg">' + starsHtml(one[0].avg, 1) + "<b>" + one[0].avg.toFixed(1) + "</b><small>" + one[0].cnt + (one[0].cnt > 1 ? " reviews" : " review") + "</small></div></div></div>" : "";
@@ -1049,7 +1109,17 @@
     box.innerHTML = (html || '<div class="pp-card pp-empty"><span class="pp-em">⭐</span>' + (rvAll.length ? "No reviews match your search" : "No reviews yet — be the first! Go to “Give review”.") + "</div>") +
       (more > 0 ? '<div style="text-align:center;margin-top:14px"><button class="pp-btn" id="pp-rvmore">Show more (' + more + ")</button></div>" : "");
     var mb = $("#pp-rvmore", box); if (mb) mb.onclick = function () { rvState.show += 30; listDraw(); }; rvPics();
-    $$("[data-dd]", box).forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); var e = b.getAttribute("data-dd"); if (rvState.fopen[e]) delete rvState.fopen[e]; else rvState.fopen[e] = 1; listDraw(); }; });
+    $$("[data-dd]", box).forEach(function (b) { b.onclick = function (ev) {
+      ev.stopPropagation();var email=b.getAttribute("data-dd"), card=b.closest(".pp-rvfw"), panel=$(".pp-rvcms",card);if(!panel)return;
+      var open=b.getAttribute("aria-expanded")!=="true", from=panel.hidden?0:panel.getBoundingClientRect().height;
+      if(panel.__motion)panel.__motion.cancel();if(open)rvState.fopen[email]=1;else delete rvState.fopen[email];
+      b.setAttribute("aria-expanded",String(open));b.title=open?"Hide comments":"Show all comments";card.classList.toggle("open",open);
+      panel.hidden=false;panel.style.height="auto";var to=open?panel.scrollHeight:0;
+      var settings=window.__aiubPlusAPI?window.__aiubPlusAPI.get():{};
+      if(!panel.animate||matchMedia("(prefers-reduced-motion: reduce)").matches||settings.anim===false||settings.performance){panel.hidden=!open;return;}
+      panel.style.overflow="hidden";var motion=panel.animate([{height:from+"px",opacity:from?1:0},{height:to+"px",opacity:open?1:0}],{duration:220,easing:"cubic-bezier(.2,.7,.2,1)"});panel.__motion=motion;
+      motion.onfinish=function(){if(panel.__motion!==motion)return;panel.hidden=!open;panel.style.height="";panel.style.overflow="";panel.__motion=null;};
+    }; });
     $$("[data-fq]", box).forEach(function (b) { b.onclick = function () { rvState.q = b.getAttribute("data-fq"); rvState.sort = "latest"; rvState.show = 30; allDraw($("#pp-rvbody", app)); scTop(0); }; });
     $$("[data-rep]", box).forEach(function (b) { b.onclick = function () { if (!confirm("Report this review as abusive or fake? Reviews with several reports are hidden.")) return; var id = +b.getAttribute("data-rep");
       rvReq("rpc/report_review", "POST", { p_id: id }).then(function () { var r = jget(RV_REP, {}); r[id] = 1; jset(RV_REP, r); b.remove(); toast("Reported. Thanks!"); }, function (e) { toast(e.message); }); }; });
@@ -1604,61 +1674,33 @@
   /* ---------- What's new + update check ----------
      Reads the public file update.json from the GitHub repo (nothing is sent) at most every 6 hours.
      When a newer version exists, More shows the new features and a GitHub update link. */
-  var PP_VER = "4.0.0";
+  var PP_VER = "4.5.0";
   var PP_NEW = [
-    "Added a dedicated Course planner in desktop navigation, More, and a Home invitation card on phone and PC.",
-    "Uses the student's portal curriculum and registration data with source-attributed official AIUB catalog snapshots.",
-    "Matches courses by exact unique code/name rather than guessing a department or borrowing another program's prerequisites.",
-    "Shows verified prerequisite groups (ALL / ONE OF), course names, passed/missing/current status, credit thresholds and source wording/links.",
-    "Explains each course's priority: retake, direct prerequisite bottleneck or curriculum sequence.",
-    "Lists named direct successor courses and any other requirements still missing. A prerequisite relationship is not a promise of future availability.",
-    "Requires the user to check the catalog/version against their own batch for academic recommendations. Missing, ambiguous or unavailable rules remain unverified.",
-    "Excludes passed and currently enrolled courses from the remaining-course suggestions.",
-    "Lets students mark current courses they expect to pass; dependent suggestions are labeled conditional, not currently eligible.",
-    "Unticking a dropped/uncertain current course recalculates dependent status immediately; it does not submit a portal drop.",
-    "Separates completed, running and projected credits. Registration credit values are preferred where available; missing credits stay unverified.",
-    "Does not chain suggested future courses together as if they were already passed.",
-    "Every remaining-course card has Add to plan, including blocked/unverified courses saved as reminders.",
-    "Keeps up to 30 saved courses in this browser across navigation/reloads. Changes in eligibility do not silently delete reminders.",
-    "Preserves older saved entries for rechecking if they are no longer in the remaining-course list.",
-    "Shows prerequisite, verification, unknown-credit and over-target warnings without blocking manual reminder saves.",
-    "Added direct Download PDF (paginated, image-backed A4) and Download JPG (styled plan image).",
-    "Downloads include course codes, names, known credits, status warnings, current-pass conditions and planned section details when available.",
-    "PDF/JPG generation happens locally; no third-party document service receives student data.",
-    "Moved JSON export to Optional backup. Automatic starting-plan replacement asks before replacing existing reminders.",
-    "Added a read-only registration/availability panel with portal start-page status and an official-registration entry point.",
-    "Shows exact-matched sections on each course card: reported status, remaining/total seats, theory/lab meetings and room.",
-    "Distinguishes available, full, closed and unknown seat counts; invalid/missing counts are not invented as zero.",
-    "Displays the offering term and snapshot time. Saved/current-term data is not represented as a guaranteed next-semester offering.",
-    "Added In loaded offerings and Sections reporting seats filters.",
-    "Optional offering-scoped starting plans require checking the displayed term; the setting resets if the source term changes.",
-    "Bounded manual refresh and focus-return refresh avoid continuous polling. Seats are snapshots, not reservations.",
-    "Uses the supplied portal offering snapshot, not invented sections.",
-    "Checks every lab/theory meeting, section capacity, overlaps, preferred time range and a hard blocked day.",
-    "Blocks automatic section search for unverified/ineligible reminders or an invalid search load. Saving a course never grants registration eligibility.",
-    "Saves explicitly confirmed complete semester offering snapshots locally.",
-    "Shows historical frequency only after at least three distinct comparable-season snapshots; no fabricated opening probability or guarantee.",
-    "Introduced a warm editorial Academic Studio design, clearer typography, restrained borders and a consistent light/dark palette.",
-    "Added original lightweight section illustrations; navigation/action icons remain functional and distinct from artwork.",
-    "Redesigned planner setup, current-course controls, eligibility summaries, course cards and saved-plan presentation for touch and desktop.",
-    "Collapsible setup/current-course sections reduce clutter; PDF/JPG controls are visible in the saved plan.",
-    "Added a native mobile Home planner invitation and persistent desktop access.",
-    "Kept a readable frosted header with solid/reduced-effect fallbacks, reduced-motion support and Performance mode.",
-    "Removed the legacy Appearance customization panel; retained a simple Light / Dark / System theme.",
-    "Fixed reminder labels/select layout being squeezed on desktop and phone, artwork/action overlap and dark-mode contrast issues.",
-    "Authenticated root redirects are no longer automatically treated as expired sessions; actual login responses still require normal sign-in.",
-    "Unavailable/redirected registration pages are not parsed as successful empty course lists.",
-    "Failed forced registration/offering refreshes preserve existing information and show actionable, durable recovery rather than a raw SESSION-only toast.",
-    "Improved bounded public-page transport, typed HTTP/network failures, public-tab notice synchronization and cache boundaries.",
-    "Bundled a clearly labeled saved official notice snapshot so the bulletin is usable when the public server does not respond. Live refresh remains dependent on the official site.",
-    "Added bundled public faculty thumbnails with remote/initial fallback for All reviews.",
-    "Regression-checked real compressed DOCX preview fixtures, offline notice labeling, faculty photos and performance/theme controls. Existing file-type limits remain unchanged.",
-    "Academic recommendations are local/deterministic; no grades are sent to an external AI service.",
-    "Plans, pass assumptions, imported rules, credit confirmations and offering history remain local to the browser. Clearing site data removes them.",
-    "No automatic registration, course submission, drop action, login/CAPTCHA bypass or queue/wait bypass was added.",
-    "Source coverage varies by department/intake. Incomplete catalogs are explicitly unverified; advisor/official portal approval remains authoritative.",
-    "Release fixtures were checked in Chromium at 320, 390, 820 and 1440px. Real authenticated Safari/iPhone and an active pre-registration session still require on-device verification.",
-    "Firefox and Microsoft Edge distribution depends on each store's validation/review. A submitted update is not necessarily approved or live."
+    "Preserve the warm Claude-inspired palette and original illustrated workspace, with restrained Apple-style surfaces, borders, shadows and focus states.",
+    "Refine Home, navigation, cards, buttons, fields, segmented filters, dialogs and light/dark themes.",
+    "Apply Times New Roman consistently across pages, sidebar and login; retain monospace course identifiers where appropriate.",
+    "Improve phone, tablet and desktop layouts, touch targets, safe areas, compact-height views and tablet navigation.",
+    "Restore the smooth capsule phone footer: Home, Routine, Courses, Notices and More, with a sliding active pill and reduced-motion fallback.",
+    "Keep all existing pages, original illustrations, the two-part Home card and Course planner NEW badge.",
+    "Add accessible illustration/icon motion controls, respecting reduced motion, Performance mode, hidden tabs and offscreen content.",
+    "Redesign the native login form with a desktop identity panel and compact phone header, visible field labels, clean inputs and accessible password reveal.",
+    "Preserve native form actions, tokens, field names, captcha and authentication; no credential storage is added.",
+    "Replace heavy gradient calendar blocks with flat, readable event surfaces without changing meeting-time geometry.",
+    "Enable Add to plan only when confirmed curriculum rules are satisfied by passed results plus explicitly checked current-semester expected passes.",
+    "Keep blocked and unverified courses locked, including stale click-handler checks; display prerequisite names, codes, ALL/ONE-OF groups and pass conditions.",
+    "Adding a course for next semester never unlocks its successors within that same plan.",
+    "Revalidate saved plans as assumptions/catalogs change; keep invalid historical references outside active totals and exports.",
+    "Match department data from portal program details while keeping curriculum/batch confirmation separate.",
+    "Preserve saved plans, offering snapshots, conflict checks, PDF/JPG exports and optional JSON backup. Planning is not registration approval; future offerings/seats are not guaranteed.",
+    "Resolve declared same-origin attachment links when an HTML notes page wraps the actual file; bound file sizes and traversal, reject login/external/loop responses.",
+    "Offer explicit choices for ambiguous files and actionable Retry, Open notes and Original download recovery.",
+    "Preserve direct supported previews. DOCX/PPTX previews remain text-only: original layout, images and equations are not reproduced.",
+    "Preserve review drafts across navigation/refresh, guard duplicate submissions and refine comment transitions.",
+    "Improve search-dialog labels, focus trapping/restoration, keyboard interaction and live status announcements.",
+    "Passed 688 local Chromium fixture/UI/functional checks plus 333 footer checks, generated-userscript checks and planner/publishing/transport unit suites.",
+    "Tests use synthetic local data and mocked review traffic. Live authenticated portal, physical phones and native Safari/Firefox engines were not verified.",
+    "Existing v4.5.1-v4.5.3 development builds are consolidated into public v4.5.0. Users of those higher-numbered local builds must replace the existing entry manually; do not clear storage or run duplicate installations.",
+    "Firefox/Edge updates require each store's acceptance and normal update checks. Safari package is developer source, not a signed App Store application."
   ];
   var GH_REPO = "https://github.com/amitsami/studentdesk-aiub",
       UPD_URL = "https://raw.githubusercontent.com/amitsami/studentdesk-aiub/main/update.json",
@@ -1743,14 +1785,14 @@
         '<a class="pp-card pp-facard" href="#/faculty"><span class="pp-qi">' + ic("user") + '</span><div class="pp-t"><b>Faculty list</b><small>Find any AIUB faculty — room, email, department, research interests</small></div>' + ic("back", "flip") + "</a>" +
         '<div class="pp-grid pp-g3">' + MENU.map(function (g) { var items = g.items.filter(function (it) { return norm(g.g) !== "ACADEMICS" || !isCoursesResult(it.t); }); if (!items.length) return ""; return '<div class="pp-card"><h3>' + ic(GROUP_IC[g.g] || "grid") + " " + esc(g.g) + '</h3><div class="pp-list">' + items.map(function (it) { return '<a class="pp-item" style="padding:10px 12px" href="' + classic(it.h) + '"><div class="pp-t"><b style="font-size:13.5px">' + esc(it.t) + "</b></div>" + ic("back", "flip") + "</a>"; }).join("") + "</div></div>"; }).join("") +
         '<div class="pp-card"><h3>' + ic("lock") + ' Account</h3><div class="pp-list"><a class="pp-item" href="#/settings"><div class="pp-t"><b>Settings & theme</b></div></a><a class="pp-item" href="' + classic(L("Change Password") || "/Student/Credential/ChangePassword") + '"><div class="pp-t"><b>Change password</b></div></a>' +
-        '<a class="pp-item" href="' + classic(location.pathname + location.search) + '"><div class="pp-t"><b>Classic portal view</b><small>Original portal layout</small></div></a><a class="pp-item" href="/Login/Logout" id="pp-logout" style="color:#ef4444"><div class="pp-t"><b>Log out</b></div>' + ic("out") + "</a></div></div></div></div>" +
+        '<a class="pp-item" href="' + classic(location.pathname + location.search) + '"><div class="pp-t"><b>Classic portal view</b><small>Original portal layout</small></div></a><a class="pp-item" href="/Login/Logout" id="pp-logout" data-act="logout" style="color:#ef4444"><div class="pp-t"><b>Log out</b></div>' + ic("out") + "</a></div></div></div></div>" +
         '<div class="pp-card pp-dev"><h3>' + ic("user") + ' Developer info</h3><div class="pp-row" style="gap:14px;align-items:center"><span class="pp-avatar" style="width:52px;height:52px;font-size:18px">AS</span><div class="pp-t" style="flex:1;min-width:0"><b style="font-size:16px">Amit Hasan Sami</b><small>Developer of StudentDesk AIUB</small></div></div>' +
         '<div class="pp-list" style="margin-top:12px"><a class="pp-item" href="mailto:amitsami110@gmail.com">' + ic("mail") + '<div class="pp-t"><small>Email</small><b>amitsami110@gmail.com</b></div></a>' +
         '<a class="pp-item" href="https://www.facebook.com/amithsami110" target="_blank" rel="noopener noreferrer">' + ic("user") + '<div class="pp-t"><small>Facebook</small><b>facebook.com/amithsami110</b></div>' + ic("ext") + "</a>" +
         '<a class="pp-item" href="https://github.com/amitsami" target="_blank" rel="noopener">' + ic("github") + '<div class="pp-t"><small>GitHub</small><b>github.com/amitsami</b></div>' + ic("ext") + "</a></div></div>";
     });
   };
-  VIEWS.more.after = function () { cgWire(); updPaint(); var uc = jget(UPD_KEY, null); updGet(!uc || Date.now() - uc.t > 3e5).then(updPaint); var lo = $("#pp-logout", app); if (lo) lo.onclick = function () { clearCache(); try { localStorage.removeItem(MF_KEY); mf = null; } catch (e) {} try { sessionStorage.clear(); } catch (e) {} }; $$("svg.flip", app).forEach(function (s) { s.style.transform = "rotate(180deg)"; s.style.opacity = ".5"; }); };
+  VIEWS.more.after = function () { cgWire(); updPaint(); var uc = jget(UPD_KEY, null); updGet(!uc || Date.now() - uc.t > 3e5).then(updPaint); $$("svg.flip", app).forEach(function (s) { s.style.transform = "rotate(180deg)"; s.style.opacity = ".5"; }); };
 
   /* ---------- settings ---------- */
   VIEWS.settings = function () {
@@ -1792,20 +1834,23 @@
   document.addEventListener("keydown", function (e) { if (!e.altKey) return; var n = parseInt(e.key, 10); if (n >= 1 && n <= NAV.length) { e.preventDefault(); location.hash = "#/" + NAV[n - 1].r; } if (e.key === "d" || e.key === "D") setTimeout(syncThemeIcon, 50); });
   /* ---------- Quick search (Ctrl+K / "/" ) ---------- */
   function openSearch() {
-    if (!app) return; var old = $("#pp-cmd", app); if (old) { old.remove(); return; }
+    if (!app) return; var old = $("#pp-cmd", app); if (old) { if(old.__close)old.__close();else old.remove(); return; }
     var items = NAV.map(function (n) { return { t: n.t, s: "StudentDesk", h: "#/" + n.r, i: n.i }; }).concat([{ t: "Settings", s: "StudentDesk", h: "#/settings", i: "gear" }, { t: "Faculty list", s: "More · aiub.edu", h: "#/faculty", i: "user" }, { t: "Exam routine", s: "Routine", h: "#/schedule", i: "file", sv: "exams" }, { t: "Campus weather", s: "Home", h: "#/home", i: "sun" }, { t: "Free time", s: "Routine", h: "#/schedule", i: "cal", sv: "free" }, { t: "Offered for me", s: "Courses", h: "#/courses", i: "list", ct: "offered" }, { t: "Remaining courses", s: "Courses", h: "#/courses", i: "book", ct: "remaining" }, { t: "Offered courses", s: "Courses", h: "#/courses", i: "list", ct: "offered" }]);
     ((peek("notices1") || {}).items || []).forEach(function (n) { items.push({ t: n.title, s: "Notice · " + n.day + " " + n.mon, h: "#/notice?u=" + encodeURIComponent(n.u), i: "bell" }); });
     MENU.forEach(function (g) { g.items.forEach(function (it) { if (it.h && it.h.charAt(0) === "/") items.push({ t: it.t, s: g.g, h: classic(it.h), i: "ext" }); }); });
-    var box = document.createElement("div"); box.id = "pp-cmd";
-    box.innerHTML = '<div class="pp-cmd-in"><div class="pp-cmd-q">' + ic("search") + '<input placeholder="Where to? (routine, grades, payments…)" autocomplete="off"><kbd>Esc</kbd></div><div class="pp-cmd-l"></div></div>';
+    var previousFocus=document.activeElement; var box = document.createElement("div"); box.id = "pp-cmd"; box.setAttribute("role","dialog");box.setAttribute("aria-modal","true");box.setAttribute("aria-label","Search portal");
+    function closeSearch(){if(!box.isConnected)return;box.remove();document.removeEventListener("keydown",searchKeys,true);if(previousFocus&&previousFocus.isConnected)previousFocus.focus({preventScroll:true});}
+    function searchKeys(e){if(e.key==="Escape"){e.preventDefault();e.stopImmediatePropagation();closeSearch();return;}if(e.key!=="Tab")return;var f=$$("input,button,a[href]",box).filter(function(x){return x.getClientRects().length&&!x.disabled;});var first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
+    box.__close=closeSearch;document.addEventListener("keydown",searchKeys,true);
+    box.innerHTML = '<div class="pp-cmd-in"><div class="pp-cmd-q">' + ic("search") + '<input type="search" aria-label="Search pages and tools" placeholder="Where to? (routine, grades, payments…)" autocomplete="off" enterkeyhint="go"><kbd>Esc</kbd></div><div class="pp-cmd-l"></div></div>';
     app.appendChild(box);
     var inp = $("input", box), list = $(".pp-cmd-l", box), sel = 0, shown = [];
     function draw() { var q = inp.value.trim().toLowerCase(); shown = items.filter(function (x) { return !q || (x.t + " " + x.s).toLowerCase().indexOf(q) >= 0; }).slice(0, 12); if (sel >= shown.length) sel = 0;
       list.innerHTML = shown.length ? shown.map(function (x, i) { return '<a href="' + x.h + '" data-i="' + i + '" class="' + (i === sel ? "on" : "") + '">' + ic(x.i) + "<b>" + esc(x.t) + "</b><small>" + esc(x.s) + "</small></a>"; }).join("") : '<div class="pp-cmd-e">Nothing found</div>'; }
-    function pick(x) { if (!x) return; if (x.sv) schedState.view = x.sv; if (x.ct) courseState.tab = x.ct; box.remove(); go(x.h); }
+    function pick(x) { if (!x) return; if (x.sv) schedState.view = x.sv; if (x.ct) courseState.tab = x.ct; closeSearch(); go(x.h); }
     inp.oninput = function () { sel = 0; draw(); };
-    inp.onkeydown = function (e) { if (e.key === "ArrowDown") { sel = Math.min(shown.length - 1, sel + 1); draw(); e.preventDefault(); } else if (e.key === "ArrowUp") { sel = Math.max(0, sel - 1); draw(); e.preventDefault(); } else if (e.key === "Enter") { pick(shown[sel]); e.preventDefault(); } else if (e.key === "Escape") box.remove(); };
-    box.addEventListener("click", function (e) { var a = e.target.closest("a[data-i]"); if (a) { e.preventDefault(); e.stopPropagation(); pick(shown[+a.getAttribute("data-i")]); } else if (e.target === box) box.remove(); }, true);
+    inp.onkeydown = function (e) { if (e.key === "ArrowDown") { sel = Math.min(shown.length - 1, sel + 1); draw(); e.preventDefault(); } else if (e.key === "ArrowUp") { sel = Math.max(0, sel - 1); draw(); e.preventDefault(); } else if (e.key === "Enter") { pick(shown[sel]); e.preventDefault(); } else if (e.key === "Escape") closeSearch(); if(e.key==="ArrowDown"||e.key==="ArrowUp"){var active=$(".pp-cmd-l a.on",box);if(active)active.scrollIntoView({block:"nearest"});} };
+    box.addEventListener("click", function (e) { var a = e.target.closest("a[data-i]"); if (a) { e.preventDefault(); e.stopPropagation(); pick(shown[+a.getAttribute("data-i")]); } else if (e.target === box) closeSearch(); }, true);
     draw(); setTimeout(function () { inp.focus(); }, 30);
   }
   document.addEventListener("keydown", function (e) {
@@ -1934,7 +1979,7 @@
   function fileCandidate(a) { var h = a.getAttribute("href") || "", label = [a.textContent, a.getAttribute("title"), a.getAttribute("download")].filter(Boolean).join(" "); return h && !/^(#|javascript:|mailto:)/i.test(h) && (/\.(pdf|png|jpe?g|webp|gif|txt|csv|md|docx?|pptx?|xlsx?)(?:[?#\s]|$)/i.test(h + " " + label) || /download|attachment|\/files?\/|getfile|viewfile|coursenote/i.test(h) || a.hasAttribute("download")); }
   function attachNotePreviews(d) {
     if (!d || d.__ppPreviewObserver) return;
-    function scan() { $$("a[href]", d).forEach(function (a) { if (a.dataset.ppPreview || !fileCandidate(a)) return; var u; try { u = new URL(a.getAttribute("href"), d.location && d.location.href !== "about:blank" ? d.location.href : d.baseURI); } catch (e) { return; } if (u.origin !== location.origin || u.protocol !== location.protocol) return; a.dataset.ppPreview = "1"; var b = d.createElement("button"); b.type = "button"; b.className = "pp-note-preview"; b.textContent = "Preview"; b.setAttribute("aria-label", "Preview " + (a.textContent.trim() || "attachment")); b.style.cssText = "min-height:44px;margin:4px 8px;padding:6px 14px;border:1px solid #cbd5e1;border-radius:12px;background:#eff6ff;color:#1d4ed8;font:600 14px system-ui;cursor:pointer"; b.onclick = function (e) { e.preventDefault(); e.stopPropagation(); previewNote(u.href, a.getAttribute("download") || a.getAttribute("title") || a.textContent.trim() || "Teacher note"); }; a.insertAdjacentElement("afterend", b); }); }
+    function scan() { $$("a[href]", d).forEach(function (a) { if (a.dataset.ppPreview || !fileCandidate(a)) return; var u; try { u = new URL(a.getAttribute("href"), d.location && d.location.href !== "about:blank" ? d.location.href : d.baseURI); } catch (e) { return; } if (u.origin !== location.origin || u.protocol !== location.protocol) return; a.dataset.ppPreview = "1"; var b = d.createElement("button"); b.type = "button"; b.className = "pp-note-preview"; b.textContent = "Preview"; b.setAttribute("aria-label", "Preview " + (a.textContent.trim() || "attachment")); b.style.cssText = "min-height:44px;margin:4px 8px;padding:6px 14px;border:1px solid #cbd5e1;border-radius:12px;background:var(--sd-surface,#fffefa);color:var(--sd-accent,#8d4d36);font:600 14px Times,serif;cursor:pointer"; b.onclick = function (e) { e.preventDefault(); e.stopPropagation(); previewNote(u.href, a.getAttribute("download") || a.getAttribute("title") || a.textContent.trim() || "Teacher note",d.location&&d.location.href); }; a.insertAdjacentElement("afterend", b); }); }
     var pending = false, observer = new MutationObserver(function () { if (pending) return; pending = true; setTimeout(function () { pending = false; scan(); }, 160); });
     d.__ppPreviewObserver = observer; observer.observe(d.body, { childList: true, subtree: true }); scan();
     function frames() { $$("iframe", d).forEach(function (f) { if (f.__ppPreviewHook) return; f.__ppPreviewHook = true; function hook() { try { if (f.contentDocument && f.contentDocument.body) attachNotePreviews(f.contentDocument); } catch (e) {} } f.addEventListener("load", hook); hook(); }); }
@@ -1978,34 +2023,75 @@
       if(signal)signal.addEventListener("abort",abort,{once:true});xhr.send();
     });
   }
-  function previewNote(url, label) {
+  // Inspect wrapper HTML inertly. Follow only declared same-origin file links, never scripts/forms.
+  function noteTargets(doc, base, label, visited) {
+    function clean(v){try{return decodeURIComponent(String(v||""));}catch(e){return String(v||"");}}
+    function filename(v){return clean(v).split(/[\/]/).pop().split(/[?#]/)[0].trim().toLowerCase();}
+    var wanted=filename(label),hasName=/\.(pdf|png|jpe?g|webp|gif|txt|csv|md|docx?|pptx?|xlsx?)$/i.test(wanted),out=[];
+    $$("a[href],iframe[src],embed[src],object[data]",doc).forEach(function(a){
+      var raw=a.getAttribute("href")||a.getAttribute("src")||a.getAttribute("data"),u;
+      try{u=new URL(raw,base);}catch(e){return;}
+      if(u.origin!==location.origin||!/^https?:$/.test(u.protocol)||u.username||u.password||visited.indexOf(u.href)>=0||/\/(logout|delete|remove|signout)(?:[/?]|$)/i.test(u.pathname))return;
+      var text=txt(a),download=a.getAttribute("download")||"",path=clean(u.href),n=filename(download||text||u.pathname),match=hasName&&(n===wanted||path.toLowerCase().indexOf(wanted)>=0),ext=/\.(pdf|png|jpe?g|webp|gif|txt|csv|md|docx?|pptx?|xlsx?)(?:[?#&\s]|$)/i.test(path+" "+download+" "+text),endpoint=/download|attachment|\/files?\/|getfile|viewfile/i.test(u.pathname);
+      if(!ext&&!endpoint&&!download)return;
+      var score=(match?100:0)+(download?25:0)+(endpoint?15:0)+(ext?10:0);
+      if(!out.some(function(x){return x.url===u.href;}))out.push({url:u.href,label:(download||text||filename(u.pathname)||"Attachment").slice(0,220),score:score,match:match});
+    });
+    return out.sort(function(a,b){return b.score-a.score;}).slice(0,20);
+  }
+  async function resolveNoteAttachment(url,label,signal,visited) {
+    visited=visited||[];if(visited.indexOf(url)>=0||visited.length>=3)throw new Error("This notes link loops or has too many redirects. Open the notes page to choose the file.");visited.push(url);
+    var r=await readPortalAttachment(url,signal);if(!r.ok)throw new Error("The portal could not open this attachment (HTTP "+r.status+")");
+    var finalUrl=new URL(r.url||url,location.href);if(finalUrl.origin!==location.origin)throw new Error("This attachment redirects outside the portal. Use Original download to open it directly.");
+    var bytes=await readBounded(r,25*1024*1024),type=(r.headers.get("content-type")||"").toLowerCase(),head=new TextDecoder().decode(bytes.slice(0,2000));
+    if(/text\/html/.test(type)||/^\s*(?:<!doctype html|<html|<form)/i.test(head)){
+      if(bytes.length>2*1024*1024)throw new Error("This notes page is too large to inspect safely. Open it and choose its download link.");
+      var doc=new DOMParser().parseFromString(new TextDecoder().decode(bytes),"text/html");
+      if(doc.querySelector('#loginForm,input[type="password"]')){var expired=new Error("Your portal session expired. Sign in again, then reopen the note.");expired.sessionExpired=true;throw expired;}
+      var choices=noteTargets(doc,finalUrl.href,label,visited);
+      if(choices.length===1||(choices.length>1&&choices[0].match&&choices[0].score>choices[1].score))return resolveNoteAttachment(choices[0].url,label,signal,visited);
+      var err=new Error(choices.length?"This page contains several attachments. Choose the file to preview.":"The portal returned a notes page without a direct attachment link. Open notes to choose or download the file.");err.choices=choices;err.notesUrl=finalUrl.href;throw err;
+    }
+    return {response:r,bytes:bytes,url:finalUrl.href};
+  }
+  function previewNote(url, label, sourceUrl) {
     var u = new URL(url, location.href); if (u.origin !== location.origin) { toast("Use the original link for externally hosted files"); return; }
-    var box = featureDialog("Note preview", '<div class="pp-file-meta"><span class="pp-file-glyph">' + ic("book") + '</span><span><b>' + esc(label) + '</b><small>Private preview · stays in this browser</small></span></div><div class="pp-preview-content" id="pp-preview-content"><div class="pp-sk" style="height:180px"></div><p>Opening note…</p></div><div class="pp-sheet-actions"><a class="pp-btn" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">Original download</a></div>');
+    var box = featureDialog("Note preview", '<div class="pp-file-meta"><span class="pp-file-glyph">' + ic("book") + '</span><span><b>' + esc(label) + '</b><small>Private preview · stays in this browser</small></span></div><div class="pp-preview-content" id="pp-preview-content"><div class="pp-sk" style="height:180px"></div><p>Opening note…</p></div><div class="pp-sheet-actions"><button type="button" class="pp-btn" data-preview-retry>Retry</button><button type="button" class="pp-btn" data-preview-notes>Open notes</button><a class="pp-btn" data-preview-original href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">Original download</a></div>');
+    var notesHref=sourceUrl||url;
+    $('[data-preview-retry]',box).onclick=function(){previewNote(url,label,notesHref);};
+    $('[data-preview-notes]',box).onclick=function(){var n;try{n=new URL(notesHref,location.href);}catch(e){return;}if(n.origin!==location.origin)return;featureDialogClose();go(classic(n.href));};
     var ctl = new AbortController(), blobs = [], timedOut = false, previewTimer = setTimeout(function () { timedOut = true; ctl.abort(); }, 20000); box.onCleanup = function () { clearTimeout(previewTimer); ctl.abort(); blobs.forEach(function (u) { URL.revokeObjectURL(u); }); };
     function object(bytes, type) { var u = URL.createObjectURL(new Blob([bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength)], { type: type })); blobs.push(u); return u; }
-    readPortalAttachment(url, ctl.signal).then(async function (r) {
-      if (!r.ok) throw new Error("The portal could not open this attachment (HTTP " + r.status + ")");
-      if (r.url && new URL(r.url, location.href).origin !== location.origin) throw new Error("This attachment redirects outside the portal. Use Original download to open it directly.");
-      var bytes = await readBounded(r, 25 * 1024 * 1024), type = (r.headers.get("content-type") || "").split(";")[0].toLowerCase(), name = label + " " + u.pathname + " " + (r.headers.get("content-disposition") || ""); var content = $("#pp-preview-content", box); if (!box.isConnected) return;
-      content.textContent = "";
-      var headText = new TextDecoder().decode(bytes.slice(0, 2000));
-      if (/text\/html/.test(type) || /^\s*(?:<!doctype html|<html|<form)/i.test(headText)) throw new Error(/loginForm|password|sign.?in/i.test(headText) ? "Your portal session expired. Sign in again, then reopen the note." : "This link opened a web page, not the actual file. Open the notes page and use Preview beside the file download link.");
+    resolveNoteAttachment(url,label,ctl.signal).then(async function (resolved) {
+      var r=resolved.response,bytes=resolved.bytes,type=(r.headers.get("content-type")||"").split(";")[0].toLowerCase(),name=label+" "+resolved.url+" "+(r.headers.get("content-disposition")||"");
+      if(!box.isConnected)return;var content=$("#pp-preview-content",box);content.textContent="";
+      $('[data-preview-original]',box).href=resolved.url;
       if (bytes[0] === 37 && bytes[1] === 80 && bytes[2] === 68 && bytes[3] === 70) { var src = object(bytes, "application/pdf"), frame = document.createElement("iframe"); frame.title = "PDF note preview"; frame.className = "pp-pdf-preview"; frame.src = src; content.appendChild(frame); var a = document.createElement("a"); a.href = src; a.target = "_blank"; a.rel = "noopener"; a.className = "pp-btn sm"; a.textContent = "PDF blank on this browser? Open PDF in a new tab"; content.appendChild(a); }
       else if ((bytes[0] === 137 && bytes[1] === 80 && bytes[2] === 78) || (bytes[0] === 255 && bytes[1] === 216) || (bytes[0] === 71 && bytes[1] === 73 && bytes[2] === 70) || (bytes[0] === 82 && bytes[1] === 73 && bytes[8] === 87 && bytes[9] === 69)) { var img = document.createElement("img"); img.alt = label; img.src = object(bytes, bytes[0] === 137 ? "image/png" : bytes[0] === 255 ? "image/jpeg" : bytes[0] === 71 ? "image/gif" : "image/webp"); content.appendChild(img); }
       else if (bytes[0] === 80 && bytes[1] === 75 && /docx|pptx|wordprocessingml|presentationml|word\/document\.xml|ppt\/slides\//i.test(name + type + new TextDecoder("latin1").decode(bytes.slice(-65536)))) { var kind = /pptx|presentationml|ppt\/slides\//i.test(name + type + new TextDecoder("latin1").decode(bytes.slice(-65536))) ? "pptx" : "docx", pages = await officeText(bytes, kind); if (!box.isConnected) return; var note = document.createElement("p"); note.className = "pp-note"; note.textContent = "Text-only preview: original layout, images, equations and formatting are not reproduced."; content.appendChild(note); pages.forEach(function (p) { var section = document.createElement("section"), h = document.createElement("h3"), pre = document.createElement("pre"); h.textContent = p.title; pre.textContent = p.text; section.append(h, pre); content.appendChild(section); }); }
       else if (/text\/(plain|csv|markdown)/.test(type) || /\.(txt|csv|md)(?:[\s?#";]|$)/i.test(name)) { var text = new TextDecoder().decode(bytes); if (/<(?:!doctype|html|form)\b/i.test(text.slice(0, 1500))) throw new Error("The portal returned a sign-in page instead of the file. Sign in again."); var pre = document.createElement("pre"); pre.textContent = text.slice(0, 1000000); content.appendChild(pre); }
       else throw new Error("This file type cannot be previewed here. PDF, images, text, DOCX and PPTX text are supported. Use the original download for other formats.");
-    }).catch(function (e) { if (!box.isConnected || (e.name === "AbortError" && !timedOut)) return; var c = $("#pp-preview-content", box); c.textContent = ""; var p = document.createElement("p"); p.className = "pp-preview-error"; p.textContent = timedOut ? "The attachment server did not respond in time. Retry or use the original download." : e.message || "Preview unavailable. Use the original download."; c.appendChild(p); }).finally(function () { clearTimeout(previewTimer); });
+    }).catch(function (e) { if (!box.isConnected || (e.name === "AbortError" && !timedOut)) return; var c = $("#pp-preview-content", box); c.textContent = ""; var p = document.createElement("p"); p.className = "pp-preview-error"; p.textContent = timedOut ? "The attachment server did not respond in time. Retry or use the original download." : e.message || "Preview unavailable. Use the original download."; c.appendChild(p);if(e.notesUrl)notesHref=e.notesUrl;
+      if(e.choices&&e.choices.length){var list=document.createElement("div");list.className="pp-preview-choices";e.choices.forEach(function(choice){var b=document.createElement("button");b.type="button";b.className="pp-btn";b.textContent=choice.label;b.onclick=function(){previewNote(choice.url,choice.label,notesHref);};list.appendChild(b);});c.appendChild(list);}
+    }).finally(function () { clearTimeout(previewTimer); });
   }
   function studioArtPaint(){
     if(!window.StudentDeskArt)return;
-    var type={home:"home",schedule:"routine",courses:"courses",grades:"grades",finance:"finance",notices:"notices",notice:"notices",mail:"mail",settings:"settings",more:"more",reviews:"grades",faculty:"courses"}[current];if(!type)return;
+    var type={home:"home",schedule:"routine",courses:"courses",grades:"grades",finance:"finance",notices:"notices",notice:"notices",mail:"mail",settings:"settings",more:"more",reviews:"reviews",faculty:"faculty",planner:"planner",notifications:"notifications"}[current];
     var view=$("#pp-scroll>.pp-view",app);if(!view)return;
-    var targets=[];
-    if(current==="home")targets=$$(".pp-quick-card,.pp-wxcard,.pp-g2>.pp-card",view);
-    else if(current==="notices")targets=$$(".pp-bulletin-head",view);
-    else targets=$$(".pp-card",view).filter(function(c){return c.parentNode===view||c.parentNode.parentNode===view;}).slice(0,3);
-    targets.forEach(function(c,i){if($(".sd-portion-art",c))return;var heading=$("h3,h2",c);if(!heading)return;var art=document.createElement("span");art.className="sd-portion-art";art.innerHTML=window.StudentDeskArt(current==="home"?["planner","weather","routine","notices"][i%4]:type);c.insertBefore(art,c.firstChild);c.classList.add("sd-art-section");heading.classList.add("sd-illustrated-title");});
+    if(!type){if(window.StudentDeskMotion)window.StudentDeskMotion.paint(app);return;}
+    if(current==="home"){
+      var intro=$(".pp-overview-intro",view);if(intro&&!$(".sd-live-mascot",intro)){var mascot=document.createElement("span");mascot.className="sd-live-mascot";mascot.innerHTML=window.StudentDeskArt("home");intro.appendChild(mascot);var date=$(".pp-date-tile",intro),eyebrow=$(".pp-eyebrow",intro);if(date&&eyebrow){var label=document.createElement("span");label.className="sd-home-date";label.textContent=$$("small,b",date).map(txt).join(" ");eyebrow.appendChild(label);}}
+      var banner=$(".sd-planner-banner",view);if(banner&&!$(".sd-banner-cartoon",banner)){var mark=$(".sd-banner-mark",banner);if(mark)mark.innerHTML=window.StudentDeskArt("planner");}
+      $$(".pp-em",view).forEach(function(el){el.innerHTML=window.StudentDeskArt("finance");});
+    }else if(current!=="planner"&&current!=="notices"&&current!=="notice"&&!$(".sd-page-intro",view)){
+      var copy={schedule:["YOUR WEEK, WITH ROOM TO BREATHE","A rhythm that works for you.","Classes, breaks and the space in between."],courses:["YOUR CURRENT SEMESTER","Small steps. Meaningful progress.","Your curriculum, current courses and academic record."],grades:["YOUR PROGRESS","Look how far you’ve come.","Results and useful perspectives, with privacy controls."],finance:["A CLEARER PICTURE","One less thing to keep track of.","Payments, deadlines and your semester account."],mail:["CAMPUS CONVERSATIONS","A place for the important things.","Your official university messages, within reach."],reviews:["SHARED EXPERIENCES","A little insight. Better-informed choices.","Respectful, course-relevant feedback from students."],faculty:["THE PEOPLE ON CAMPUS","Find the right person.","Faculty profiles and contact information."],notifications:["A GENTLE HEADS-UP","Only what needs your attention.","Important updates and reminders, quietly collected."],more:["YOUR WORKSPACE","Everything else. Still close by.","Useful places in one calm corner."],settings:["MAKE YOURSELF AT HOME","A calmer space. Your own way.","The right light, the right amount of motion."]}[current];
+      if(copy){var h=document.createElement("section");h.className="sd-page-intro";h.innerHTML='<div><span class="pp-eyebrow">'+esc(copy[0])+'</span><h2>'+esc(copy[1])+'</h2><p>'+esc(copy[2])+'</p></div>'+window.StudentDeskArt(type);view.insertBefore(h,view.firstChild);}
+    }
+    var targets=current==="home"?$$(".pp-quick-card,.pp-wxcard,.pp-g2>.pp-card,.pp-home>.pp-card",view):current==="notices"||current==="notice"?$$(".pp-bulletin-head,.pp-card",view):$$(".pp-card",view).filter(function(c){return !c.parentElement.closest(".pp-card");});
+    targets.forEach(function(c,i){if($(".sd-portion-art",c)||c.classList.contains("pp-overview"))return;var heading=$("h3,h2",c);if(!heading||heading.parentNode!==c||current==="planner"||$(".pp-avatar,.pp-rvhead,.sd-setup-summary",c)||$("a,button",heading))return;var art=document.createElement("span");art.className="sd-portion-art";art.innerHTML=window.StudentDeskArt(current==="home"?(c.classList.contains("pp-wxcard")?"weather":c.classList.contains("pp-quick-card")?"routine":["finance","routine","notices"][i%3]):type);c.insertBefore(art,c.firstChild);c.classList.add("sd-art-section");heading.classList.add("sd-illustrated-title");});
+    $$(".pp-em",view).forEach(function(el){el.innerHTML=window.StudentDeskArt(type);});
+    if(window.StudentDeskMotion)window.StudentDeskMotion.paint(app);
   }
   function workspacePaint() {
     syncPaint();
@@ -2015,6 +2101,7 @@
     if (current === "home") { var quick = $(".pp-quick", app), h = quick && quick.parentNode.querySelector("h3"); if (h && !$("[data-custom-quick]", h)) { var b = document.createElement("button"); b.className = "pp-btn sm pp-custom-quick"; b.dataset.customQuick = "1"; b.textContent = "Customize"; b.onclick = editQuickActions; h.appendChild(b); } }
     if (current === "schedule") { var view = $("#pp-scroll > .pp-view", app); if (view && !$("#pp-export-bar", view)) { var bar = document.createElement("div"); bar.id = "pp-export-bar"; bar.className = "pp-toolstrip"; bar.innerHTML = '<div><b>Your week, anywhere</b><small>Save a routine image, PDF or calendar snapshot</small></div><button class="pp-btn sm" id="pp-export-routine">' + ic("ext") + ' Export</button>'; view.insertBefore(bar, view.firstChild); $("#pp-export-routine", bar).onclick = routineExport; } }
     if (current === "settings") { var view = $("#pp-scroll > .pp-view", app); if (view && !$(".pp-workspace", view)) { var wrap = document.createElement("div"); wrap.innerHTML = workspaceSettingsHtml(); view.insertBefore(wrap.firstChild, view.firstChild); } workspaceSettingsWire(); }
+    if(current==="settings"){var list=$(".pp-workspace>.pp-list",app);if(list&&!$("[data-sd-motion-toggle]",list)){var motion=document.createElement("button");motion.type="button";motion.className="pp-item pp-click sd-motion-setting";motion.setAttribute("data-sd-motion-toggle","");motion.setAttribute("role","switch");motion.innerHTML='<span class="pp-t"><b>Animated illustrations & icons</b><small>Soft motion across pages. Reduced-motion and Performance mode take priority.</small></span><span class="pp-mode-switch" aria-hidden="true"><i></i></span><span class="sd-motion-label"></span>';list.insertBefore(motion,list.firstChild);}}
     studioArtPaint();
     if (current === "classic") { var fr = $("#pp-frame", app); if (fr && !fr.__ppNoteHook) { fr.__ppNoteHook = true; fr.addEventListener("load", function () { try { attachNotePreviews(fr.contentDocument); } catch (e) {} }); try { if (fr.contentDocument && fr.contentDocument.body) attachNotePreviews(fr.contentDocument); } catch (e) {} } }
   }

@@ -1,0 +1,274 @@
+/* StudentDesk 4.5 Warm Studio. Presentation only; existing portal logic is retained. */
+html.ap #pp-app{--art-paper:#fff9ed;--art-tint:#efcfb7;--sage:#dbe5d6;--blush:#e9bfa7;--sun-fill:#f7de9c;--sun-stroke:#c99e58;--buddy-paper:#fffaf0;--buddy-blush:#edc8b6}
+html.ap[data-ap-mode=dark] #pp-app{--art-paper:#363c32;--art-tint:#6f5743;--sage:#405b49;--blush:#bd8a6b;--sun-fill:#95763c;--sun-stroke:#e5c082}
+html.ap #pp-app .pp-card{border-radius:25px!important;box-shadow:0 5px 18px -17px #352c2133!important}
+html.ap #pp-app .pp-side{background:var(--sd-glass)!important}.pp-side .pp-brand small{font-size:11px}
+html.ap #pp-app .pp-home .pp-overview-intro{background:transparent!important;align-items:center;gap:18px;padding:28px!important}
+html.ap #pp-app .pp-overview-intro>div:first-child{flex:1;min-width:0}
+html.ap #pp-app .pp-home .pp-overview-intro h2{font-family:"Times New Roman",Times,serif!important;font-weight:400!important;font-size:43px!important;line-height:1.08!important;letter-spacing:-.055em!important;max-width:12ch}
+html.ap #pp-app .pp-overview-intro .pp-date-tile{display:none!important}
+html.ap #pp-app .sd-home-date{display:block;font-size:10px;font-weight:500;letter-spacing:.02em;margin:7px 0 0;color:var(--sd-muted)}
+html.ap #pp-app .sd-live-mascot{width:135px;height:145px;flex:none;color:var(--sd-accent)}
+html.ap #pp-app .sd-live-mascot .sd-art{width:100%;height:100%;margin:0}
+html.ap #pp-app .pp-quick-card h3{font-size:20px!important}.pp-quick-card .pp-section-caption{font-size:12px;line-height:1.75}
+html.ap #pp-app .pp-quick a{min-height:95px!important;border-radius:15px!important;padding:9px 3px!important}
+html.ap #pp-app .pp-quick a .pp-qi{width:46px;height:46px;border:1px solid color-mix(in srgb,var(--sd-accent) 15%,var(--sd-line));border-radius:15px!important;background:color-mix(in srgb,var(--sd-tint) 35%,var(--sd-surface))!important;color:var(--sd-accent)!important;box-shadow:inset 0 1px 0 #fff8!important}
+html.ap #pp-app .pp-quick a .i{width:23px;height:23px;stroke-width:1.65}
+html.ap #pp-app .pp-quick .pp-ql{font-size:11px!important}
+html.ap #pp-app .pp-quick a:nth-child(3n+2) .pp-qi{color:var(--sd-good)!important;background:var(--sd-good-bg)!important}
+html.ap #pp-app .pp-quick a:nth-child(4n) .pp-qi{color:#9b773e!important;background:#fbf6e9!important}
+html.ap #pp-app .sd-planner-banner{padding:25px 27px;min-height:175px;gap:22px;border-radius:25px}
+html.ap #pp-app .sd-banner-mark{order:2;margin-left:auto;width:105px;height:118px;border:0;background:transparent;flex:none}
+html.ap #pp-app .sd-banner-mark .sd-art{width:100%;height:100%;margin:0}
+html.ap #pp-app .sd-planner-banner>div{flex:1}.sd-planner-banner .sd-banner-cta{order:3}
+html.ap #pp-app .sd-planner-banner b{font-family:"Times New Roman",Times,serif;font-size:30px;font-weight:400;letter-spacing:-.045em;line-height:1.12}
+html.ap #pp-app .sd-page-intro{display:flex;align-items:center;justify-content:space-between;gap:25px;margin:8px 0 27px;padding:3px 2px}
+html.ap #pp-app .sd-page-intro>div{flex:1;min-width:0}
+html.ap #pp-app .sd-page-intro h2{font:400 42px/1.08 "Times New Roman",Times,serif;letter-spacing:-.05em;max-width:23ch;margin:12px 0;color:var(--sd-ink)}
+html.ap #pp-app .sd-page-intro p{font-size:13px;line-height:1.75;color:var(--sd-muted);margin:0;max-width:55ch}
+html.ap #pp-app .sd-page-intro>.sd-art{width:150px;height:150px;flex:none;margin:0 20px 0 0}
+html.ap #pp-app .sd-local-note>.sd-art{width:145px;height:145px}
+html.ap #pp-app .sd-art{color:var(--sd-accent)}
+html.ap #pp-app .sd-portion-art{width:73px;height:78px;top:16px;right:18px;pointer-events:none}
+html.ap #pp-app .sd-art-section>.sd-illustrated-title{min-height:65px!important;padding-right:83px!important}
+html.ap #pp-app .pp-bulletin-head.sd-art-section{padding-right:135px;min-height:130px}
+html.ap #pp-app .pp-bulletin-head .sd-portion-art{width:115px;height:120px;top:0}
+html.ap #pp-app .pp-em>.sd-art{width:75px;height:80px}
+html.ap #pp-app .i[data-sd-icon]{transform-box:fill-box;transform-origin:center;stroke-width:1.7}
+html.ap #pp-app .sd-motion-setting{display:flex;align-items:center;gap:12px;text-align:left;width:100%}
+html.ap #pp-app .sd-motion-setting .pp-t{flex:1;min-width:0}
+html.ap #pp-app .sd-motion-label{font-size:11px;color:var(--sd-muted);min-width:24px}
+html.ap #pp-app .sd-motion-setting[aria-checked=true] .pp-mode-switch{background:var(--sd-accent)}
+html.ap #pp-app .sd-motion-setting[aria-checked=true] .pp-mode-switch i{transform:translateX(18px)}
+html.ap #pp-app .sd-motion-art{overflow:visible}
+html.ap #pp-app .sd-motion-art .character{animation:sd45-companion-breathe 5.6s ease-in-out infinite;transform-origin:80px 130px}
+html.ap #pp-app .sd-motion-art .eyes{transform-box:fill-box;transform-origin:center;animation:sd45-soft-blink 5.3s linear infinite}
+html.ap #pp-app .sd-motion-art .wave-arm{transform-origin:121px 78px;animation:sd45-clear-wave 5.2s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .ground{transform-origin:80px 142px;animation:sd45-ground-pulse 5.8s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .sd45-page-sway{transform-origin:80px 125px;animation:sd45-page-sway 6s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art.art-book .sd45-page-sway{animation:sd45-open-book 6.4s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .clock-hand{transform-origin:80px 80px;animation:sd45-clock-sweep 24s linear infinite}
+html.ap #pp-app .sd-motion-art .floating-letter{animation:sd45-letter-delivery 5.4s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .bubble-small{animation:sd45-bubble-hello 5s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .sd45-leaf-sway{transform-origin:81px 100px;animation:sd45-leaf-greet 5.3s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .grow-bar{transform-origin:113px 133px;animation:sd45-chart-breathe 5.8s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .sd45-cloud-drift{animation:sd45-cloud-drift 6s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .sd45-sun-turn{transform-origin:104px 49px;animation:sd45-sun-turn 36s linear infinite}
+html.ap #pp-app .sd-motion-art .steam{animation:sd45-steam-rise 3.9s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .sd45-sparkle{animation:sd45-sparkle 4.5s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .star-orbit{transform-origin:76px 32px;animation:sd45-star-tilt 7s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .planner-tick{stroke-dasharray:18;stroke-dashoffset:18;animation:sd45-checklist-tick 6s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .planner-tick:nth-child(2){animation-delay:.6s}
+html.ap #pp-app .sd-motion-art .planner-tick:nth-child(3){animation-delay:1.2s}
+html.ap #pp-app .sd-motion-art .planner-pencil{transform-origin:124px 107px;animation:sd45-pencil-think 5.7s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .settings-cog{transform-origin:80px 83px;animation:sd45-settings-turn 20s linear infinite}
+html.ap #pp-app .sd-motion-art .settings-slider{animation:sd45-slider-breathe 6s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .notify-bell{transform-origin:80px 35px;animation:sd45-bell-hello 5.2s ease-in-out infinite}
+html.ap #pp-app .sd-motion-art .compass-pointer{transform-origin:80px 80px;animation:sd45-compass-think 7s ease-in-out infinite}
+html.ap #pp-app .sd-motion-away,html.ap #pp-app .sd-motion-away *{animation-play-state:paused!important}
+html.ap[data-sd-motion=off] #pp-app .sd-motion-art,html.ap[data-sd-motion=off] #pp-app .sd-motion-art *{animation-play-state:paused!important}
+html.ap[data-ap-mode=dark] #pp-app .sd-art{color:#edbea0}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a .pp-qi{background:var(--sd-icon-tile,#323832)!important;color:var(--sd-icon-ink,#d5dfd0)!important;border-color:color-mix(in srgb,var(--sd-icon-ink,#d5dfd0) 18%,var(--sd-icon-tile,#323832));box-shadow:inset 0 1px 0 #ffffff09!important}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(1){--sd-icon-tile:#332e3d;--sd-icon-ink:#cbbcff}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(2){--sd-icon-tile:#2b3930;--sd-icon-ink:#b6d9c3}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(3){--sd-icon-tile:#2a3542;--sd-icon-ink:#b3c9f2}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(4){--sd-icon-tile:#3c3429;--sd-icon-ink:#e4c293}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(5){--sd-icon-tile:#2b3a36;--sd-icon-ink:#b2d3ca}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(6){--sd-icon-tile:#3c3037;--sd-icon-ink:#e2b4c5}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(7){--sd-icon-tile:#343344;--sd-icon-ink:#c6c2e9}
+html.ap[data-ap-mode=dark] #pp-app .pp-top .pp-iconbtn{color:#e3e9df;background:#282e29!important;border-color:#3b433c}
+html.ap[data-ap-mode=dark] #pp-app .pp-top .pp-theme-toggle{color:#f1cc9b;background:#393126!important}
+@media(max-width:900px){
+html.ap #pp-app header.pp-top{display:flex!important;flex-wrap:wrap;padding:12px 15px!important;gap:8px!important;min-height:78px}
+html.ap #pp-app .pp-top>.pp-hlogo{width:31px;height:31px;flex:none}
+html.ap #pp-app .pp-top>.pp-grow{flex:1;min-width:0}
+html.ap #pp-app .pp-top h1{font-size:20px!important;line-height:1.08;max-width:15ch}
+html.ap #pp-app .pp-top .pp-sub{font-size:9px!important;max-width:100%;margin-top:4px}
+html.ap #pp-app .pp-top>.pp-header-tools{width:auto;gap:5px;order:2}
+html.ap #pp-app .pp-top>.pp-appearance-tools{order:3;padding:0;border:0;gap:0}
+html.ap #pp-app .pp-top .pp-search-trigger{width:40px;min-width:40px;height:40px;flex:none;padding:0;justify-content:center;background:var(--sd-surface)!important}
+html.ap #pp-app .pp-search-trigger>span,html.ap #pp-app .pp-search-trigger>kbd{display:none}
+html.ap #pp-app .pp-top .pp-iconbtn{width:40px;height:40px}
+html.ap #pp-app .pp-top .pp-gear,html.ap #pp-app .pp-header-tools [data-act=refresh]{display:none!important}
+html.ap #pp-app #pp-tr:not(:empty){width:100%;order:4;flex-basis:100%}
+html.ap #pp-app .pp-home .pp-overview-intro{padding:23px 20px!important;gap:6px}
+html.ap #pp-app .pp-home .pp-overview-intro h2{font-size:32px!important;line-height:1.08!important;max-width:12ch}
+html.ap #pp-app .sd-live-mascot{width:88px;height:119px}
+html.ap #pp-app .pp-home .pp-hero .pp-overview-intro p{font-size:12px!important;line-height:1.6}
+html.ap #pp-app .pp-home .pp-overview{border-radius:26px!important}
+html.ap #pp-app .pp-card{border-radius:24px!important}
+html.ap #pp-app .pp-quick a{min-height:92px!important}
+html.ap #pp-app .pp-quick .pp-ql{font-size:10px!important}
+html.ap #pp-app .sd-page-intro{gap:9px;margin:4px 0 24px}
+html.ap #pp-app .sd-page-intro h2{font-size:31px;max-width:15ch}
+html.ap #pp-app .sd-page-intro p{font-size:12px}
+html.ap #pp-app .sd-page-intro>.sd-art{width:94px;height:123px;margin:0 -2px 0 0}
+html.ap #pp-app .sd-local-note>.sd-art{width:88px;height:98px}
+html.ap #pp-app .sd-planner-banner{padding:22px 20px;min-height:210px;gap:12px;flex-wrap:wrap}
+html.ap #pp-app .sd-planner-banner>div{flex-basis:calc(100% - 97px)}
+html.ap #pp-app .sd-planner-banner b{font-size:27px}
+html.ap #pp-app .sd-banner-mark{width:75px;height:105px;order:2;margin:0}
+html.ap #pp-app .sd-banner-cta{order:3;flex-basis:100%;margin-left:0!important;width:100%;border-top:1px solid var(--sd-line);padding-top:14px}
+html.ap #pp-app .sd-portion-art{width:65px;height:70px;right:14px;top:14px}
+html.ap #pp-app .sd-art-section>.sd-illustrated-title{padding-right:76px!important;min-height:65px!important}
+html.ap #pp-app .pp-bulletin-head .sd-portion-art{width:85px;height:100px}
+html.ap #pp-app .pp-bulletin-head.sd-art-section{padding-right:100px;min-height:130px}
+}
+@media(max-width:350px){html.ap #pp-app header.pp-top{padding-inline:12px!important;gap:6px!important}html.ap #pp-app .pp-top .pp-iconbtn,html.ap #pp-app .pp-top .pp-search-trigger{width:36px;min-width:36px;height:38px}html.ap #pp-app .sd-live-mascot{width:66px}html.ap #pp-app .pp-home .pp-overview-intro h2{font-size:28px!important}html.ap #pp-app .sd-page-intro h2{font-size:27px}html.ap #pp-app .sd-page-intro>.sd-art{width:76px}}
+@media(prefers-reduced-motion:reduce){html.ap #pp-app .sd-motion-art,html.ap #pp-app .sd-motion-art *{animation:none!important;transition:none!important}}
+
+@keyframes sd45-buddy-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes sd45-buddy-wave{0%,18%,70%,100%{transform:rotate(0)}30%,51%{transform:rotate(14deg)}40%,60%{transform:rotate(-7deg)}}
+@keyframes sd45-buddy-blink{0%,42%,46%,93%,97%,100%{transform:scaleY(1)}44%,95%{transform:scaleY(.08)}}
+@keyframes sd45-buddy-shadow{0%,100%{transform:scaleX(1);opacity:.08}50%{transform:scaleX(.8);opacity:.04}}
+@keyframes sd45-buddy-spark{0%,100%{opacity:.22}50%{opacity:.6}}
+@keyframes sd45-paper-float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-4px) rotate(1deg)}}
+@keyframes sd45-gentle-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes sd45-soft-blink{0%,44%,48%,91%,95%,100%{transform:scaleY(1)}46%,93%{transform:scaleY(.08)}}
+@keyframes sd45-friendly-wave{0%,22%,80%,100%{transform:rotate(0)}36%,58%{transform:rotate(10deg)}46%,68%{transform:rotate(-6deg)}}
+@keyframes sd45-page-sway{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1.5deg)}}
+@keyframes sd45-sun-turn{to{transform:rotate(360deg)}}
+@keyframes sd45-cloud-drift{0%,100%{transform:translateX(-2px)}50%{transform:translateX(3px)}}
+@keyframes sd45-leaf-sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes sd45-bar-stretch{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.94)}}
+@keyframes sd45-star-tilt{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+@keyframes sd45-sparkle{0%,100%{opacity:.25}50%{opacity:.7}}
+@keyframes sd45-clock-tick{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(8deg)}}
+@keyframes sd45-steam-rise{0%,100%{transform:translateY(2px);opacity:.4}50%{transform:translateY(-4px);opacity:.8}}
+@keyframes sd45-ground-pulse{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.87)}}
+@keyframes sd45-line-reveal{from{stroke-dashoffset:600}to{stroke-dashoffset:0}}
+@keyframes sd45-scene-enter{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sd45-companion-breathe{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-4px) rotate(1deg)}}
+@keyframes sd45-clear-wave{0%,18%,78%,100%{transform:rotate(0)}31%,54%{transform:rotate(15deg)}42%,65%{transform:rotate(-10deg)}}
+@keyframes sd45-open-book{0%,100%{transform:rotate(-2.5deg) scaleX(1)}50%{transform:rotate(2deg) scaleX(.96)}}
+@keyframes sd45-clock-sweep{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes sd45-letter-delivery{0%,100%{transform:translate(0,0) rotate(-2deg)}45%{transform:translate(5px,-7px) rotate(7deg)}70%{transform:translate(-1px,-2px) rotate(-4deg)}}
+@keyframes sd45-bubble-hello{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-5px) scale(1.025)}}
+@keyframes sd45-notice-nod{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes sd45-leaf-greet{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@keyframes sd45-chart-breathe{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.9)}}
+@keyframes sd45-timeline-arrival{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sd45-row-arrive{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sd45-balance-reveal{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes sd45-chart-dot-arrive{from{opacity:0}to{opacity:1}}
+@keyframes sd45-checklist-tick{0%,15%{stroke-dashoffset:18;opacity:.4}35%,80%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:18;opacity:.4}}
+@keyframes sd45-pencil-think{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(6deg)}}
+@keyframes sd45-settings-turn{to{transform:rotate(360deg)}}
+@keyframes sd45-slider-breathe{0%,100%{transform:translateX(-4px)}50%{transform:translateX(5px)}}
+@keyframes sd45-bell-hello{0%,20%,70%,100%{transform:rotate(0)}30%,50%{transform:rotate(9deg)}40%,60%{transform:rotate(-9deg)}}
+@keyframes sd45-compass-think{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(22deg)}}
+/* Compact two-column primary actions retain all original portal actions. */
+@media(max-width:900px){html.ap #pp-app .pp-home-links{grid-template-columns:1fr 1fr!important;gap:9px!important}html.ap #pp-app .pp-home .pp-hero .pp-home-links>a{padding:11px 9px!important;gap:8px!important;min-height:70px!important}html.ap #pp-app .pp-home-links>a>.i:last-child{display:none}html.ap #pp-app .pp-home .pp-hero .pp-home-links .pp-qi{width:28px;height:31px;min-width:28px}html.ap #pp-app .pp-home-links .pp-t b{font-size:10px;line-height:1.4}html.ap #pp-app .pp-home .pp-hero .pp-home-links small{font-size:9px!important;line-height:1.5}html.ap #pp-app .pp-home-links .pp-chip{font-size:8px;margin:3px 0 0;padding:2px 4px}html.ap #pp-app .pp-top .pp-iconbtn,html.ap #pp-app .pp-top .pp-search-trigger{width:44px;min-width:44px;height:44px}}
+@media(max-width:350px){html.ap #pp-app .pp-top .pp-iconbtn,html.ap #pp-app .pp-top .pp-search-trigger{width:40px;min-width:40px;height:42px}html.ap #pp-app .pp-home .pp-hero .pp-home-links>a{gap:5px!important;padding:9px 7px!important}html.ap #pp-app .pp-home-links .pp-t b{font-size:9px}html.ap #pp-app .pp-home .pp-hero .pp-home-links .pp-qi{width:24px;height:28px;min-width:24px}}
+html.ap #pp-app .pp-wx-ic>.i{width:48px;height:48px;color:var(--sd-accent);stroke-width:1.4}
+html.ap #pp-app .pp-wx-meta .i{width:13px;height:13px;vertical-align:-2px;margin-right:4px;color:var(--sd-muted)}
+html.ap #pp-app .pp-wx-hrs .i{width:24px;height:24px;color:var(--sd-accent)}
+html.ap #pp-app .sd-planner-banner{display:flex!important}
+html.ap #pp-app .sd-planner-banner>div{min-width:0}
+/* 4.5.1 bugfix layer. Preserve v4.5 components and artwork; no navigation/feature replacement. */
+html.ap[data-ap-mode="dark"]{color-scheme:dark;--sd-paper:#191a19;--sd-surface:#222422;--sd-raised:#2c2f2b;--sd-ink:#eeeeE7;--sd-muted:#b3b7ad;--sd-line:#3b3e37;--sd-tint:#3b2e27;--sd-accent:#e6b296;--sd-glass:rgba(34,36,33,.96);--sd-good:#b6ddc6;--sd-good-bg:#293d31;--sd-risk:#f2b9ac;--sd-risk-bg:#452e29;--ap-card:var(--sd-surface);--ap-glass:var(--sd-glass);--ap-hair:var(--sd-line);--ap-text:var(--sd-ink);--ap-muted:var(--sd-muted)}
+html.ap #pp-app .pp-nav a[data-r="planner"]{color:var(--sd-muted)!important}
+html.ap #pp-app .pp-nav a[data-r="planner"] span::after{content:none!important;display:none!important}
+html.ap #pp-app .pp-nav a{position:relative;flex-shrink:0;transform:none!important;transition:background-color 170ms ease-out,color 170ms ease-out!important;isolation:isolate}
+html.ap #pp-app .pp-nav a.on,html.ap #pp-app .pp-nav a[data-r="planner"].on{background:var(--sd-tint)!important;color:var(--sd-accent)!important;font-weight:650}
+html.ap #pp-app .pp-nav a.on::before{left:0!important;top:11px;bottom:11px;width:3px;border-radius:6px;background:var(--sd-accent)!important}
+html.ap #pp-app .pp-nav a svg,html.ap #pp-app .pp-nav a:hover svg,html.ap #pp-app .pp-nav a.on svg{transform:none!important;animation:none!important;transition:color 170ms ease-out!important}
+html.ap #pp-app .pp-nav a:hover{background:var(--sd-raised)!important}
+html.ap #pp-app .pp-nav a.on:hover{background:var(--sd-tint)!important}
+html.ap #pp-app .pp-side{min-height:0;overflow:hidden;background:var(--sd-surface)!important}
+html.ap #pp-app .pp-nav{min-height:0;overscroll-behavior:contain;scrollbar-width:thin;padding-inline:2px}
+html.ap #pp-app .pp-nav-label,html.ap #pp-app .pp-nav .pp-sep,html.ap #pp-app .pp-brand,html.ap #pp-app .pp-me{flex-shrink:0}
+html.ap #pp-app .pp-me{min-width:0}.pp-me>div{min-width:0}
+html.ap #pp-app .pp-me b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(min-width:1201px){html.ap #pp-app .pp-side{width:246px;margin:12px 0 12px 12px;padding:22px 14px 16px}html.ap #pp-app .pp-brand{padding-bottom:20px}html.ap #pp-app .pp-nav{gap:3px}html.ap #pp-app .pp-nav a{padding:11px 13px;min-height:45px}html.ap #pp-app .pp-nav-label{margin-top:12px;margin-bottom:6px}}
+@media(min-width:901px) and (max-width:1200px){html.ap #pp-app .pp-side{width:82px}html.ap #pp-app .pp-nav-label{font-size:8px;text-align:center;letter-spacing:.03em;padding:12px 0 4px}html.ap #pp-app .pp-nav a{min-height:46px}html.ap #pp-app .pp-nav a.on::before{left:0!important}}
+/* Structural containment instead of an absolutely positioned decoration over actions. */
+html.ap #pp-app .sd-art-section>.sd-portion-art{position:static!important;float:right!important;width:58px!important;height:64px!important;margin:0 0 10px 16px;pointer-events:none}
+html.ap #pp-app .sd-art-section>.sd-illustrated-title{min-height:64px!important;padding-right:0!important;display:flex!important;flex-direction:column;align-items:flex-start;gap:6px}
+html.ap #pp-app .sd-art-section::after{content:"";display:table;clear:both}
+html.ap #pp-app .sd-current .sd-portion-art,html.ap #pp-app .sd-plan .sd-portion-art,html.ap #pp-app .sd-setup .sd-portion-art{display:none!important}
+html.ap #pp-app .sd-setup-summary{gap:18px;align-items:center}.sd-setup-summary>span:first-child{min-width:0;flex:1}.sd-fold-hint{flex:none;white-space:nowrap}
+html.ap #pp-app .sd-setup-summary small{overflow-wrap:anywhere;line-height:1.6}
+html.ap #pp-app .pp-card .pp-row{min-width:0}
+html.ap #pp-app .pp-card .pp-row>.pp-btn{flex-shrink:0}
+html.ap #pp-app .pp-stat .pp-ic{background:var(--sd-tint)!important;color:var(--sd-accent)!important;border:1px solid var(--sd-line);width:40px;height:40px;border-radius:12px!important;box-shadow:none!important;transform:none!important}
+html.ap #pp-app .pp-stat .pp-ic svg{width:22px;height:22px;stroke-width:1.6}
+html.ap #pp-app .pp-stat:hover .pp-ic{transform:none!important}
+html.ap[data-ap-mode="dark"] #pp-app :is(.pp-card,.pp-modal,.pp-sheet,.pp-dialog,.pp-rvform,.pp-rvmine,.pp-rvcms,.pp-top,.sd-course-availability,.sd-source,.sd-plan-total){color:var(--sd-ink);border-color:var(--sd-line)!important}
+html.ap[data-ap-mode="dark"] #pp-app :is(.pp-sheet,.pp-modal,.pp-dialog,.pp-search-box,.pp-select-list){background:var(--sd-surface)!important}
+html.ap[data-ap-mode="dark"] #pp-app :is(.pp-btn:not(.pri),.pp-iconbtn,.pp-starpick button){background:var(--sd-raised)!important;border-color:var(--sd-line)!important;color:var(--sd-ink)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-starpick button.on{background:var(--sd-tint)!important;color:#f3cb87!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-quick a .pp-qi{background:var(--sd-raised)!important;color:var(--sd-accent)!important;border-color:var(--sd-line)!important}
+html.ap #pp-app .pp-input:focus-visible,html.ap #pp-app :is(button,a):focus-visible{outline:2px solid var(--sd-accent)!important;outline-offset:3px}
+html.ap #pp-app .pp-rvcms[hidden]{display:none!important}
+html.ap #pp-app .pp-rvcms{animation:none!important;max-height:420px;scrollbar-width:thin;overscroll-behavior:contain}
+html.ap #pp-app .pp-rvdd{transition:background-color 160ms ease-out!important}
+html.ap #pp-app .pp-rvdd .i{transition:transform 200ms ease-out!important}
+html.ap #pp-app .pp-rvdd[aria-expanded="true"] .i{transform:rotate(180deg)}
+html.ap #pp-app .pp-starpick button{min-width:36px;min-height:40px;touch-action:manipulation;transition:color 150ms ease-out,background-color 150ms ease-out!important}
+html.ap #pp-app .pp-rvc[aria-busy="true"]{opacity:.8}
+@media(max-width:600px){html.ap #pp-app .sd-setup-summary{align-items:flex-start;gap:10px}html.ap #pp-app .sd-fold-hint{font-size:11px}html.ap #pp-app .sd-course-bottom{flex-wrap:wrap;gap:12px}html.ap #pp-app .pp-card .pp-row:has(>.pp-avatar){flex-wrap:wrap}html.ap #pp-app .pp-card .pp-row:has(>.pp-avatar)>div{flex:1;min-width:150px}html.ap #pp-app .pp-card .pp-row:has(>.pp-avatar)>.pp-btn{margin-left:0!important}html.ap #pp-app .pp-starpick{flex-wrap:wrap;gap:4px}html.ap #pp-app .pp-rvhead .pp-t{min-width:0}}
+@media(prefers-reduced-motion:reduce){html.ap #pp-app :is(.pp-nav a,.pp-nav a svg,.pp-rvcms,.pp-rvdd .i){transition:none!important;animation:none!important}}
+/* Strict next-semester planner states, retaining the 4.5 UI. */
+html.ap #pp-app .sd-course.sd-locked{border-style:dashed!important;box-shadow:none!important}
+html.ap #pp-app .sd-course [data-sd-add][disabled]{opacity:1!important;color:var(--sd-muted)!important;background:var(--sd-raised)!important;border:1px solid var(--sd-line)!important;cursor:not-allowed!important;transform:none!important;box-shadow:none!important}
+html.ap #pp-app .sd-course [data-sd-add] .i{width:15px;height:15px}
+html.ap #pp-app .sd-required-first{margin:18px 0 0;padding:15px 0;border-top:1px solid var(--sd-line)}
+html.ap #pp-app .sd-required-first h5{font-size:11px;letter-spacing:.04em;margin:0 0 10px;color:var(--sd-muted)}
+html.ap #pp-app .sd-required-first ul{margin:0;padding-left:17px}
+html.ap #pp-app .sd-required-first li{font-size:12px;line-height:1.7;margin:8px 0;color:var(--sd-ink);overflow-wrap:anywhere}
+html.ap #pp-app .sd-required-first li b{display:block;font-weight:600;font-size:12px}
+html.ap #pp-app .sd-required-first li small{display:block;color:var(--sd-muted);line-height:1.7;font-size:11px}
+html.ap #pp-app .sd-rule-group>small{font-weight:700;color:var(--sd-accent)!important}
+html.ap #pp-app .sd-course .sd-course-reason{min-height:0;overflow-wrap:anywhere;line-height:1.7}
+html.ap #pp-app .sd-parked{margin-top:18px;padding:14px 0;border-top:1px solid var(--sd-line);font-size:11px;line-height:1.7}
+html.ap #pp-app .sd-parked>p{color:var(--sd-muted);font-size:11px}
+html.ap #pp-app .sd-parked>div{padding:13px 0;border-bottom:1px solid var(--sd-line)}
+html.ap #pp-app .sd-parked small{display:block;color:var(--sd-muted);margin:5px 0}
+/* Approved-demo candidate: only presentation; v4.5.2 planner/review logic unchanged. */
+html.ap #pp-app{--sd-demo-upper:#eee9e1;--sd-demo-lower:#fffefa;--sd-demo-shadow:0 3px 16px rgba(55,43,28,.035)}
+html.ap[data-ap-mode=dark] #pp-app{--sd-demo-upper:#2c2e2a;--sd-demo-lower:#222422;--sd-demo-shadow:0 3px 16px rgba(0,0,0,.1)}
+/* One outer card, two surfaces, no extra nested card. */
+html.ap #pp-app .pp-home .pp-overview{overflow:hidden!important;padding:0!important;border-radius:25px!important;border:1px solid var(--sd-line)!important;box-shadow:var(--sd-demo-shadow)!important;display:flex;flex-direction:column}
+html.ap #pp-app .pp-home .pp-overview-intro{background:var(--sd-demo-upper)!important;border-radius:0!important;padding:30px 28px 27px!important;min-height:238px;align-items:center!important;gap:24px!important;border-bottom:1px solid color-mix(in srgb,var(--sd-line) 75%,var(--sd-accent) 25%)}
+html.ap #pp-app .pp-home .pp-overview-intro h2{font-size:43px!important;line-height:1.08!important;letter-spacing:-.05em!important;font-weight:400!important;max-width:12ch!important;margin:17px 0 15px!important}
+html.ap #pp-app .pp-home .pp-overview-intro p{margin:0!important;line-height:1.7!important}
+html.ap #pp-app .pp-home .pp-overview-body{background:var(--sd-demo-lower)!important;padding:23px 24px 24px!important;flex:1;display:flex;flex-direction:column;gap:20px}
+html.ap #pp-app .pp-home .pp-overview-body .pp-next{margin:0!important;border-radius:16px!important;min-height:70px;box-shadow:inset 0 1px 1px #00000003!important}
+html.ap #pp-app .pp-home .pp-home-links{margin:0!important;gap:10px!important}
+html.ap #pp-app .pp-home .pp-home-links>a{border-radius:15px!important;background:var(--sd-demo-lower)!important;box-shadow:0 1px 2px #00000002!important;min-height:72px!important}
+html.ap #pp-app .pp-home-links .pp-qi{border-radius:12px!important}
+html.ap #pp-app .sd-live-mascot{width:128px;height:140px;flex-shrink:0}
+/* Claude's warm editorial surfaces, restrained Apple-like alignment and edge detail. */
+html.ap #pp-app .pp-card{box-shadow:var(--sd-demo-shadow)!important}
+html.ap #pp-app .pp-iconbtn{border-radius:13px!important;box-shadow:inset 0 1px 0 #ffffff12!important}
+html.ap #pp-app .pp-input{border-radius:12px!important}
+html.ap #pp-app .pp-side{border-radius:23px!important;background:var(--sd-surface)!important;box-shadow:var(--sd-demo-shadow)!important}
+html.ap #pp-app .pp-nav a{border-radius:12px!important;min-height:43px!important;padding:10px 12px!important;font-size:13px!important;gap:11px}
+html.ap #pp-app .pp-nav a .i{width:18px;height:18px;stroke-width:1.65}
+html.ap #pp-app .pp-nav a.on{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sd-accent) 13%,transparent)!important}
+html.ap #pp-app .pp-nav a.on::before{left:0!important;top:12px;bottom:12px;width:3px}
+html.ap #pp-app .pp-nav a[data-r=planner] span::after{content:"NEW"!important;display:inline-block!important;font:600 9px/1.2 "Times New Roman",Times,serif!important;letter-spacing:.05em;margin-left:8px;padding:3px 5px;border:1px solid var(--sd-line);border-radius:5px;color:var(--sd-accent);background:var(--sd-surface);vertical-align:middle}
+html.ap #pp-app .pp-brand b{font-size:15px!important;letter-spacing:-.03em}
+html.ap #pp-app .pp-brand small{font-size:11px!important}
+html.ap #pp-app .pp-nav-label{letter-spacing:.16em!important;font-size:9px!important}
+@media(min-width:1201px){html.ap #pp-app .pp-side{width:238px;margin:12px 0 12px 12px;padding:20px 13px 15px}html.ap #pp-app .pp-brand{padding-bottom:19px}html.ap #pp-app .pp-nav{gap:3px}html.ap #pp-app .pp-nav-label{margin-top:11px;margin-bottom:6px}html.ap #pp-app .pp-me{padding-top:15px}}
+@media(min-width:901px) and (max-width:1200px){html.ap #pp-app .pp-side{width:82px;padding-inline:10px}html.ap #pp-app .pp-nav a{justify-content:center;padding:12px 0!important;min-height:45px!important}html.ap #pp-app .pp-nav a[data-r=planner]::after{content:"";position:absolute;right:10px;top:9px;width:5px;height:5px;border-radius:50%;background:var(--sd-accent)}html.ap #pp-app .pp-nav a[data-r=planner] span::after{display:none!important}}
+@media(max-width:900px){html.ap #pp-app .pp-home .pp-overview-intro{padding:25px 21px!important;gap:12px!important;min-height:210px}html.ap #pp-app .pp-home .pp-overview-intro h2{font-size:34px!important}html.ap #pp-app .pp-home .pp-overview-body{padding:19px 17px 20px!important;gap:16px}html.ap #pp-app .sd-live-mascot{width:84px;height:104px}html.ap #pp-app .pp-home .pp-home-links>a{min-height:75px!important}html.ap #pp-app .pp-home .pp-overview-body .pp-next{min-height:76px}}
+@media(max-width:350px){html.ap #pp-app .pp-home .pp-overview-intro{padding:23px 17px!important;gap:8px!important}html.ap #pp-app .pp-home .pp-overview-intro h2{font-size:29px!important}html.ap #pp-app .sd-live-mascot{width:65px;height:90px}}
+@media(min-width:1201px){html.ap #pp-app .pp-me{gap:9px!important}html.ap #pp-app .pp-me>div{flex:1;min-width:0}html.ap #pp-app .pp-me b{font-size:12px!important;line-height:1.4;white-space:normal!important;overflow:visible!important;text-overflow:clip!important}html.ap #pp-app .pp-me>.pp-avatar{width:34px;height:34px;min-width:34px;font-size:12px}html.ap #pp-app .pp-me>.pp-signout{width:34px;height:36px;min-width:34px}}
+/* Subtle Apple finish over the approved warm Claude-style layout. No layout/academic logic changes. */
+html.ap #pp-app{--sd-control-highlight:rgba(255,255,255,.65);--sd-control-shadow:0 1px 2px rgba(32,28,21,.035)}
+html.ap[data-ap-mode=dark] #pp-app{--sd-control-highlight:rgba(255,255,255,.065);--sd-control-shadow:0 1px 2px rgba(0,0,0,.10)}
+html.ap #pp-app .pp-btn{border-radius:12px!important;font-weight:600;letter-spacing:-.012em;box-shadow:inset 0 1px 0 var(--sd-control-highlight),var(--sd-control-shadow)!important}
+html.ap #pp-app .pp-btn.pri{box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 1px 3px rgba(25,25,20,.10)!important}
+html.ap #pp-app .pp-btn[disabled],html.ap #pp-app .sd-course [data-sd-add][disabled]{box-shadow:none!important}
+html.ap #pp-app .pp-iconbtn{box-shadow:inset 0 1px 0 var(--sd-control-highlight),var(--sd-control-shadow)!important}
+html.ap #pp-app .pp-tabs{padding:4px;border:1px solid var(--sd-line);border-radius:13px!important;background:var(--sd-raised)!important;gap:3px}
+html.ap #pp-app .pp-tabs button{border-radius:9px!important;letter-spacing:-.01em;box-shadow:none!important;background:transparent!important;color:var(--sd-muted)!important}
+html.ap #pp-app .pp-tabs button.on{background:var(--sd-surface)!important;color:var(--sd-ink)!important;box-shadow:0 1px 3px rgba(20,20,15,.08),inset 0 1px 0 var(--sd-control-highlight)!important}
+html.ap #pp-app .pp-input{box-shadow:inset 0 1px 2px rgba(25,25,20,.025)!important}
+html.ap #pp-app .pp-input:focus-visible{outline:2px solid color-mix(in srgb,var(--sd-accent) 55%,transparent)!important;outline-offset:2px;border-color:var(--sd-accent)!important}
+html.ap #pp-app .pp-home-links>a{border-color:var(--sd-line)!important}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){html.ap[data-ap-anim="1"][data-ap-performance="0"] #pp-app .pp-btn{transition:background-color 160ms ease-out,border-color 160ms ease-out,box-shadow 160ms ease-out!important}html.ap #pp-app .pp-btn:not([disabled]):hover{border-color:color-mix(in srgb,var(--sd-accent) 35%,var(--sd-line))!important}}
+@media(prefers-reduced-motion:reduce){html.ap #pp-app .pp-btn,html.ap #pp-app .pp-tabs button{transition:none!important}}

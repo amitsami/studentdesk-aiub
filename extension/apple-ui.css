@@ -1,0 +1,384 @@
+/* Apple Studio · user-requested 4.5.0 refresh of 4.5.3.
+   Presentation only. Keep Warm Studio colors, illustrations, all routes and planner rules.
+   Solid content surfaces; progressive glass only on stationary navigation. */
+html.ap #pp-app {
+ --ui-radius:22px;--ui-control:12px;--ui-edge:rgba(255,255,255,.7);
+ --ui-shadow:0 2px 5px rgba(36,31,23,.025),0 12px 28px -22px rgba(36,31,23,.18);
+ --ui-float:0 16px 46px -18px rgba(36,31,23,.24);--ui-ring:rgba(141,77,54,.24);
+ font-family:"Times New Roman",Times,serif!important;
+ font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+html.ap[data-ap-mode=dark] #pp-app {
+ --ui-edge:rgba(255,255,255,.065);--ui-shadow:0 2px 5px #00000012,0 12px 28px -22px #00000050;
+ --ui-float:0 16px 46px -18px #00000080;--ui-ring:rgba(227,181,157,.28);
+}
+html.ap #pp-app :is(button,input,textarea,select,a){-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html.ap #pp-app :is(button,a,input,textarea,select,summary,[tabindex]):focus-visible {
+ outline:2px solid var(--sd-accent)!important;outline-offset:3px;scroll-margin-block:24px;
+}
+html.ap #pp-app :is(.pp-scroll,.pp-nav,.pp-sheet-body,.pp-rvcms){scrollbar-width:thin;scrollbar-color:var(--sd-line) transparent;overscroll-behavior:contain}
+html.ap #pp-app .pp-scroll{scroll-padding-block:24px 112px;-webkit-overflow-scrolling:touch}
+html.ap #pp-app .pp-scroll:focus{outline:none}
+html.ap #pp-app .pp-card{border-radius:var(--ui-radius)!important;box-shadow:var(--ui-shadow)!important;overflow-wrap:break-word}
+html.ap #pp-app :is(.pp-card,.pp-list,.pp-grid,.pp-t,.sd-work-main){min-width:0}
+html.ap #pp-app .pp-grid{gap:18px}
+html.ap #pp-app h3{letter-spacing:-.025em;line-height:1.35}
+html.ap #pp-app .pp-eyebrow{line-height:1.6!important}
+html.ap #pp-app :is(.pp-stat b,.pp-money,.sd-plan-total b){font-variant-numeric:tabular-nums;letter-spacing:-.035em}
+/* Tactile controls: uniform geometry, no bounce and no expensive backdrop on cards. */
+html.ap #pp-app .pp-btn{min-height:42px;border-radius:var(--ui-control)!important;padding:10px 15px;line-height:1.35;font-weight:600!important;letter-spacing:-.015em;box-shadow:inset 0 1px 0 var(--ui-edge),0 1px 2px #00000006!important}
+html.ap #pp-app .pp-btn.pri{box-shadow:inset 0 1px 0 #ffffff1c,0 2px 4px #00000014!important}
+html.ap #pp-app .pp-iconbtn{min-width:42px;min-height:42px;border-radius:13px!important;box-shadow:inset 0 1px 0 var(--ui-edge),0 1px 2px #00000005!important}
+html.ap #pp-app :is(.pp-btn,.pp-iconbtn):not([disabled]):active{transform:scale(.98)!important}
+html.ap #pp-app :is(.pp-btn,.pp-iconbtn)[disabled]{cursor:not-allowed;transform:none!important;box-shadow:none!important}
+html.ap #pp-app .pp-input{min-height:44px;padding:11px 13px!important;line-height:1.45;border-radius:12px!important;box-shadow:inset 0 1px 2px #00000004!important;background:var(--sd-surface)!important;color:var(--sd-ink)!important;border:1px solid var(--sd-line)!important;max-width:100%}
+html.ap #pp-app textarea.pp-input{min-height:115px;resize:vertical}
+html.ap #pp-app .pp-input::placeholder{color:var(--sd-muted);opacity:.9}
+html.ap #pp-app .pp-input:focus-visible{border-color:var(--sd-accent)!important;box-shadow:0 0 0 4px var(--ui-ring)!important;outline-offset:1px}
+html.ap #pp-app :is(input[type=checkbox],input[type=radio]){accent-color:var(--sd-accent);flex-shrink:0}
+html.ap #pp-app .pp-tabs{display:inline-flex;max-width:100%;gap:3px;padding:4px;border-radius:13px!important;border:1px solid var(--sd-line);background:var(--sd-raised)!important;overflow-x:auto;scrollbar-width:none}
+html.ap #pp-app .pp-tabs button{min-height:36px;flex-shrink:0;padding:8px 13px;border:0;border-radius:9px!important;color:var(--sd-muted)!important;background:transparent!important;line-height:1.3;font-weight:600;font-size:12px}
+html.ap #pp-app .pp-tabs button.on{color:var(--sd-ink)!important;background:var(--sd-surface)!important;box-shadow:0 1px 4px #00000012,inset 0 1px 0 var(--ui-edge)!important}
+html.ap #pp-app :is(.pp-chip,.sd-status){border-radius:8px;line-height:1.45;letter-spacing:0}
+/* Desktop: stable selected state, generous scan targets, short-window scrolling. */
+html.ap #pp-app .pp-side{border-radius:24px!important;box-shadow:var(--ui-shadow)!important}
+html.ap #pp-app .pp-nav{scroll-padding-block:12px;padding-bottom:8px}
+html.ap #pp-app .pp-nav a{min-height:44px!important;line-height:1.35;border-radius:11px!important;transform:none!important;transition:background-color 160ms ease-out,color 160ms ease-out!important}
+html.ap #pp-app .pp-nav a.on{color:var(--sd-accent)!important;background:var(--sd-tint)!important;box-shadow:inset 0 1px 0 var(--ui-edge),inset 0 0 0 1px var(--sd-line)!important}
+html.ap #pp-app .pp-nav a.on::before{display:none!important}
+html.ap #pp-app .pp-nav a.on svg{transform:none!important;animation:none!important}
+html.ap #pp-app .pp-nav .pp-sep{margin-block:16px}
+html.ap #pp-app .pp-nav-label{padding-left:12px;font-weight:650;letter-spacing:.13em!important}
+html.ap #pp-app .pp-me{padding-inline:4px;gap:10px!important;min-height:65px}
+html.ap #pp-app .pp-me b{font-weight:600}
+html.ap #pp-app header.pp-top{border-radius:0 0 22px 22px!important;border-bottom:1px solid var(--sd-line);box-shadow:0 2px 10px #00000003!important}
+html.ap #pp-app .pp-top h1{font-weight:650!important;letter-spacing:-.045em;line-height:1.15}
+html.ap #pp-app .pp-sub{line-height:1.55}
+html.ap #pp-app .pp-search-trigger{box-shadow:inset 0 1px 0 var(--ui-edge)!important}
+html.ap #pp-app .pp-appearance-tools{gap:7px}
+/* Home: preserve approved one-box, two-surface card and all quick actions. */
+html.ap #pp-app .pp-home .pp-overview{border-radius:var(--ui-radius)!important;box-shadow:var(--ui-shadow)!important}
+html.ap #pp-app .pp-home .pp-overview-intro{border-bottom:1px solid var(--sd-line)!important}
+html.ap #pp-app .pp-home .pp-home-links>a{border-radius:15px!important;align-items:center;min-width:0;box-shadow:inset 0 1px 0 var(--ui-edge)!important}
+html.ap #pp-app .pp-home .pp-home-links .pp-t{min-width:0}
+html.ap #pp-app .pp-home-links small{line-height:1.55!important;white-space:normal}
+html.ap #pp-app .pp-home .pp-overview-body .pp-next{border-radius:16px!important}
+html.ap #pp-app .pp-quick a{border:1px solid transparent;transition:background-color 160ms ease-out,border-color 160ms ease-out!important}
+html.ap #pp-app .pp-quick a .pp-qi{box-shadow:inset 0 1px 0 var(--ui-edge),0 2px 3px #00000004!important;border-radius:15px!important}
+html.ap #pp-app .pp-stat{padding:21px!important}
+html.ap #pp-app .pp-stat .pp-ic{border-radius:12px!important;box-shadow:inset 0 1px 0 var(--ui-edge)!important}
+html.ap #pp-app .pp-item{padding-block:13px;border-radius:10px!important}
+html.ap #pp-app .pp-course{border-radius:13px!important;overflow-wrap:anywhere}
+html.ap #pp-app .pp-list{overflow:hidden;border-radius:13px}
+html.ap #pp-app .pp-week-wrap{border-radius:14px;scrollbar-width:thin;overscroll-behavior-x:contain}
+html.ap #pp-app .pp-blk{border-radius:13px!important;box-shadow:0 4px 10px #00000016!important;text-shadow:none}
+html.ap #pp-app .pp-chart text{font-size:9px}
+/* Planner: less wasted whitespace, prominent prerequisites, no eligibility changes. */
+html.ap #pp-app .sd-workspace{gap:20px}
+html.ap #pp-app .sd-workspace .sd-plan{border-radius:20px!important;box-shadow:var(--ui-shadow)!important}
+html.ap #pp-app #sd-course-list{gap:16px;align-items:start}
+html.ap #pp-app .sd-course{border-radius:20px!important;padding:21px!important}
+html.ap #pp-app .sd-course h4{margin-top:17px;font-weight:600;letter-spacing:-.025em}
+html.ap #pp-app .sd-course-reason{flex:initial;margin-bottom:20px;line-height:1.7!important}
+html.ap #pp-app .sd-course-bottom{margin-top:0}
+html.ap #pp-app .sd-required-first{padding-block:14px;margin-top:17px}
+html.ap #pp-app .sd-required-first h5{font-size:11px;letter-spacing:.025em}
+html.ap #pp-app .sd-required-first li{margin-block:7px}
+html.ap #pp-app .sd-course-availability{border-radius:13px!important}
+html.ap #pp-app .sd-course summary{min-height:44px}
+html.ap #pp-app .sd-search-row{gap:10px}
+html.ap #pp-app .sd-setup-summary{min-height:48px}
+html.ap #pp-app .sd-source{border-radius:14px}
+html.ap #pp-app .sd-check{min-height:38px;align-items:flex-start;line-height:1.65}
+html.ap #pp-app .sd-plan-item button{border-radius:10px;min-width:44px;min-height:44px}
+html.ap #pp-app .sd-plan-item button:hover{background:var(--sd-raised)}
+/* Reviews, settings, dialogs and search use the same warm system surfaces. */
+html.ap #pp-app :is(.pp-rvc,.pp-rvgroup){border-radius:20px!important;box-shadow:var(--ui-shadow)!important;overflow:hidden}
+html.ap #pp-app .pp-rvc textarea{line-height:1.6}
+html.ap #pp-app .pp-rvcms{border-radius:14px!important;background:var(--sd-paper)!important}
+html.ap #pp-app .pp-starpick button{border-radius:10px!important;min-width:40px;min-height:44px}
+html.ap #pp-app :is(.pp-sheet,.pp-logout-dialog,.pp-cmd-in){border-radius:24px!important;background:var(--sd-surface)!important;color:var(--sd-ink)!important;border:1px solid var(--sd-line)!important;box-shadow:var(--ui-float)!important}
+html.ap #pp-app :is(.pp-sheet-head,.pp-sheet-actions,.pp-sheet>header){background:var(--sd-surface)!important;border-color:var(--sd-line)!important}
+html.ap #pp-app .pp-sheet-body{background:var(--sd-paper)!important}
+html.ap #pp-app #pp-cmd{background:rgba(22,24,22,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+html.ap #pp-app .pp-cmd-in{overflow:hidden;max-height:calc(100dvh - 64px)}
+html.ap #pp-app .pp-cmd-q{border-color:var(--sd-line)!important;background:var(--sd-surface)!important}
+html.ap #pp-app .pp-cmd-q input{font-size:16px;color:var(--sd-ink)!important;min-width:0;min-height:46px;background:transparent}
+html.ap #pp-app .pp-cmd-l{padding:8px;overscroll-behavior:contain;scrollbar-width:thin}
+html.ap #pp-app .pp-cmd-l a{min-height:48px;border-radius:11px;color:var(--sd-ink)!important}
+html.ap #pp-app .pp-cmd-l a.on{background:var(--sd-tint)!important;color:var(--sd-accent)!important}
+html.ap #pp-app .pp-cmd-l small{color:var(--sd-muted)!important}
+html.ap #pp-app .pp-mode-switch{box-shadow:inset 0 1px 2px #00000012}
+html.ap #pp-app .pp-mode-switch i{box-shadow:0 1px 3px #00000020}
+html.ap #pp-app .pp-toast{border-radius:16px!important;max-width:calc(100vw - 32px);padding:13px 18px!important;background:var(--sd-surface)!important;border:1px solid var(--sd-line)!important;color:var(--sd-ink)!important;box-shadow:var(--ui-float)!important;line-height:1.5;pointer-events:none}
+html.ap[data-ap-mode=dark] #pp-app :is(.pp-input,.pp-cmd-q,.pp-rvc textarea){color-scheme:dark}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(n) .pp-qi{background:var(--sd-raised)!important;color:var(--sd-accent)!important;border-color:var(--sd-line)!important}
+/* Tablet rail: cover the entire 901–1200 breakpoint consistently. */
+@media(min-width:1201px){
+ html.ap #pp-app .pp-side{width:242px;margin:12px 0 12px 12px;padding:20px 14px 14px}
+ html.ap #pp-app .pp-nav a{padding:11px 12px!important;font-size:13px!important}
+ html.ap #pp-app .pp-scroll{padding-inline:30px}
+ html.ap #pp-app .pp-me b{white-space:normal!important;overflow-wrap:anywhere}
+}
+@media(min-width:901px) and (max-width:1200px){
+ html.ap #pp-app .pp-side{width:80px;padding:18px 9px}
+ html.ap #pp-app :is(.pp-brand>div,.pp-nav a span,.pp-nav .pp-badge,.pp-me>div,.pp-me .pp-iconbtn){display:none!important}
+ html.ap #pp-app .pp-brand{justify-content:center;padding-inline:0}
+ html.ap #pp-app .pp-nav a{justify-content:center;padding:12px 0!important;min-height:46px!important}
+ html.ap #pp-app .pp-nav-label{padding-inline:0;letter-spacing:.02em!important;font-size:8px!important;text-align:center}
+ html.ap #pp-app .pp-me{justify-content:center;padding-inline:0}
+ html.ap #pp-app .pp-g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html.ap #pp-app .pp-scroll{padding-inline:22px}
+ html.ap #pp-app .sd-workspace{grid-template-columns:minmax(0,1fr) 255px;gap:16px}
+ html.ap #pp-app #sd-course-list{grid-template-columns:minmax(0,1fr)}
+}
+@media(min-width:901px) and (max-height:800px){
+ html.ap #pp-app .pp-side{padding-top:14px;padding-bottom:10px}
+ html.ap #pp-app .pp-brand{padding-bottom:12px}
+ html.ap #pp-app .pp-nav-label{margin-top:7px;margin-bottom:3px}
+ html.ap #pp-app .pp-nav .pp-sep{margin-block:10px}
+ html.ap #pp-app .pp-nav{gap:1px}
+}
+/* Phone: comfortable reading size, touch targets and keyboard-safe floating dock. */
+@media(max-width:900px){
+ html.ap #pp-app{font-size:14px}
+ html.ap #pp-app .pp-top{padding-left:16px;padding-right:16px;gap:9px}
+ html.ap #pp-app .pp-top h1{font-size:22px!important}
+ html.ap #pp-app .pp-sub{font-size:12px!important;line-height:1.55}
+ html.ap #pp-app .pp-scroll{padding:14px 14px calc(118px + env(safe-area-inset-bottom))!important;scroll-padding-bottom:128px}
+ html.ap #pp-app .pp-grid{gap:14px}
+ html.ap #pp-app .pp-card{padding:18px;border-radius:20px!important}
+ html.ap #pp-app :is(.pp-btn,.pp-iconbtn,.pp-tabs button){min-height:44px}
+ html.ap #pp-app .pp-input{font-size:16px!important;min-height:46px}
+ html.ap #pp-app textarea{font-size:16px!important}
+ html.ap #pp-app .pp-tabs{max-width:100%;flex-wrap:nowrap;overflow-x:auto}
+ html.ap #pp-app .pp-tabs button{font-size:12px;padding-inline:12px}
+ html.ap #pp-app .pp-tabbar{left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(10px + env(safe-area-inset-bottom));padding:5px;gap:2px;border-radius:23px!important;background:var(--sd-surface)!important;border:1px solid var(--sd-line)!important;box-shadow:var(--ui-float),inset 0 1px 0 var(--ui-edge)!important}
+ html.ap #pp-app .pp-tabbar a{min-height:54px;border-radius:18px!important;font-size:10px;line-height:1.25;gap:4px;padding:7px 1px;color:var(--sd-muted)!important}
+ html.ap #pp-app .pp-tabbar a.on{color:var(--sd-accent)!important}
+ html.ap #pp-app .pp-tabbar a svg{width:21px;height:21px;stroke-width:1.7;transform:none!important;animation:none!important}
+ html.ap #pp-app .pp-tabbar .pp-pill{border-radius:17px!important;top:5px;bottom:5px;background:var(--sd-tint)!important;transition:left 190ms ease-out,width 190ms ease-out!important}
+ html.ap #pp-app .pp-toast{bottom:calc(93px + env(safe-area-inset-bottom))!important;font-size:13px;width:max-content;max-width:calc(100vw - 32px);text-align:center}
+ html.ap #pp-app .pp-home .pp-overview-intro{padding:26px 22px!important;min-height:215px}
+ html.ap #pp-app .pp-home .pp-overview-body{padding:18px!important;gap:16px}
+ html.ap #pp-app .pp-quick a{min-height:92px!important}
+ html.ap #pp-app .pp-quick .pp-ql{font-size:11px!important;line-height:1.4}
+ html.ap #pp-app .sd-page-intro{gap:16px;margin-bottom:22px}
+ html.ap #pp-app .sd-page-intro h2{font-size:31px;line-height:1.12}
+ html.ap #pp-app .sd-page-intro>.sd-art{width:84px;height:98px;margin:0}
+ html.ap #pp-app .pp-stat{padding:17px!important}
+ html.ap #pp-app .pp-stat b{font-size:26px;line-height:1.2}
+ html.ap #pp-app .sd-workspace{grid-template-columns:minmax(0,1fr);gap:18px}
+ html.ap #pp-app .sd-plan{position:static!important}
+ html.ap #pp-app .sd-course{padding:20px!important}
+ html.ap #pp-app .sd-required-first li b{font-size:13px}
+ html.ap #pp-app .sd-required-first li small{font-size:12px;line-height:1.65}
+ html.ap #pp-app .sd-course-bottom>span{font-size:12px}
+ html.ap #pp-app .pp-sheet{max-height:calc(100dvh - 24px - env(safe-area-inset-top));border-radius:22px!important}
+ html.ap #pp-app .pp-sheet-head,html.ap #pp-app .pp-sheet-body{padding:19px}
+ html.ap #pp-app .pp-sheet-actions .pp-btn{flex:1;min-width:120px}
+ html.ap #pp-app .pp-cmd-in{max-height:calc(100dvh - 32px - env(safe-area-inset-top));border-radius:21px!important}
+ html.ap #pp-app:has(input:focus,textarea:focus) .pp-tabbar{visibility:hidden;pointer-events:none}
+}
+@media(max-width:480px){
+ html.ap #pp-app .pp-home .pp-home-links{grid-template-columns:minmax(0,1fr)!important;gap:10px!important}
+ html.ap #pp-app .pp-home .pp-hero .pp-home-links>a{padding:13px 14px!important;gap:12px!important;min-height:76px!important}
+ html.ap #pp-app .pp-home .pp-hero .pp-home-links .pp-qi{width:36px;height:38px;min-width:36px}
+ html.ap #pp-app .pp-home .pp-home-links .pp-t b{font-size:13px!important;line-height:1.4}
+ html.ap #pp-app .pp-home .pp-hero .pp-home-links small{font-size:12px!important;line-height:1.5}
+ html.ap #pp-app .pp-home .pp-home-links .pp-chip{font-size:10px!important}
+ html.ap #pp-app .pp-home .pp-home-links>a>.i:last-child{display:block;width:16px;height:16px}
+ html.ap #pp-app .sd-search-row{grid-template-columns:minmax(0,1fr)}
+ html.ap #pp-app .sd-source{align-items:flex-start;flex-direction:column;gap:12px}
+ html.ap #pp-app .sd-planner-banner{padding:22px 20px;gap:12px}
+ html.ap #pp-app .sd-planner-banner b{font-size:26px}
+ html.ap #pp-app .sd-banner-mark{width:70px;height:88px}
+ html.ap #pp-app .sd-planner-banner .sd-banner-cta{min-height:44px}
+ html.ap #pp-app .pp-rvhead{align-items:flex-start}
+ html.ap #pp-app .pp-rvdd{min-width:44px;min-height:44px}
+}
+@media(hover:hover){
+ html.ap #pp-app .pp-btn:not([disabled]):hover{border-color:var(--sd-accent)!important}
+ html.ap #pp-app .pp-quick a:hover{background:var(--sd-raised)!important;border-color:var(--sd-line)}
+ html.ap #pp-app .pp-home-links>a:hover{background:var(--sd-raised)!important}
+}
+@supports(backdrop-filter:blur(12px)){
+ html.ap #pp-app .pp-top{backdrop-filter:blur(16px) saturate(115%)!important;-webkit-backdrop-filter:blur(16px) saturate(115%)!important}
+}
+@media(prefers-reduced-motion:reduce){html.ap #pp-app *,html.ap #pp-app *::before,html.ap #pp-app *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+html.ap[data-ap-performance="1"] #pp-app :is(.pp-top,.pp-tabbar,#pp-cmd){backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html.ap[data-ap-anim="0"] #pp-app *,html.ap[data-ap-performance="1"] #pp-app *{transition:none!important}
+@media(prefers-contrast:more){html.ap #pp-app :is(.pp-card,.pp-btn,.pp-input,.pp-side,.pp-tabbar){border-color:var(--sd-muted)!important}html.ap #pp-app .pp-sub{color:var(--sd-ink)!important}}
+@media(forced-colors:active){html.ap #pp-app :is(.pp-nav a.on,.pp-tabbar a.on,.pp-tabs button.on){outline:2px solid Highlight!important}html.ap #pp-app :is(.pp-btn,.pp-input){border:1px solid ButtonText!important}}
+/* Login uses the real portal form, not the app shell. Never replace its action or captcha. */
+html.ap.ap-login {--ap-accent:var(--sd-accent);--ap-text:var(--sd-ink);--ap-muted:var(--sd-muted);--ap-hair:var(--sd-line);--ap-glass:var(--sd-surface);--ap-glass-strong:var(--sd-surface);color-scheme:light}
+html.ap.ap-login[data-ap-mode=dark]{color-scheme:dark}
+html.ap.ap-login,html.ap.ap-login body{height:auto!important;min-height:100%;overflow:auto!important;background:var(--sd-paper)!important;color:var(--sd-ink)!important;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important}
+html.ap.ap-login body>div:not([id^=ap-]){min-height:100vh;min-height:100dvh;align-items:center;padding:30px 20px!important}
+html.ap.ap-login .login-form{width:100%!important;max-width:440px!important;position:relative!important;padding:29px 32px 25px!important;margin:auto!important;background:var(--sd-surface)!important;border:1px solid var(--sd-line)!important;border-radius:25px!important;box-shadow:0 3px 10px #2c302c04,0 24px 64px -32px #2c302c2b!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;animation:none!important;overflow:visible}
+html.ap.ap-login .login-form::before{display:none!important}
+html.ap.ap-login .login-form img:not(#CaptchaImage){width:52px!important;height:52px!important;object-fit:contain;border-radius:14px!important;box-shadow:none!important;animation:none!important;transform:none!important;margin:0!important}
+html.ap.ap-login .login-form>.row{gap:0}
+html.ap.ap-login blockquote{margin:10px auto 0!important;max-width:31ch}
+html.ap.ap-login .aiub_title{font-size:11px!important;line-height:1.55!important;font-weight:600!important;letter-spacing:.055em;color:var(--sd-muted)!important;background:none!important;-webkit-text-fill-color:var(--sd-muted)!important}
+html.ap.ap-login .aiub_slogan{font-size:11px!important;line-height:1.4;font-style:normal!important;margin-top:4px;color:var(--sd-muted)!important}
+html.ap.ap-login #ap-login-brand{font-size:9px;letter-spacing:.17em;font-weight:650;color:var(--sd-accent);margin-top:25px}
+html.ap.ap-login #ap-greet{font:400 36px/1.15 "Times New Roman",Times,serif!important;letter-spacing:-.045em!important;margin:9px 0 0!important;color:var(--sd-ink)!important}
+html.ap.ap-login .login_header{font-size:13px!important;line-height:1.65;color:var(--sd-muted)!important;margin:10px 0 22px!important}
+html.ap.ap-login .form-group{margin-bottom:15px!important;min-width:0}
+html.ap.ap-login .ap-login-label{display:block;text-align:left;font-size:12px;font-weight:600;line-height:1.4;color:var(--sd-ink);margin:0 0 7px}
+html.ap.ap-login :is(#username,#password,#CaptchaInputText){display:block;width:100%;height:48px!important;min-height:48px;padding:10px 44px 10px 42px!important;border:1px solid var(--sd-line)!important;border-radius:12px!important;background:var(--sd-paper)!important;background-image:none!important;color:var(--sd-ink)!important;font-size:16px!important;font-weight:400!important;line-height:1.4!important;letter-spacing:0!important;box-shadow:inset 0 1px 2px #00000003!important;transition:border-color .15s ease,box-shadow .15s ease}
+html.ap.ap-login :is(#username,#password,#CaptchaInputText)::placeholder{color:var(--sd-muted);opacity:.8;font-weight:400}
+html.ap.ap-login :is(#username,#password,#CaptchaInputText):focus{outline:2px solid color-mix(in srgb,var(--sd-accent) 55%,transparent)!important;outline-offset:2px;border-color:var(--sd-accent)!important;box-shadow:none!important}
+html.ap.ap-login :is(#username,#password,#CaptchaInputText):-webkit-autofill{box-shadow:0 0 0 1000px var(--sd-raised) inset!important;-webkit-text-fill-color:var(--sd-ink)!important;caret-color:var(--sd-ink)!important}
+html.ap.ap-login :is(#username,#password,#CaptchaInputText):autofill{background:var(--sd-raised)!important;color:var(--sd-ink)!important}
+html.ap.ap-login .ap-ico{width:18px;height:18px;left:14px;top:39px;color:var(--sd-muted)}
+html.ap.ap-login .ap-eye{right:4px;top:27px;width:42px;height:42px;border-radius:10px;color:var(--sd-muted)}
+html.ap.ap-login .ap-eye:focus-visible{outline:2px solid var(--sd-accent);outline-offset:2px}
+html.ap.ap-login #captcha{background:var(--sd-raised)!important;border:1px solid var(--sd-line)!important;padding:16px!important;border-radius:16px!important;margin-block:20px 17px!important}
+html.ap.ap-login #captcha .row{display:flex!important;flex-direction:row!important;align-items:center;justify-content:center;gap:10px}
+html.ap.ap-login #captcha .row>div{min-width:0}
+html.ap.ap-login #CaptchaImage{width:auto!important;max-width:calc(100% - 56px)!important;height:46px!important;object-fit:contain;vertical-align:middle;border-radius:8px!important;box-shadow:none!important;background:white!important;animation:none!important;transform:none!important}
+html.ap.ap-login #captcha .btn{width:42px!important;height:44px!important;min-width:42px;border-radius:11px!important;border:1px solid var(--sd-line)!important;background:var(--sd-surface)!important;background-image:none!important;color:var(--sd-accent)!important;box-shadow:0 1px 2px #00000005!important;text-shadow:none!important;margin-left:8px}
+html.ap.ap-login #captcha label{font-size:12px!important;font-weight:500!important;text-align:left!important;margin:13px 0 7px!important;color:var(--sd-muted)!important}
+html.ap.ap-login #CaptchaInputText{padding:10px 14px!important;text-align:left!important;background:var(--sd-surface)!important;letter-spacing:0!important}
+html.ap.ap-login #captcha .form-group:last-child{margin-bottom:0!important}
+html.ap.ap-login button[type=submit]{width:100%;height:48px!important;min-height:48px;border:1px solid var(--sd-ink)!important;border-radius:12px!important;background:var(--sd-ink)!important;background-image:none!important;color:var(--sd-surface)!important;font-size:14px!important;font-weight:600!important;letter-spacing:-.01em;text-shadow:none!important;box-shadow:inset 0 1px 0 #ffffff12,0 2px 4px #00000012!important;margin-top:3px!important}
+html.ap.ap-login button[type=submit]:hover{opacity:.94;transform:none!important}
+html.ap.ap-login :is(button,a):focus-visible{outline:2px solid var(--sd-accent)!important;outline-offset:3px}
+html.ap.ap-login :is(.field-validation-error,.validation-summary-errors){color:var(--sd-risk)!important;font-size:12px;line-height:1.6;display:block;margin-top:7px;text-align:left}
+html.ap.ap-login .input-validation-error{border-color:var(--sd-risk)!important}
+html.ap.ap-login .login_forgotpassword{margin-top:17px;font-size:12px;line-height:1.6}
+html.ap.ap-login .login_forgotpassword a{color:var(--sd-accent)!important;font-weight:500}
+html.ap.ap-login #ap-foot{max-width:34ch;margin:20px auto 0!important;padding-top:17px;border-top:1px solid var(--sd-line);font-size:11px!important;line-height:1.65;color:var(--sd-muted)!important;opacity:1}
+html.ap.ap-login #ap-fab{width:44px;height:44px;right:18px;bottom:18px;border:1px solid var(--sd-line)!important;border-radius:14px!important;background:var(--sd-surface)!important;color:var(--sd-accent)!important;box-shadow:0 3px 10px #0000000b!important}
+html.ap.ap-login[data-ap-mode=dark] .login-form{box-shadow:0 24px 64px -32px #00000080!important}
+@media(max-width:600px){html.ap.ap-login body>div:not([id^=ap-]){padding:20px 16px calc(24px + env(safe-area-inset-bottom))!important}html.ap.ap-login .login-form{max-width:420px!important;padding:26px 23px 22px!important;border-radius:23px!important}html.ap.ap-login #ap-greet{font-size:33px!important}html.ap.ap-login #ap-fab{bottom:calc(14px + env(safe-area-inset-bottom));right:14px}html.ap.ap-login #ap-panel{max-height:calc(100dvh - 100px)}}
+@media(max-height:780px){html.ap.ap-login body>div:not([id^=ap-]){align-items:flex-start;padding-top:22px!important}html.ap.ap-login .login-form{margin-block:0!important}}
+@media(prefers-reduced-motion:reduce){html.ap.ap-login *,html.ap.ap-login *::before{animation:none!important;transition:none!important}}
+
+/* User-requested Times New Roman throughout, retaining monospace for codes only. */
+html.ap body,html.ap #pp-app{font-family:"Times New Roman",Times,serif!important;letter-spacing:0!important}
+html.ap #pp-app :is(button,input,textarea,select,.pp-nav a,.pp-tabbar a,.pp-tabs button,.pp-ql,.pp-brand b){font-family:"Times New Roman",Times,serif!important}
+html.ap #pp-app .pp-nav a{font-size:15px!important}
+html.ap #pp-app .pp-brand b{font-size:17px!important}
+html.ap #pp-app .pp-top h1{letter-spacing:-.025em!important}
+html.ap #pp-app :is(.sd-page-intro h2,.sd-planner-intro h2,.pp-home .pp-overview-intro h2){font-family:"Times New Roman",Times,serif!important;letter-spacing:-.035em!important}
+html.ap.ap-login :is(input,button,label,a){font-family:"Times New Roman",Times,serif!important}
+html.ap.ap-login .ap-login-label{font-size:14px}
+html.ap.ap-login .login_header{font-size:15px!important}
+/* Native FullCalendar / faculty routine: flat normal blocks, exact time geometry preserved. */
+html.ap .fc-event,html.ap .fc-event:hover,html.ap .fc-event:focus{background:var(--sd-tint)!important;background-image:none!important;color:var(--sd-ink)!important;border:1px solid var(--sd-line)!important;border-left:3px solid var(--sd-accent)!important;border-radius:4px!important;box-shadow:none!important;text-shadow:none!important;box-sizing:border-box;font-family:"Times New Roman",Times,serif!important;overflow:hidden}
+html.ap .fc-event :is(.fc-content,.fc-title,.fc-time){background:none!important;color:var(--sd-ink)!important;box-shadow:none!important;text-shadow:none!important;line-height:1.4;font-family:"Times New Roman",Times,serif!important}
+html.ap .fc-event .fc-content{padding:4px 6px}
+html.ap .fc-event .fc-title{font-weight:600;font-size:14px}
+html.ap .fc-event .fc-time{font-size:12px;font-weight:400}
+html.ap .fc-event .fc-bg{opacity:0!important}
+html.ap .fc .fc-toolbar h2,html.ap .fc :is(th,td){font-family:"Times New Roman",Times,serif!important}
+html.ap #pp-app .pp-blk{border-radius:6px!important;box-shadow:none!important;background:var(--sd-raised)!important;border:1px solid var(--sd-line)!important;border-left:3px solid var(--sd-accent)!important;text-shadow:none!important;color:var(--sd-ink)!important}
+html.ap #pp-app .pp-blk :is(b,small){color:var(--sd-ink)!important;background:transparent!important}
+@media(max-width:900px){html.ap #pp-app .pp-home .pp-home-links .pp-t b{font-size:14px!important}html.ap #pp-app .pp-quick .pp-ql{font-size:12px!important}html.ap #pp-app .pp-home .pp-hero .pp-home-links small{font-size:12px!important}}
+/* Refined login composition: identity / welcome on the left; untouched real form on right. */
+html.ap.ap-login .login-form.ap-login-studio{display:grid!important;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);max-width:840px!important;padding:0!important;overflow:hidden;border-radius:27px!important;text-align:left}
+html.ap.ap-login .ap-login-identity{display:flex;flex-direction:column;align-items:flex-start;padding:31px 30px 25px;background:#eee9e1;border-right:1px solid var(--sd-line);min-width:0;position:relative}
+html.ap.ap-login[data-ap-mode=dark] .ap-login-identity{background:#2c2e2a}
+html.ap.ap-login .ap-login-identity>a{display:block;color:inherit!important;text-decoration:none!important;width:100%}
+html.ap.ap-login .ap-login-identity .row{display:grid!important;grid-template-columns:43px minmax(0,1fr);align-items:center!important;gap:12px!important}
+html.ap.ap-login .ap-login-identity .row>div{width:auto!important;text-align:left!important}
+html.ap.ap-login .ap-login-identity .row img:not(#CaptchaImage){width:43px!important;height:43px!important;border-radius:11px!important}
+html.ap.ap-login .ap-login-identity blockquote{margin:0!important;max-width:none}
+html.ap.ap-login .ap-login-identity .aiub_title{font-size:10px!important;letter-spacing:.035em;line-height:1.5!important}
+html.ap.ap-login .ap-login-identity .aiub_slogan{font-size:10px!important;margin-top:3px!important;display:block}
+html.ap.ap-login .ap-login-story{padding-top:47px;flex:1;width:100%}
+html.ap.ap-login .ap-login-kicker{font-size:9px;font-weight:600;letter-spacing:.15em;color:var(--sd-accent)}
+html.ap.ap-login .ap-login-story h2{font:400 40px/1.08 "Times New Roman",Times,serif!important;letter-spacing:-.035em;color:var(--sd-ink)!important;margin:15px 0 9px!important;padding:0!important}
+html.ap.ap-login .ap-login-illustration{width:160px;height:170px;margin:23px auto 18px;color:var(--sd-accent);--art-paper:#fff9ed;--art-tint:#efcfb7;--buddy-paper:#fffaf0;--buddy-blush:#edc8b6}
+html.ap.ap-login .ap-login-illustration svg{width:100%;height:100%}
+html.ap.ap-login[data-ap-mode=dark] .ap-login-illustration{--art-paper:#363c32;--art-tint:#6f5743;--buddy-paper:#363c32;--buddy-blush:#bd8a6b}
+html.ap.ap-login .ap-login-story p{font-size:15px;color:var(--sd-muted);line-height:1.6;margin:0}
+html.ap.ap-login .ap-login-identity-note{font-size:11px;line-height:1.6;color:var(--sd-muted);border-top:1px solid var(--sd-line);padding-top:17px;margin-top:31px;width:100%}
+html.ap.ap-login .ap-login-entry{padding:34px 34px 26px;min-width:0;background:var(--sd-surface)}
+html.ap.ap-login .ap-login-entry #ap-login-brand{margin:0;font-size:9px;letter-spacing:.13em}
+html.ap.ap-login .ap-login-entry #ap-greet{text-align:left;font-size:34px!important;margin-top:11px!important}
+html.ap.ap-login .ap-login-entry .login_header{font-size:14px!important;text-align:left;margin:10px 0 26px!important;line-height:1.6}
+html.ap.ap-login .ap-login-entry .login_forgotpassword{text-align:center}
+html.ap.ap-login .ap-login-entry #ap-foot{max-width:none;text-align:center;font-size:11px!important;margin-top:20px!important}
+html.ap.ap-login .login-form #captcha{padding:14px!important;margin-block:17px!important}
+html.ap.ap-login .login-form input{font-family:"Times New Roman",Times,serif!important}
+html.ap.ap-login .ap-login-entry .form-group{margin-bottom:17px!important}
+html.ap.ap-login .ap-login-entry button[type=submit]{margin-top:2px!important;font-size:16px!important}
+@media(min-width:761px) and (min-height:740px){html.ap.ap-login .login-form.ap-login-studio{min-height:620px}}
+@media(max-width:760px){
+ html.ap.ap-login body>div:not([id^=ap-]){padding:22px 16px calc(28px + env(safe-area-inset-bottom))!important}
+ html.ap.ap-login .login-form.ap-login-studio{display:block!important;max-width:440px!important;border-radius:24px!important}
+ html.ap.ap-login .ap-login-identity{padding:21px 24px;border-right:0;border-bottom:1px solid var(--sd-line);gap:0}
+ html.ap.ap-login .ap-login-identity .row{grid-template-columns:40px minmax(0,1fr)}
+ html.ap.ap-login .ap-login-identity .row img:not(#CaptchaImage){width:40px!important;height:40px!important}
+ html.ap.ap-login .ap-login-identity .aiub_title{font-size:10px!important}
+ html.ap.ap-login .ap-login-story{padding-top:18px}
+ html.ap.ap-login .ap-login-kicker{font-size:8px}
+ html.ap.ap-login .ap-login-story h2{font-size:25px!important;line-height:1.15!important;margin:7px 0 0!important;letter-spacing:-.025em}
+ html.ap.ap-login .ap-login-story h2 br{display:none!important}
+ html.ap.ap-login .ap-login-story h2 br::after{content:" "}
+ html.ap.ap-login :is(.ap-login-illustration,.ap-login-story p,.ap-login-identity-note){display:none}
+ html.ap.ap-login .ap-login-entry{padding:25px 24px 24px}
+ html.ap.ap-login .ap-login-entry #ap-login-brand{display:none}
+ html.ap.ap-login .ap-login-entry #ap-greet{margin-top:0!important;font-size:32px!important}
+ html.ap.ap-login .ap-login-entry .login_header{margin:8px 0 23px!important;font-size:14px!important}
+}
+@media(max-width:350px){html.ap.ap-login .ap-login-entry{padding:23px 19px}html.ap.ap-login .ap-login-identity{padding-inline:19px}html.ap.ap-login .ap-login-story h2{font-size:23px!important}}
+/* Preview: filename wraps, actions never clip, local content inherits the selected theme. */
+html.ap #pp-app .pp-file-meta{background:var(--sd-raised)!important;border:1px solid var(--sd-line)!important;border-radius:15px!important;align-items:flex-start;padding:17px}
+html.ap #pp-app .pp-file-meta b{font-size:15px!important;overflow-wrap:anywhere;line-height:1.5;color:var(--sd-ink)!important}
+html.ap #pp-app .pp-file-meta small{font-size:12px;color:var(--sd-muted)!important;line-height:1.55}
+html.ap #pp-app .pp-preview-content>section{background:var(--sd-surface)!important;border:1px solid var(--sd-line)!important;box-shadow:none!important;border-radius:14px!important;padding:20px}
+html.ap #pp-app .pp-preview-content pre{font:16px/1.75 "Times New Roman",Times,serif!important;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--sd-ink)!important}
+html.ap #pp-app .pp-preview-error{background:var(--sd-raised)!important;color:var(--sd-ink)!important;border:1px solid var(--sd-line);border-radius:14px!important;padding:18px;font-size:15px;line-height:1.65}
+html.ap #pp-app .pp-preview-choices{display:grid;gap:10px;margin-top:16px}
+html.ap #pp-app .pp-preview-choices .pp-btn{text-align:left;justify-content:flex-start;white-space:normal;overflow-wrap:anywhere}
+html.ap #pp-app .pp-sheet-actions{flex-wrap:wrap!important;gap:10px;padding:16px 22px!important}
+html.ap #pp-app .pp-sheet-actions .pp-btn{white-space:normal;overflow-wrap:anywhere}
+html.ap .pp-note-preview{font-family:"Times New Roman",Times,serif!important;border-color:var(--sd-line,#e4e5dc)!important;background:var(--sd-surface,#fffefa)!important;color:var(--sd-accent,#8d4d36)!important;border-radius:10px!important}
+@media(max-width:600px){html.ap #pp-app .pp-sheet-actions{padding:14px 16px calc(14px + env(safe-area-inset-bottom))!important}html.ap #pp-app .pp-sheet-actions .pp-btn{flex:1 1 110px;min-width:0}html.ap #pp-app .pp-file-meta{padding:14px;gap:10px}html.ap #pp-app .pp-file-meta b{font-size:14px!important}}
+
+html.ap.ap-login .ap-login-story h2 br,html.ap.ap-login .ap-login-story p br{display:initial!important}
+@media(max-width:760px){html.ap.ap-login .ap-login-story h2 br{display:none!important}}
+/* Keep login's inherited copy on the requested serif as well as its headings/fields. */
+html.ap.ap-login,html.ap.ap-login body,html.ap.ap-login .login-form,html.ap.ap-login :is(.ap-login-identity,.ap-login-entry,.ap-login-story,.login_header,#ap-login-brand,#ap-foot,.ap-login-identity-note){font-family:"Times New Roman",Times,serif!important}
+/* Requested mobile footer restoration: soft capsule dock, stable icons, sliding active pill.
+   Footer only. Keep the requested Times New Roman and every existing route/feature. */
+@media(max-width:900px){
+ html.ap #pp-app .pp-tabbar{
+  left:max(14px,env(safe-area-inset-left));right:max(14px,env(safe-area-inset-right));
+  bottom:calc(12px + env(safe-area-inset-bottom));padding:5px;gap:2px;
+  border-radius:999px!important;border:1px solid var(--sd-line)!important;
+  background:rgba(255,254,250,.96)!important;
+  box-shadow:0 8px 24px -10px rgba(30,33,27,.2),inset 0 1px 0 rgba(255,255,255,.65)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(115%)!important;backdrop-filter:blur(18px) saturate(115%)!important;
+  isolation:isolate;overflow:hidden;
+ }
+ html.ap[data-ap-mode=dark] #pp-app .pp-tabbar{
+  background:rgba(31,38,32,.96)!important;border-color:rgba(185,198,181,.16)!important;
+  box-shadow:0 8px 24px -10px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.035)!important;
+ }
+ html.ap #pp-app .pp-tabbar a{
+  min-height:54px;padding:7px 1px 6px!important;gap:4px;line-height:1.25;
+  border-radius:999px!important;background:transparent!important;font-size:11px!important;
+  transform:none!important;transition:color 180ms ease-out!important;
+ }
+ html.ap #pp-app .pp-tabbar a:active{transform:none!important}
+ html.ap #pp-app .pp-tabbar a svg{width:21px;height:21px;transform:none!important;animation:none!important;transition:color 180ms ease-out!important}
+ html.ap #pp-app .pp-tabbar .pp-pill{
+  top:5px;bottom:5px;border-radius:999px!important;background:var(--sd-raised)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2)!important;
+  transition:left 280ms cubic-bezier(.22,1,.36,1),width 280ms cubic-bezier(.22,1,.36,1)!important;
+  pointer-events:none;
+ }
+ html.ap[data-ap-mode=dark] #pp-app .pp-tabbar .pp-pill{background:#2c372e!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important}
+ html.ap #pp-app .pp-tabbar a.on{color:var(--sd-accent)!important}
+ html.ap[data-ap-performance="1"] #pp-app .pp-tabbar{
+  background:var(--sd-surface)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){html.ap #pp-app .pp-tabbar :is(a,svg,.pp-pill){transition:none!important;animation:none!important}}
+html.ap[data-ap-anim="0"] #pp-app .pp-tabbar :is(a,svg,.pp-pill),html.ap[data-ap-performance="1"] #pp-app .pp-tabbar :is(a,svg,.pp-pill){transition:none!important}
