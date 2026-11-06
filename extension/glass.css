@@ -372,7 +372,7 @@ html.ap .login-form { animation:none !important; }
 #pp-app .pp-rvfw { padding:0; margin-bottom:10px; overflow:hidden; }
 #pp-app .pp-rvfrow { display:flex; align-items:center; } #pp-app .pp-rvfw .pp-rvf { flex:1; min-width:0; margin:0; background:none; box-shadow:none; padding-right:6px; }
 #pp-app .pp-rvdd { display:inline-flex; align-items:center; gap:3px; flex:none; margin-right:12px; padding:6px 9px; border:1px solid rgba(109,124,145,.28); border-radius:999px; background:none; color:inherit; font:inherit; font-size:12.5px; cursor:pointer; }
-#pp-app .pp-rvdd svg.i { width:15px; height:15px; transition:transform .2s; } #pp-app .pp-rvfw.open .pp-rvdd svg.i { transform:rotate(180deg); }
+#pp-app .pp-rvdd svg.i { width:15px; height:15px; transition:transform .2s; } #pp-app .pp-rvfw.open .pp-rvdd svg[data-sd-icon="down"] { transform:rotate(180deg); }
 #pp-app .pp-rvcms { border-top:1px solid var(--ap-hair); padding:4px 14px 10px; max-height:420px; overflow-y:auto; }
 #pp-app .pp-rvci { padding:9px 0; border-bottom:1px solid var(--ap-hair); } #pp-app .pp-rvci:last-child { border-bottom:0; }
 #pp-app .pp-rvci .pp-rvcm { margin:0 0 4px; } #pp-app .pp-rvci small { display:flex; align-items:center; gap:6px; flex-wrap:wrap; color:var(--ap-muted); font-size:11.5px; } #pp-app .pp-rvc0 { color:var(--ap-muted); font-size:13px; }

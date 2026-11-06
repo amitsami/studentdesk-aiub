@@ -58,10 +58,21 @@
     "https://api.open-meteo.com/*"
   ],
   "background": {
-    "service_worker": "bg.js"
+    "service_worker": "bg.js",
+    "scripts": [
+      "bg.js",
+      "public-sync.js"
+    ],
+    "preferred_environment": "document"
   },
   "homepage_url": "https://github.com/amitsami/studentdesk-aiub",
   "permissions": [
     "storage"
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "aiub-portal-plus@student.local",
+      "strict_min_version": "140.0"
+    }
+  }
 }

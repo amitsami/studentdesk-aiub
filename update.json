@@ -10,6 +10,7 @@
     "See the next available exam on Home, with details from the portal when available.",
     "Temporarily hide classes between the first and last dated personal exam of the same named term; restore the usual routine afterwards. This is a display rule, not an official cancellation.",
     "Refine phone layouts and exam and review controls; use current courses as a fallback when the semester list is unavailable.",
+    "Replace the comment-count placeholder with a clear comment icon and keep the dropdown arrow animation independent.",
     "Use lighter glass effects on mobile and in Performance mode to support smoother scrolling."
   ],
   "release": "https://github.com/amitsami/studentdesk-aiub/releases/latest"

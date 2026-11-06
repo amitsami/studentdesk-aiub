@@ -14,6 +14,7 @@
 
 ### Mobile and usability
 - Refine phone layouts and exam and review controls; use current courses as a fallback when the semester list is unavailable.
+- Replace the comment-count placeholder with a clear comment icon and keep the dropdown arrow animation independent.
 - Use lighter glass effects on mobile and in Performance mode to support smoother scrolling.
 
 ## 4.5.0 - Refined Workspace

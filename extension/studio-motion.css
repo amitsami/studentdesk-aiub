@@ -204,7 +204,7 @@ html.ap #pp-app .pp-rvcms[hidden]{display:none!important}
 html.ap #pp-app .pp-rvcms{animation:none!important;max-height:420px;scrollbar-width:thin;overscroll-behavior:contain}
 html.ap #pp-app .pp-rvdd{transition:background-color 160ms ease-out!important}
 html.ap #pp-app .pp-rvdd .i{transition:transform 200ms ease-out!important}
-html.ap #pp-app .pp-rvdd[aria-expanded="true"] .i{transform:rotate(180deg)}
+html.ap #pp-app .pp-rvdd[aria-expanded="true"] svg[data-sd-icon="down"]{transform:rotate(180deg)}
 html.ap #pp-app .pp-starpick button{min-width:36px;min-height:40px;touch-action:manipulation;transition:color 150ms ease-out,background-color 150ms ease-out!important}
 html.ap #pp-app .pp-rvc[aria-busy="true"]{opacity:.8}
 @media(max-width:600px){html.ap #pp-app .sd-setup-summary{align-items:flex-start;gap:10px}html.ap #pp-app .sd-fold-hint{font-size:11px}html.ap #pp-app .sd-course-bottom{flex-wrap:wrap;gap:12px}html.ap #pp-app .pp-card .pp-row:has(>.pp-avatar){flex-wrap:wrap}html.ap #pp-app .pp-card .pp-row:has(>.pp-avatar)>div{flex:1;min-width:150px}html.ap #pp-app .pp-card .pp-row:has(>.pp-avatar)>.pp-btn{margin-left:0!important}html.ap #pp-app .pp-starpick{flex-wrap:wrap;gap:4px}html.ap #pp-app .pp-rvhead .pp-t{min-width:0}}

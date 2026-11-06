@@ -44,6 +44,7 @@
     coffee: '<path d="M10 2v2" />  <path d="M14 2v2" />  <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1" />  <path d="M6 2v2" />',
     ext: '<path d="M15 3h6v6" />  <path d="M10 14 21 3" />  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />',
     search: '<circle cx="11" cy="11" r="8" />  <path d="m21 21-4.3-4.3" />',
+    comment: '<path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H5l1.3-3.4A8.5 8.5 0 1 1 21 11.5Z" />',
     out: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />  <polyline points="16 17 21 12 16 7" />  <line x1="21" x2="9" y1="12" y2="12" />',
     user: '<circle cx="12" cy="8" r="5" />  <path d="M20 21a8 8 0 0 0-16 0" />',
     refresh: '<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />  <path d="M21 3v5h-5" />  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />  <path d="M8 16H3v5" />',
@@ -1128,8 +1129,8 @@
       var nRv = 0; ag.forEach(function (a) { nRv += a.cnt; });
       html = (ag.length ? '<div class="pp-rvcount"><b>' + ag.length + "</b> " + "faculty" + (qs.length ? " found" : " reviewed") + " · " + nRv + (nRv > 1 ? " reviews" : " review") + "</div>" : "") +
         ag.slice(0, rvState.show).map(function (a) { var x = facBy(a.e), cms = (byF[a.e] || []).slice().sort(function (p, q) { return String(q.updated_at || q.created_at || "").localeCompare(String(p.updated_at || p.created_at || "")); }), op = !!rvState.fopen[a.e];
-        return '<div class="pp-card pp-rvfw' + (op ? " open" : "") + '"><div class="pp-rvfrow"><button class="pp-rvf" data-fq="' + esc(a.n) + '">' + facPic(a.e, "", a.n) + '<div class="pp-t"><b>' + esc(a.n) + "</b><small>" + esc(x ? title(x[4].toLowerCase()) + " · " + title(x[3].toLowerCase()) : Object.keys(a.courses).slice(0, 2).join(" · ")) + '</small><div class="pp-rvavg">' + starsHtml(a.avg) + "<b>" + a.avg.toFixed(1) + "</b><small>" + a.cnt + (a.cnt > 1 ? " reviews" : " review") + (a.cm ? " · " + a.cm + " ◇" : "") + "</small></div></div></button>" +
-          '<button class="pp-rvdd" data-dd="' + esc(a.e) + '" aria-expanded="' + op + '" title="' + (op ? "Hide comments" : "Show all comments") + '" aria-label="Comments">◇ ' + cms.length + ic("down") + "</button></div>" +
+        return '<div class="pp-card pp-rvfw' + (op ? " open" : "") + '"><div class="pp-rvfrow"><button class="pp-rvf" data-fq="' + esc(a.n) + '">' + facPic(a.e, "", a.n) + '<div class="pp-t"><b>' + esc(a.n) + "</b><small>" + esc(x ? title(x[4].toLowerCase()) + " · " + title(x[3].toLowerCase()) : Object.keys(a.courses).slice(0, 2).join(" · ")) + '</small><div class="pp-rvavg">' + starsHtml(a.avg) + "<b>" + a.avg.toFixed(1) + "</b><small>" + a.cnt + (a.cnt > 1 ? " reviews" : " review") + (a.cm ? " · " + a.cm + (a.cm === 1 ? " comment" : " comments") : "") + "</small></div></div></button>" +
+          '<button class="pp-rvdd" data-dd="' + esc(a.e) + '" aria-expanded="' + op + '" title="' + (op ? "Hide comments" : "Show all comments") + '" aria-label="Comments">' + ic("comment") + '<span>' + cms.length + '</span>' + ic("down") + "</button></div>" +
           ('<div class="pp-rvcms"'+(op?'':' hidden')+'> ' + (cms.length ? cms.map(function (r) { return '<div class="pp-rvci"><p class="pp-rvcm">' + esc(r.comment) + "</p><small>" + starsHtml(r.stars) + " " + esc(r.course) + " · " + esc(r.semester) + " · " + esc(agoIso(r.updated_at || r.created_at)) + "</small></div>"; }).join("") : '<div class="pp-rvci pp-rvc0">No written comments yet — only star ratings.</div>') + "</div>") + "</div>"; }).join("");
       var more = ag.length - rvState.show;
     } else {
@@ -1719,6 +1720,7 @@
     "See the next available exam on Home, with details from the portal when available.",
     "Temporarily hide classes between the first and last dated personal exam of the same named term; restore the usual routine afterwards. This is a display rule, not an official cancellation.",
     "Refine phone layouts and exam and review controls; use current courses as a fallback when the semester list is unavailable.",
+    "Replace the comment-count placeholder with a clear comment icon and keep the dropdown arrow animation independent.",
     "Use lighter glass effects on mobile and in Performance mode to support smoother scrolling."
   ];
   var GH_REPO = "https://github.com/amitsami/studentdesk-aiub",
