@@ -23,45 +23,45 @@
   function fmtT(m) { var h = Math.floor(m / 60), mm = m % 60, ap = h >= 12 ? "PM" : "AM", hh = h % 12 || 12; return hh + ":" + (mm < 10 ? "0" : "") + mm + " " + ap; }
   function fmtShort(m) { var h = Math.floor(m / 60), mm = m % 60, hh = h % 12 || 12; return hh + ":" + (mm < 10 ? "0" : "") + mm; }
   function dur(m) { var h = Math.floor(m / 60), mm = m % 60; return (h ? h + "h " : "") + (mm ? mm + "m" : (h ? "" : "0m")).trim(); }
-  function nowMin() { var d = new Date(); return d.getHours() * 60 + d.getMinutes(); }
+  function nowMin() { var d = campusNow(); return d.getHours() * 60 + d.getMinutes(); }
   var DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   var DAYFULL = { Sun: "Sunday", Mon: "Monday", Tue: "Tuesday", Wed: "Wednesday", Thu: "Thursday", Fri: "Friday", Sat: "Saturday" };
   var GP = { "A+": 4, "A": 3.75, "B+": 3.5, "B": 3.25, "C+": 3, "C": 2.75, "D+": 2.5, "D": 2.25, "F": 0 };
 
   var ICONS = {
-    drop: '<path d="M12 3c-2 4-7 8-7 12a7 7 0 0 0 14 0c0-4-5-8-7-12Z"/><path d="M8 15a4 4 0 0 0 4 4"/>',
-    wind: '<path d="M3 8h12a3 3 0 1 0-3-3M2 12h17a3 3 0 1 1-3 3M4 17h5a2 2 0 1 1-2 2"/>',
-    home: '<path d="m3.5 10 8.5-7 8.5 7v9a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2Z"/><path d="M9 21v-7.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1V21"/>',
-    cal: '<rect x="3" y="5" width="18" height="16" rx="4"/><path d="M7.5 3v4m9-4v4M3 11h18m-13 4h.1m4.9 0h.1m-5.1 3h.1m4.9 0h.1m3.9-3h.1"/>',
-    book: '<path d="M12 5C8 2 4 3 2.5 4v15c3-1.5 6.5-1.5 9.5 1.5 3-3 6.5-3 9.5-1.5V4C19 3 15 2 12 5Zm0 0v15.5M5.5 7h3m7 0h3"/>',
-    award: '<circle cx="12" cy="8.5" r="5.5"/><path d="m8 13-1.5 8 5.5-3 5.5 3-1.5-8"/><path d="m10 8.5 1.5 1.5L14 7"/>',
-    wallet: '<path d="M19.5 8V5.5a2 2 0 0 0-2.3-2L5 5.5A2.5 2.5 0 0 0 3 8v10a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-7a3 3 0 0 0-3-3H5"/><path d="M21 13h-5a2 2 0 0 0 0 4h5m-4-2h.1"/>',
-    mail: '<rect x="3" y="5" width="18" height="15" rx="4"/><path d="m4 7 6.5 5a2.5 2.5 0 0 0 3 0L20 7m-16 11 5-5m11 5-5-5"/>',
-    grid: '<rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/>',
-    gear: '<path d="M9.53 4.39 L10.47 4.15 L10.61 2.10 L13.39 2.10 L13.53 4.15 L14.47 4.39 L15.63 4.87 L16.47 5.37 L18.02 4.01 L19.99 5.98 L18.63 7.53 L19.13 8.37 L19.61 9.53 L19.85 10.47 L21.90 10.61 L21.90 13.39 L19.85 13.53 L19.61 14.47 L19.13 15.63 L18.63 16.47 L19.99 18.02 L18.02 19.99 L16.47 18.63 L15.63 19.13 L14.47 19.61 L13.53 19.85 L13.39 21.90 L10.61 21.90 L10.47 19.85 L9.53 19.61 L8.37 19.13 L7.53 18.63 L5.98 19.99 L4.01 18.02 L5.37 16.47 L4.87 15.63 L4.39 14.47 L4.15 13.53 L2.10 13.39 L2.10 10.61 L4.15 10.47 L4.39 9.53 L4.87 8.37 L5.37 7.53 L4.01 5.98 L5.98 4.01 L7.53 5.37 L8.37 4.87 Z"/><circle cx="12" cy="12" r="3.3"/>',
-    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
-    pin: '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
-    coffee: '<path d="M4 8h12v9a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4Zm12 1h2a3 3 0 0 1 0 6h-2"/><path d="M7 2v3m5-3v3M3 22h14"/>',
-    ext: '<path d="M14 3h7v7"/><path d="M10 14 21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/>',
-    search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/>',
-    out: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>',
-    user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
-    refresh: '<path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/>',
-    layers: '<path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/>',
-    moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
-    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
-    check: '<path d="M20 6 9 17l-5-5"/>', alert: '<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>',
-    plus: '<path d="M12 5v14M5 12h14"/>', x: '<path d="M18 6 6 18M6 6l12 12"/>', back: '<path d="m15 18-6-6 6-6"/>', down: '<path d="m6 9 6 6 6-6"/>', lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
-    lib: '<path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/>', file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
-    megaphone: '<path d="m4 9 14-5v15L4 14Z"/><path d="M4 9v5m3 1 2 6h4l-2-5m10-9 1-1m-1 6h2m-2 5 1 1"/>',
-    key: '<circle cx="8" cy="15" r="4"/><path d="m10.8 12.2 9.2-9.2"/><path d="m17 6 3 3"/><path d="m14.5 8.5 2 2"/>',
-    calc: '<rect x="5" y="2.5" width="14" height="19" rx="3"/><path d="M8.5 7h7"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/>',
-    spark: '<rect x="5" y="4" width="15" height="17" rx="3"/><path d="M9 3v3m7-3v3m-8 5 1.5 1.5L12 10m2 2h3m-9 4 1.5 1.5L12 15m2 2h3"/>',
-    minus: '<circle cx="12" cy="12" r="9"/><path d="M8 12h8"/>',
-    cloud: '<path d="M7 18a5 5 0 1 1 .9-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 8z"/>',
-    star: '<path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>',
+    drop: '<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" />',
+    wind: '<path d="M12.8 19.6A2 2 0 1 0 14 16H2" />  <path d="M17.5 8a2.5 2.5 0 1 1 2 4H2" />  <path d="M9.8 4.4A2 2 0 1 1 11 8H2" />',
+    home: '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />  <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />',
+    cal: '<path d="M8 2v4" />  <path d="M16 2v4" />  <rect width="18" height="18" x="3" y="4" rx="2" />  <path d="M3 10h18" />  <path d="M8 14h.01" />  <path d="M12 14h.01" />  <path d="M16 14h.01" />  <path d="M8 18h.01" />  <path d="M12 18h.01" />  <path d="M16 18h.01" />',
+    book: '<path d="M12 7v14" />  <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />',
+    award: '<path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />  <path d="M22 10v6" />  <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />',
+    wallet: '<rect width="18" height="18" x="3" y="3" rx="2" />  <path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2" />  <path d="M3 11h3c.8 0 1.6.3 2.1.9l1.1.9c1.6 1.6 4.1 1.6 5.7 0l1.1-.9c.5-.5 1.3-.9 2.1-.9H21" />',
+    mail: '<rect width="20" height="16" x="2" y="4" rx="2" />  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />',
+    grid: '<rect width="7" height="7" x="3" y="3" rx="1" />  <rect width="7" height="7" x="14" y="3" rx="1" />  <rect width="7" height="7" x="14" y="14" rx="1" />  <rect width="7" height="7" x="3" y="14" rx="1" />',
+    gear: '<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />  <circle cx="12" cy="12" r="3" />',
+    clock: '<circle cx="12" cy="12" r="10" />  <polyline points="12 6 12 12 16.5 12" />',
+    pin: '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />  <circle cx="12" cy="10" r="3" />',
+    coffee: '<path d="M10 2v2" />  <path d="M14 2v2" />  <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1" />  <path d="M6 2v2" />',
+    ext: '<path d="M15 3h6v6" />  <path d="M10 14 21 3" />  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />',
+    search: '<circle cx="11" cy="11" r="8" />  <path d="m21 21-4.3-4.3" />',
+    out: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />  <polyline points="16 17 21 12 16 7" />  <line x1="21" x2="9" y1="12" y2="12" />',
+    user: '<circle cx="12" cy="8" r="5" />  <path d="M20 21a8 8 0 0 0-16 0" />',
+    refresh: '<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />  <path d="M21 3v5h-5" />  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />  <path d="M8 16H3v5" />',
+    layers: '<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" />',
+    moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />',
+    sun: '<circle cx="12" cy="12" r="4" />  <path d="M12 2v2" />  <path d="M12 20v2" />  <path d="m4.93 4.93 1.41 1.41" />  <path d="m17.66 17.66 1.41 1.41" />  <path d="M2 12h2" />  <path d="M20 12h2" />  <path d="m6.34 17.66-1.41 1.41" />  <path d="m19.07 4.93-1.41 1.41" />',
+    check: '<path d="M20 6 9 17l-5-5" />', alert: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />  <path d="M12 9v4" />  <path d="M12 17h.01" />',
+    plus: '<path d="M5 12h14" />  <path d="M12 5v14" />', x: '<path d="M18 6 6 18" />  <path d="m6 6 12 12" />', back: '<path d="m15 18-6-6 6-6" />', down: '<path d="m6 9 6 6 6-6" />', lock: '<circle cx="12" cy="16" r="1" />  <rect x="3" y="10" width="18" height="12" rx="2" />  <path d="M7 10V7a5 5 0 0 1 10 0v3" />',
+    lib: '<path d="m16 6 4 14" />  <path d="M12 6v14" />  <path d="M8 8v12" />  <path d="M4 4v16" />', file: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />  <path d="M14 2v4a2 2 0 0 0 2 2h4" />',
+    megaphone: '<path d="m3 11 18-5v12L3 14v-3z" />  <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />',
+    key: '<path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" />  <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" />',
+    calc: '<rect width="16" height="20" x="4" y="2" rx="2" />  <line x1="8" x2="16" y1="6" y2="6" />  <line x1="16" x2="16" y1="14" y2="18" />  <path d="M16 10h.01" />  <path d="M12 10h.01" />  <path d="M8 10h.01" />  <path d="M12 14h.01" />  <path d="M8 14h.01" />  <path d="M12 18h.01" />  <path d="M8 18h.01" />',
+    spark: '<rect width="8" height="4" x="8" y="2" rx="1" ry="1" />  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />  <path d="m9 14 2 2 4-4" />',
+    minus: '<circle cx="12" cy="12" r="10" />  <path d="M8 12h8" />',
+    cloud: '<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />',
+    star: '<path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />',
     github: '<path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/>',
-    bell: '<path d="M5 9a7 7 0 0 1 14 0c0 5 1.5 6 2 8H3c.5-2 2-3 2-8Z"/><path d="M10 21h4m-4-4v1a2 2 0 0 0 4 0v-1"/>', flash: '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>', list: '<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>'
+    bell: '<path d="M10.268 21a2 2 0 0 0 3.464 0" />  <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />', flash: '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />', list: '<path d="M3 12h.01" />  <path d="M3 18h.01" />  <path d="M3 6h.01" />  <path d="M8 12h13" />  <path d="M8 18h13" />  <path d="M8 6h13" />'
   };
   function ic(n, cls) { return '<svg class="i ' + (cls || "") + '" data-sd-icon="' + esc(n) + '" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' + (ICONS[n] || "") + "</svg>"; }
 
@@ -271,10 +271,10 @@
     acc: function (f) { return load("acc", L("Financials"), P.acc, f); },
     profile: function (f) { return load("profile", "/Student/Home/Profile", P.profile, f); }
   };
-  var PAL = ["#6366f1", "#f59e0b", "#10b981", "#ec4899", "#06b6d4", "#8b5cf6", "#ef4444", "#84cc16", "#f97316", "#0ea5e9"];
+  var PAL = ["#669fee", "#1a6fe6", "#1457b5", "#498deb", "#165ec4", "#649eee", "#488ceb", "#1762cb", "#2878e7", "#196bde"];
   function weekly(reg) { var slots = []; reg.courses.forEach(function (c, i) { c.slots.forEach(function (s) { slots.push({ day: s.day, start: s.start, end: s.end, type: s.type, room: s.room, name: c.name, sec: c.sec, href: c.href, col: PAL[i % PAL.length] }); }); }); return slots; }
   function daySlots(slots, day) { return slots.filter(function (s) { return s.day === day; }).sort(function (a, b) { return a.start - b.start; }); }
-  function todayKey() { return DAYS[new Date().getDay()]; }
+  function todayKey() { return DAYS[campusNow().getDay()]; }
 
   /* ------------------------------------------------------------ shell */
   var NAV = [
@@ -393,8 +393,8 @@
   function skeleton(n) { var h = ""; for (var i = 0; i < (n || 3); i++) h += '<div class="pp-sk" style="height:' + (i ? 90 : 150) + 'px;margin-bottom:14px"></div>'; return '<div class="pp-view">' + h + "</div>"; }
   function failView(err) {
     var net = networkError(err), message = net ? (navigator.onLine === false ? "You are offline. Reconnect and try again." : "The request could not finish. Check your connection and try again.") : err && err.message || "Unknown error";
-    if (err && err.message === "SESSION") return '<div class="pp-view"><div class="pp-card pp-empty"><span class="pp-em">🔒</span><h3 style="justify-content:center">Session expired</h3><p>Please sign in again.</p><a class="pp-btn pri" href="/">Log in again</a></div></div>';
-    return '<div class="pp-view"><div class="pp-card pp-empty"><span class="pp-em">😕</span><h3 style="justify-content:center">Couldn’t load</h3><p>' + esc(message) + '</p><button class="pp-btn pri" data-act="refresh">Try again</button> <a class="pp-btn" href="#/classic?u=' + encodeURIComponent(location.pathname + location.search) + '">Classic view</a></div></div>';
+    if (err && err.message === "SESSION") return '<div class="pp-view"><div class="pp-card pp-empty"><span class="pp-em">◆</span><h3 style="justify-content:center">Session expired</h3><p>Please sign in again.</p><a class="pp-btn pri" href="/">Log in again</a></div></div>';
+    return '<div class="pp-view"><div class="pp-card pp-empty"><span class="pp-em">○</span><h3 style="justify-content:center">Couldn’t load</h3><p>' + esc(message) + '</p><button class="pp-btn pri" data-act="refresh">Try again</button> <a class="pp-btn" href="#/classic?u=' + encodeURIComponent(location.pathname + location.search) + '">Classic view</a></div></div>';
   }
   var current = "", renderId = 0;
   // Show final numbers immediately: no per-frame text/layout work during navigation.
@@ -443,23 +443,26 @@
     Promise.resolve().then(function () { return VIEWS[r](params, !!force && !silent); }).then(function (html) { shown = true; clearTimeout(skT); if (id !== renderId) return; swap(silent ? html.replace('class="pp-view"', 'class="pp-view pp-quiet"') : html, function () { scroller.setAttribute("data-r", r); if (VIEWS[r].after) VIEWS[r].after(params); workspacePaint(); topCheck(); requestAnimationFrame(function () { setTimeout(paintBadges, 0); }); scheduleSeen(r); }); })
       .catch(function (e) { shown = true; clearTimeout(skT); if (id !== renderId) return; scroller.innerHTML = failView(e); if (window.console) console.warn("[StudentDesk]", e); });
   }
-  function greet() { var h = new Date().getHours(); return h >= 5 && h < 12 ? "Good morning" : h >= 12 && h < 17 ? "Good afternoon" : h >= 17 && h < 20 ? "Good evening" : "Good night"; }
-  function greetEmoji() { var h = new Date().getHours(); return h >= 5 && h < 12 ? "☀️" : h >= 12 && h < 14 ? "🌞" : h >= 14 && h < 17 ? "🌤️" : h >= 17 && h < 20 ? "🌆" : "🌙"; }
+  function greet() { var h = campusNow().getHours(); return h >= 5 && h < 12 ? "Good morning" : h >= 12 && h < 17 ? "Good afternoon" : h >= 17 && h < 20 ? "Good evening" : "Good night"; }
+  function greetEmoji() { var h = campusNow().getHours(); return h >= 5 && h < 12 ? "☀" : h >= 12 && h < 14 ? "☼" : h >= 14 && h < 17 ? "☼" : h >= 17 && h < 20 ? "☾" : "☾"; }
   function classic(u) { return "#/classic?u=" + encodeURIComponent(u); }
 
   /* ------------------------------------------------------------ views */
   var VIEWS = {};
   var tickData = null;
   function nextInfo(slots) {
-    var d = todayKey(), n = nowMin(), today = daySlots(slots, d);
+    var d = todayKey(), n = nowMin(), today = examPeriodOn(campusNow()) ? [] : daySlots(slots, d);
     var live = today.filter(function (s) { return s.start <= n && n < s.end; })[0];
     var next = today.filter(function (s) { return s.start > n; })[0];
-    if (!next && !live) { for (var k = 1; k <= 7; k++) { var dk = DAYS[(new Date().getDay() + k) % 7]; var ds = daySlots(slots, dk); if (ds.length) { next = ds[0]; next._in = k; break; } } }
+    if (!next && !live) { for (var k = 1; k <= 7; k++) { var dk = DAYS[(campusNow().getDay() + k) % 7]; var target = new Date(campusNow()); target.setDate(target.getDate() + k); var ds = examPeriodOn(target) ? [] : daySlots(slots, dk); if (ds.length) { next = Object.assign({}, ds[0], {_in:k}); break; } } }
     return { live: live, next: next };
   }
   function tick() {
     if (!tickData) return; var el = $(".pp-tick", app); if (!el) return; var info = nextInfo(tickData), n = nowMin();
-    var cd = $(".pp-cd", el), lab = $(".pp-nl", el);
+    var cd = $(".pp-cd", el), lab = $(".pp-nl", el), nextExam = examNext();
+    if (nextExam) { var es = examStart(nextExam), now = campusNow(), delta = es ? Math.ceil((es.getTime()-now.getTime())/60000) : null;
+      lab.innerHTML = '<span>Next exam · <b>' + esc(nextExam.course || nextExam.sec || nextExam.code || "Course not provided") + '</b><br>' + esc([nextExam.term || "Exam type not provided", nextExam.dtxt || "Date TBA", nextExam.time || "Time TBA", nextExam.room ? "Room " + nextExam.room : ""].filter(Boolean).join(" · ")) + '</span>';
+      cd.textContent = delta == null ? "" : delta <= 0 ? "In progress" : delta < 1440 ? "in " + dur(delta) : "in " + Math.floor(delta/1440) + "d " + dur(delta%1440); return; }
     if (!peek("home") && !peek("reg")) { lab.textContent = "Waiting for your schedule"; cd.textContent = ""; return; }
     if (info.live) { lab.innerHTML = '<span>Now · <b>' + esc(title(info.live.name)) + "</b> · Room " + esc(info.live.room) + "</span>"; cd.textContent = dur(info.live.end - n) + " left"; }
     else if (info.next && !info.next._in) { lab.innerHTML = '<span>Next · <b>' + esc(title(info.next.name)) + "</b> · Room " + esc(info.next.room) + " · " + fmtT(info.next.start) + "</span>"; cd.textContent = "in " + dur(info.next.start - n); }
@@ -474,24 +477,24 @@
     return out;
   }
   VIEWS.home = function (p, f) {
-    setHead("Home", new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }));
+    setHead("Home", campusNow().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }));
     return D.home(f).catch(function (e) { if (e && e.message === "SESSION") throw e; requestWarnings.home = "Home could not refresh. Check your connection or use the original portal."; return null; }).then(function (home) {
       var reg = peek("reg");
       if (!reg && !f) bg(function () { return D.reg(); }).then(function () { if (current === "home") softRefresh(); }, function () {});
       var slots = reg ? weekly(reg) : homeSlots(home); tickData = slots;
-      var today = daySlots(slots, todayKey()), n = nowMin();
+      var examToday = examPeriodOn(campusNow()), today = examToday ? [] : daySlots(slots, todayKey()), n = nowMin();
       var todayHtml = !home && !reg ? '<div class="pp-empty">Schedule unavailable. Your classes are not confirmed by this view.</div>' : today.length ? '<div class="pp-list">' + today.map(function (s) { var live = s.start <= n && n < s.end, past = n >= s.end;
           return '<a class="pp-item' + (past ? " pp-past" : "") + '" href="' + classic(s.href) + '"><span class="pp-dot" style="background:' + s.col + '"></span><div class="pp-t"><b>' + esc(title(s.name)) + '</b><small>' + (s.type ? esc(s.type) + " · " : "") + "Room " + esc(s.room) + '</small></div><div class="pp-r"><b>' + fmtShort(s.start) + "–" + fmtShort(s.end) + "</b><br>" + (live ? '<span class="pp-chip bad">Live</span>' : past ? "Done" : "in " + dur(s.start - n)) + "</div></a>"; }).join("") + "</div>"
-        : '<div class="pp-empty"><span class="pp-em">🌿</span>No classes today</div>';
-      var up = home && home.days ? home.days.slice(1, 4).map(function (d) { return '<div class="pp-item"><div class="pp-t"><b>' + esc(d.label) + "</b><small>" + (d.items.length ? d.items.map(function (i) { return esc(title(i.name)); }).join(" · ") : "No classes") + '</small></div><span class="pp-chip ' + (d.items.length ? "" : "ok") + '">' + d.items.length + "</span></div>"; }).join("") : "";
-      var sub = (!home && !reg ? "Schedule unavailable · refresh when connected" : "") || (reg && reg.semester ? esc(reg.semester) + " · " : "") + (today.length ? today.length + (today.length > 1 ? " classes" : " class") + " today" : "Free day");
-      return '<div class="pp-view pp-home">' +
-        '<div class="pp-grid pp-g-21 pp-overview-grid"><section class="pp-card pp-hero pp-overview"><div class="pp-overview-intro"><div><span class="pp-eyebrow">STUDENTDESK · YOUR DAY</span><h2>' + esc(greet()) + ", " + esc(FIRST) + '</h2><p>' + sub + '</p></div><div class="pp-date-tile' + ((home || reg) && !today.length ? ' pp-day-off' : '') + '" aria-label="' + ((home || reg) && !today.length ? 'No classes today' : 'Today') + '"><small>' + new Date().toLocaleDateString("en-GB", { month: "short" }) + '</small><b>' + new Date().getDate() + '</b></div></div>' +
+        : '<div class="pp-empty"><span class="pp-em">○</span>' + (examToday ? 'Exam period: classes hidden by your display rule. Check the official portal.' : 'No classes today') + '</div>';
+      var up = home && home.days ? home.days.slice(1, 4).map(function (d, i) { var day = new Date(campusNow()); day.setDate(day.getDate()+i+1); if (examPeriodOn(day)) return '<div class="pp-item"><div class="pp-t"><b>' + esc(d.label) + '</b><small>Exam period · classes hidden</small></div></div>'; return '<div class="pp-item"><div class="pp-t"><b>' + esc(d.label) + "</b><small>" + (d.items.length ? d.items.map(function (i) { return esc(title(i.name)); }).join(" · ") : "No classes") + '</small></div><span class="pp-chip ' + (d.items.length ? "" : "ok") + '">' + d.items.length + "</span></div>"; }).join("") : "";
+      var sub = (!home && !reg ? "Schedule unavailable · refresh when connected" : "") || (reg && reg.semester ? esc(reg.semester) + " · " : "") + (examToday ? "Exam period · classes hidden" : today.length ? today.length + (today.length > 1 ? " classes" : " class") + " today" : "Free day");
+      return '<div class="pp-view pp-home">' + (examReadError ? '<p class="pp-note pp-exam-empty">Exam data could not refresh. Classes may not reflect the exam period; check the official portal.</p>' : '') +
+        '<div class="pp-grid pp-g-21 pp-overview-grid"><section class="pp-card pp-hero pp-overview"><div class="pp-overview-intro"><div><span class="pp-eyebrow">STUDENTDESK · YOUR DAY</span><h2>' + esc(greet()) + ", " + esc(FIRST) + '</h2><p>' + sub + '</p></div><div class="pp-date-tile' + ((home || reg) && !today.length ? ' pp-day-off' : '') + '" aria-label="' + ((home || reg) && !today.length ? 'No classes today' : 'Today') + '"><small>' + campusNow().toLocaleDateString("en-GB", { month: "short" }) + '</small><b>' + campusNow().getDate() + '</b></div></div>' +
           '<div class="pp-overview-body"><div class="pp-next pp-tick">' + ic("clock") + '<div class="pp-nl"></div><div class="pp-cd"></div></div>' +
           '<div class="pp-home-links">' + regBtnHtml(reg) + rvHeroBtn() + "</div></div></section>" +
           '<section class="pp-card pp-quick-card"><span class="pp-eyebrow">AT YOUR FINGERTIPS</span><h3>Quick actions</h3><p class="pp-section-caption">A little less searching. A little more doing.</p><div class="pp-quick">' + quickActionsHtml() + "</div></section></div>" +
         (examUpcoming().length ? '<div class="pp-card pp-examcard"><h3>' + ic("cal") + ' Exam routine is out<a class="pp-more" href="#/schedule?view=exams">All exams →</a></h3><div class="pp-list">' + examRows(examUpcoming(), 3) + "</div></div>" : "") +
-        '<a class="sd-planner-banner" href="#/planner"><span class="sd-banner-mark">' + ic("spark") + '</span><div><span class="pp-eyebrow">NEW IN STUDENTDESK 4.5</span><b>Your next semester starts with a plan.</b><small>Prerequisites, course priorities and a timetable that fits.</small></div><span class="sd-banner-cta">Open planner ↗</span></a>' +
+        '<a class="sd-planner-banner" href="#/planner"><span class="sd-banner-mark">' + ic("spark") + '</span><div><span class="pp-eyebrow">COURSE PLANNER</span><b>Your next semester starts with a plan.</b><small>Prerequisites, course priorities and a timetable that fits.</small></div><span class="sd-banner-cta">Open planner ↗</span></a>' +
         '<div class="pp-card pp-wxcard"><h3>Campus weather<span class="pp-more" style="color:var(--ap-muted)">AIUB · Kuratoli, Dhaka</span></h3><div id="pp-wx">' + (peek("wx") ? wxCard(peek("wx")) : '<div class="pp-sk" style="height:120px"></div>') + "</div></div>" +
         '<div class="pp-grid pp-g2"><div class="pp-card"><h3>Today · ' + DAYFULL[todayKey()] + '<a class="pp-more" href="#/schedule">Routine →</a></h3>' + todayHtml + "</div>" +
           '<div class="pp-card"><h3>Coming up<a class="pp-more" href="#/schedule">Week →</a></h3><div class="pp-list">' + (up || '<div class="pp-empty">—</div>') + "</div></div></div>" +
@@ -499,7 +502,8 @@
         "</div>";
     });
   };
-  VIEWS.home.after = function () { tick(); wxPaint(); updBar(); whenIdle(function () { updGet().then(function () { paintBadges(); updBar(); }, function () {}); }, 1500, 8000);
+  VIEWS.home.after = function () { tick(); wxPaint();
+    var beforeExam = JSON.stringify(peek("exams") || null); examLoad().then(function(d){ var was=examReadError;examReadError=false;if(current === "home" && (JSON.stringify(d)!==beforeExam || was)) softRefresh(); },function(){var was=examReadError;examReadError=true;if(current === "home" && !was)softRefresh();}); updBar(); whenIdle(function () { updGet().then(function () { paintBadges(); updBar(); }, function () {}); }, 1500, 8000);
     whenIdle(function () { regStatus().then(function () { var b = $(".pp-regbtn", app); if (b && current === "home") b.outerHTML = regBtnHtml(peek("reg")); }, function () {}); }, 600, 3000);
     if (rvCfg() && Date.now() - rvAt > 60e3) whenIdle(function () { rvList().then(function () { var c = $(".pp-rvhome", app); if (c && current === "home") { c.outerHTML = rvHeroBtn(); rvPics(); } }, function () {}); }, 600, 3000);
     wireQuickActions();
@@ -551,7 +555,7 @@
       var list = (Array.isArray(j) ? j : j.Data || []).map(function (n) { var pt = /\/Date\((\d+)/.exec(n.PostedDate || ""); return { ID: n.ID || 0, Title: n.Title || "", Message: String(n.Message || ""), WebUrl: n.WebUrl || "", Duration: n.Duration || "", t: pt ? +pt[1] : 0 }; });
       var d = { list: list }; cacheSet("noti", d); mem.noti = d; return d;
     });
-    return pr.catch(function(error) { if(c&&c.d)return c.d;var snapshot=window.StudentDeskPublicSnapshot&&window.StudentDeskPublicSnapshot.faculty;if(snapshot&&snapshot.list&&snapshot.list.length){cacheSet("faculty",snapshot);return snapshot;}throw error; });
+    return pr.catch(function(error) { if(c&&c.d)return c.d;throw error; });
   }
   var jsonReads={};
   function portalJSON(path) {
@@ -577,7 +581,7 @@
     return notiLoad(f).then(function (d) {
       var rows = d.list.slice(0, notiShow).map(function (n, i) { var msg = n.WebUrl === "message", t = plain(n.Message);
         return '<div class="pp-item pp-click pp-noti" data-ni="' + i + '"><span class="pp-qi">' + ic(msg ? "mail" : /note/i.test(n.Title) ? "file" : "bell") + '</span><div class="pp-t"><b>' + esc(msg ? n.Title || "Message" : t) + (isNewSig("noti", notiSig(n)) ? NEWDOT : "") + "</b><small>" + (n.Title && !msg ? esc(n.Title) + " · " : "") + esc(n.t ? ago(n.t) : n.Duration) + "</small></div>" + ic(msg ? "plus" : "back", "flip") + '</div><div class="pp-nmsg" id="pp-nm' + i + '" hidden></div>'; }).join("");
-      return '<div class="pp-view pp-notis"><div class="pp-card"><div class="pp-list">' + (rows || '<div class="pp-empty"><span class="pp-em">🔔</span>No notifications right now</div>') + "</div>" +
+      return '<div class="pp-view pp-notis"><div class="pp-card"><div class="pp-list">' + (rows || '<div class="pp-empty"><span class="pp-em">◉</span>No notifications right now</div>') + "</div>" +
         '<div style="text-align:center;margin-top:14px">' + (d.list.length > notiShow ? '<button class="pp-btn" id="pp-nomore">Show more (' + (d.list.length - notiShow) + ')</button> ' : "") + '<a class="pp-btn" href="' + classic("/Student/Notification") + '">' + ic("layers") + " See all on portal</a></div></div></div>";
     });
   };
@@ -594,8 +598,8 @@
   /* ---------- AIUB campus weather (Open-Meteo, free, no key; AIUB Kuratoli, Khilkhet) ---------- */
   var WX_URL = "https://api.open-meteo.com/v1/forecast?latitude=23.8223&longitude=90.4273&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,is_day&hourly=temperature_2m,precipitation_probability,weather_code,is_day&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_hours=8&forecast_days=1&timezone=Asia%2FDhaka";
   function wxInfo(c, day) {
-    var M = { 0: ["Clear sky", day ? "☀️" : "🌙"], 1: ["Mostly clear", day ? "🌤️" : "🌙"], 2: ["Partly cloudy", "⛅"], 3: ["Cloudy", "☁️"], 45: ["Fog", "🌫️"], 48: ["Fog", "🌫️"], 51: ["Light drizzle", "🌦️"], 53: ["Drizzle", "🌦️"], 55: ["Heavy drizzle", "🌧️"], 61: ["Light rain", "🌦️"], 63: ["Rain", "🌧️"], 65: ["Heavy rain", "🌧️"], 66: ["Freezing rain", "🌧️"], 67: ["Freezing rain", "🌧️"], 80: ["Rain showers", "🌦️"], 81: ["Rain showers", "🌧️"], 82: ["Heavy showers", "⛈️"], 95: ["Thunderstorm", "⛈️"], 96: ["Thunderstorm, hail", "⛈️"], 99: ["Thunderstorm, hail", "⛈️"] };
-    return M[c] || ["—", "🌡️"];
+    var M = { 0: ["Clear sky", day ? "☀" : "☾"], 1: ["Mostly clear", day ? "☼" : "☾"], 2: ["Partly cloudy", "⛅"], 3: ["Cloudy", "☁"], 45: ["Fog", "☁"], 48: ["Fog", "☁"], 51: ["Light drizzle", "☂"], 53: ["Drizzle", "☂"], 55: ["Heavy drizzle", "☂"], 61: ["Light rain", "☂"], 63: ["Rain", "☂"], 65: ["Heavy rain", "☂"], 66: ["Freezing rain", "☂"], 67: ["Freezing rain", "☂"], 80: ["Rain showers", "☂"], 81: ["Rain showers", "☂"], 82: ["Heavy showers", "⛈"], 95: ["Thunderstorm", "⛈"], 96: ["Thunderstorm, hail", "⛈"], 99: ["Thunderstorm, hail", "⛈"] };
+    return M[c] || ["—", "◇"];
   }
   function wxLoad(force) {
     var c = cacheRaw("wx"); if (!force && c && c.d && Date.now() - c.t < 10 * 60e3) return Promise.resolve(c.d);
@@ -617,47 +621,72 @@
   function wxPaint(force) { wxLoad(force).then(function (j) { var b = $("#pp-wx", app); if (b) b.innerHTML = wxCard(j); }, function () { var b = $("#pp-wx", app); if (b && !b.querySelector(".pp-wx-main")) b.innerHTML = '<div class="pp-wx-empty">Weather unavailable right now</div>'; }); }
 
   /* ---------- Exam routine (portal publishes it before every term exam) ---------- */
-  var EXAM_PAGE = "/Student/ExamRoutineSchedule";
-  function pickK(o, re) { for (var k in o) if (re.test(k) && o[k] != null && o[k] !== "" && typeof o[k] !== "object") return o[k]; return ""; }
+  var EXAM_PAGE = "/Student/ExamRoutineSchedule", examReadError = false;
+  /* Preserve the portal's own labels. Never infer a course or exam type from a date. */
+  function examFields(o) {
+    var result = {};
+    function collect(x, depth, prefix) { if (!x || typeof x !== "object" || depth > 2) return; Object.keys(x).forEach(function (k) { var v=x[k], key=String(k).replace(/[^a-z0-9]/gi,"").toLowerCase(); if (v == null || v === "") return; if (typeof v === "object" && !Array.isArray(v)) { collect(v,depth+1,prefix+key); return; } if (typeof v !== "object") { if (result[key] == null) result[key]=String(v).trim(); var full=prefix+key; if (result[full] == null) result[full]=String(v).trim(); } }); }
+    collect(o,0,""); return result;
+  }
+  function examPick(f, names) { for (var i=0;i<names.length;i++) if (f[names[i]]) return f[names[i]]; return ""; }
+  function examDate(raw) {
+    var s=String(raw||"").trim(), m=/^\/Date\((-?\d+)(?:[+-]\d+)?\)\/$/.exec(s); if(m) return new Date(+m[1]);
+    m=/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/.exec(s); if(m){var dd=new Date(+m[3],+m[2]-1,+m[1]); return dd.getFullYear()===+m[3]&&dd.getMonth()===+m[2]-1&&dd.getDate()===+m[1]?dd:null;}
+    if(!/\b\d{4}\b/.test(s)) return null; var d=new Date(s);return isNaN(d.getTime())?null:d;
+  }
   function examNorm(o, term) {
-    var d = pickK(o, /^(exam)?date|date$/i), m = /\/Date\((\d+)/.exec(String(d)), dt = m ? new Date(+m[1]) : d ? new Date(String(d).replace(/-/g, " ")) : null;
-    return { course: String(pickK(o, /course.*(name|title)|subject|^title$|coursename/i) || pickK(o, /course/i)), sec: String(pickK(o, /section/i) || ""), date: dt && !isNaN(dt) ? dt.getTime() : 0, dtxt: m ? "" : String(d || ""),
-      time: String(pickK(o, /time|slot|start/i) || ""), room: String(pickK(o, /room|venue|hall/i) || ""), term: term || String(pickK(o, /term/i) || "") };
+    var f=examFields(o), d=examPick(f,["examdate","scheduledate","date","examdatetime"]),dt=examDate(d);
+    var name=examPick(f,["coursename","coursetitle","subjectname","subjecttitle","subject","course","title","sectionname","sectiontitle","section"]);
+    var sec=examPick(f,["sectionname","sectiontitle","section","sectioncode"]), start=examPick(f,["examstarttime","starttime","start"]), end=examPick(f,["examendtime","endtime","end"]);
+    var time=examPick(f,["examtime","examtimeslot","time","timeslot","slot"]) || (start && end ? start + " – " + end : start || end);
+    return {course:name,sec:sec,date:dt?dt.getTime():0,dtxt:d,time:time,room:examPick(f,["roomno","roomnumber","examroom","room","venue","hall"]),column:examPick(f,["columnno","columnnumber","column"]),seat:examPick(f,["seatno","seatnumber","seat"]),term:term||examPick(f,["examtype","examterm","termname","term","examname","examtitle"]),code:examPick(f,["coursecode","subjectcode"]) };
   }
   function parseExamTable(d) {
-    var out = []; $$("#main-content table", d).forEach(function (tb) {
-      var hd = $$("thead th, tr:first-child th", tb).map(function (th) { return txt(th).toLowerCase(); }); if (!hd.length) return;
-      $$("tbody tr", tb).forEach(function (tr) { var c = $$("td", tr).map(txt); if (c.length < 2) return; var o = {}; hd.forEach(function (h, i) { o[h.replace(/[^a-z]/g, "") || "c" + i] = c[i] || ""; }); out.push(examNorm(o)); });
-    }); return out;
+    var out=[], termSelect=d.querySelector('select[name*="term" i], select[id*="term" i]'), selected=termSelect && termSelect.querySelector("option:checked"), label=selected ? txt(selected) : ""; if (/^(select|choose|all)(\s|$)/i.test(label)) label=""; $$("#main-content table",d).forEach(function(tb){
+      var header=tb.querySelector("thead tr")||tb.querySelector("tr"), hd=header? $$("th,td",header).map(function(th){return txt(th).toLowerCase().replace(/[^a-z0-9]/g,"");}):[];
+      if(!hd.some(function(x){return /date|time/.test(x);}))return;
+      $$("tbody tr",tb).forEach(function(tr){if(tr===header)return;var cells=$$("td",tr).map(txt);if(cells.length<2||cells.some(function(x){return /\{\{.*\}\}/.test(x);}))return;var o={};hd.forEach(function(h,i){if(h)o[h]=cells[i]||""});var e=examNorm(o,label);if(e.course||e.dtxt||e.time)out.push(e);});
+    });return out;
   }
   function examLoad(force) {
-    var c = cacheRaw("exams"); if (!force && c && c.d && Date.now() - c.t < 3 * 3600e3) return Promise.resolve(c.d);
-    var J = function (u) { return fetch(u, { credentials: "include", headers: { Accept: "application/json" } }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }); };
-    var pr = getDoc(EXAM_PAGE).then(function (doc) {
-      var html = doc.documentElement.innerHTML;
-      if (/no exam routine available/i.test(txt($("#main-content", doc) || doc.body)) && !/ExamRoutineScheduleController/.test(html)) return { list: [], none: true };
-      var tbl = parseExamTable(doc); if (tbl.length) return { list: tbl };
-      if (!/ExamRoutineScheduleController/.test(html)) return { list: [], none: true };
-      return Promise.all([J("/Student/ExamRoutineSchedule/GetStudentSemesters"), J("/Student/ExamRoutineSchedule/GetTerms")]).then(function (r) {
-        var sems = Array.isArray(r[0]) ? r[0] : r[0].Data || [], terms = Array.isArray(r[1]) ? r[1] : r[1].Data || [];
-        var cur = sems.filter(function (s) { return s.IsCurrent; })[0] || sems[sems.length - 1]; if (!cur) return { list: [] };
-        var list = [], i = 0;
-        return terms.reduce(function (p, tm) { return p.then(function () { return J("/Student/ExamRoutineSchedule/GetExamRoutinesBySemesterIdTermId?semesterId=" + cur.ID + "&termId=" + tm.ID).then(function (x) { (Array.isArray(x) ? x : x.Data || []).forEach(function (o) { list.push(examNorm(o, tm.Name || tm.Title || tm.TermName || "")); }); }, function () {}); }); }, Promise.resolve()).then(function () { return { list: list }; });
+    var c=cacheRaw("exams");if(!force&&c&&c.d&&c.d.schema===2&&Date.now()-c.t<3*3600e3)return Promise.resolve(c.d);
+    var J=function(u){return fetch(u,{credentials:"include",headers:{Accept:"application/json"}}).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();});};
+    var pr=getDoc(EXAM_PAGE).then(function(doc){var html=doc.documentElement.innerHTML,table=parseExamTable(doc);if(table.length)return {list:table,schema:2};
+      if(/no exam routine available/i.test(txt($("#main-content",doc)||doc.body))&&!/ExamRoutineScheduleController/.test(html))return {list:[],none:true,schema:2};
+      if(!/ExamRoutineScheduleController/.test(html))throw new Error("Exam routine format unavailable — check the official portal");
+      return Promise.all([J("/Student/ExamRoutineSchedule/GetStudentSemesters"),J("/Student/ExamRoutineSchedule/GetTerms")]).then(function(r){
+        var sems=Array.isArray(r[0])?r[0]:r[0].Data||[],terms=Array.isArray(r[1])?r[1]:r[1].Data||[],cur=sems.filter(function(x){return x.IsCurrent;})[0]||sems[sems.length-1];if(!cur)return {list:[],schema:2};var list=[],failed=0;
+        return terms.reduce(function(p,tm){return p.then(function(){return J("/Student/ExamRoutineSchedule/GetExamRoutinesBySemesterIdTermId?semesterId="+encodeURIComponent(cur.ID)+"&termId="+encodeURIComponent(tm.ID)).then(function(x){var label=tm.Name||tm.Title||tm.TermName||tm.ExamType||"";(Array.isArray(x)?x:x.Data||[]).forEach(function(o){list.push(examNorm(o,label));});},function(){failed++;});});},Promise.resolve()).then(function(){if(failed===terms.length&&failed)throw new Error("Exam routine could not refresh");return {list:list,partial:failed>0,schema:2};});
       });
-    }).then(function (d) { d.list.sort(function (a, b) { return a.date - b.date; }); cacheSet("exams", d); return d; });
-    return pr.catch(function(error) { if(c&&c.d)return c.d;var snapshot=window.StudentDeskPublicSnapshot&&window.StudentDeskPublicSnapshot.faculty;if(snapshot&&snapshot.list&&snapshot.list.length){cacheSet("faculty",snapshot);return snapshot;}throw error; });
+    }).then(function(d){d.list.sort(function(a,b){return (a.date||Infinity)-(b.date||Infinity);});cacheSet("exams",d);return d;});
+    return pr.catch(function(error){if(c&&c.d){c.d.stale=true;return c.d;}throw error;});
   }
-  function examSig(e) { return e.term + "|" + e.course + "|" + e.date + "|" + e.time + "|" + e.room; }
+  // Display-only rule: within a labelled term's first/last published personal exams.
+  // Unknown types suppress only dated exams, never infer missing term or dates.
+  function examDay(e) { if(!e || !e.date) return null; var d=new Date(e.date); return new Date(d.getFullYear(),d.getMonth(),d.getDate()); }
+  function examPeriodOn(day, entries) {
+    var list=entries || ((peek("exams")||{}).list||[]), d=new Date(day.getFullYear(),day.getMonth(),day.getDate()).getTime(), groups={};
+    for(var i=0;i<list.length;i++){var e=list[i],ed=examDay(e);if(!ed)continue;var n=ed.getTime(),term=String(e.term||"").trim().toLowerCase();if(!term){if(n===d)return true;continue;} var g=groups[term]||(groups[term]=[n,n]);g[0]=Math.min(g[0],n);g[1]=Math.max(g[1],n);}
+    return Object.keys(groups).some(function(k){return d>=groups[k][0]&&d<=groups[k][1];});
+  }
+  function examNext() {
+    var now=campusNow();return examUpcoming().filter(function(e){var day=examDay(e);if(!day)return true;var today=new Date(now.getFullYear(),now.getMonth(),now.getDate());if(day<today)return false;var start=examStart(e);if(day.getTime()!==today.getTime() || !start)return true;var endm=/(?:to|–|-|—)\s*(\d{1,2})[:.](\d{2})\s*(AM|PM)?/i.exec(e.time||"");if(!endm)return start>=now;var h=+endm[1],m=+endm[2];if(endm[3])h=h%12+(/PM/i.test(endm[3])?12:0);var end=new Date(day);end.setHours(h,m,0,0);return end>=now;}).sort(function(a,b){var da=examDay(a),db=examDay(b);if(!da)return db?1:0;if(!db)return -1;return (examStart(a)||da)-(examStart(b)||db);})[0]||null;
+  }
+  function examSig(e) { return [e.term,e.course,e.sec,e.date,e.dtxt,e.time,e.room,e.column,e.seat].join("|"); }
   function examRows(list, limit) {
-    var now = Date.now() - 864e5;
-    return list.filter(function (e) { return !e.date || e.date >= now; }).slice(0, limit || 99).map(function (e) { var dd = e.date ? new Date(e.date) : null, days = dd ? Math.ceil((dd - new Date().setHours(0, 0, 0, 0)) / 864e5) : null;
-      return '<div class="pp-item pp-exam"><span class="pp-ndate"><b>' + (dd ? dd.getDate() : "?") + "</b>" + (dd ? dd.toLocaleDateString("en-GB", { month: "short" }) : esc(e.dtxt.slice(0, 6))) + '</span><div class="pp-t"><b>' + esc(title(e.course || "Exam")) + (isNewSig("exams", examSig(e)) ? NEWDOT : "") + "</b><small>" + [e.term, dd ? dd.toLocaleDateString("en-GB", { weekday: "short" }) : "", e.time, e.room ? "Room " + e.room : ""].filter(Boolean).map(esc).join(" · ") + '</small></div><span class="pp-chip ' + (days != null && days <= 2 ? "bad" : days != null && days <= 7 ? "warn" : "") + '">' + (days == null ? "" : days <= 0 ? "Today" : days === 1 ? "Tomorrow" : days + " days") + "</span></div>"; }).join("");
+    var now=Date.now()-864e5;
+    return list.slice(0,limit||999).map(function(e){
+      var dd=examDay(e), nowDay=campusNow(), days=dd?Math.round((dd-new Date(nowDay.getFullYear(),nowDay.getMonth(),nowDay.getDate()))/864e5):null;
+      var shortDate=dd?dd.toLocaleDateString("en-GB",{day:"2-digit",month:"short"}):String(e.dtxt||"Date TBA"), parts=shortDate.match(/^(\d{1,2})[\s\/-]+([a-z]{3,})/i), dateBadge=parts?'<b>'+esc(parts[1])+'</b>'+esc(parts[2].slice(0,3)): '<b>—</b>'+esc(shortDate);
+      var course=e.course||e.sec||e.code||"Course not provided", section=e.sec&&e.sec!==course?e.sec:"", detail=[e.code&&e.code!==course?"Code: "+e.code:"",section?"Section: "+section:"",e.term?"Exam: "+e.term:"Exam type not provided",e.dtxt?"Date: "+e.dtxt:"Date not provided",e.time?"Time: "+e.time:"Time not provided",e.room?"Room: "+e.room:"Room not provided",e.column?"Column: "+e.column:"",e.seat?"Seat: "+e.seat:""].filter(Boolean);
+      return '<div class="pp-item pp-exam"><span class="pp-ndate">'+dateBadge+'</span><div class="pp-t"><b>'+esc(course)+(isNewSig("exams",examSig(e))?NEWDOT:"")+'</b><div class="pp-exam-details">'+detail.map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</div></div>'+(days==null?'':'<span class="pp-chip '+(days<=2?'bad':days<=7?'warn':'')+'">'+(days<0?'Past':days===0?'Today':days===1?'Tomorrow':days+' days')+'</span>')+'</div>';
+    }).join("");
   }
-  function examUpcoming() { var d = peek("exams"); if (!d || !d.list) return []; var now = Date.now() - 864e5; return d.list.filter(function (e) { return !e.date || e.date >= now; }); }
+  function examUpcoming() { var d = peek("exams"), now=campusNow(), today=new Date(now.getFullYear(),now.getMonth(),now.getDate()); if (!d || !d.list) return []; return d.list.filter(function (e) { var day=examDay(e);return !day || day>=today; }); }
   function examView() {
-    var d = peek("exams"), up = examUpcoming();
+    var d = peek("exams"), up = d && d.list || [];
     return '<div class="pp-card"><h3>' + ic("file") + ' Exam routine<a class="pp-more" href="' + classic(EXAM_PAGE) + '">Portal →</a></h3>' +
-      (up.length ? '<div class="pp-list">' + examRows(up) + "</div>" : '<div class="pp-empty"><span class="pp-em">📝</span>' + (d ? "No exam routine published yet. It appears here automatically as soon as AIUB posts it." : "Checking the portal…") + "</div>") + "</div>";
+      (d && (d.stale || d.partial) ? '<p class="pp-exam-empty">Some exam details may be out of date or incomplete. Check the official portal.</p>' : "") + (up.length ? '<p class="pp-exam-empty">Classes are hidden from your first to last exam of the same named term as a display rule, not an official cancellation. Dates outside your personal routine may differ; confirm with AIUB.</p>' : "") + (up.length ? '<div class="pp-list">' + examRows(up) + "</div>" : '<div class="pp-empty"><span class="pp-em">≡</span>' + (d && d.partial ? "Some exam data could not load. Check the official portal." : d ? "No exam routine found." : "Checking the portal…") + "</div>") + "</div>";
   }
 
   /* ---------- Faculty list (public list from www.aiub.edu) ---------- */
@@ -692,7 +721,7 @@
       var list = d.list.filter(function (x) { if (facState.fac && x[2] !== facState.fac) return false; if (!qs.length) return true; var hay = (x[0] + " " + x[1] + " " + x[3] + " " + x[4] + " " + x[5] + " " + x[6] + " " + x[8]).toLowerCase(); return qs.every(function (w) { return hay.indexOf(w) >= 0; }); });
       box.innerHTML = '<div class="pp-fgrid">' + list.slice(0, facState.show).map(function (x) {
         var prof = x[1] ? SITE + "/faculty-list/faculty-profile?q=" + encodeURIComponent(x[1].split("@")[0]) + "#" + encodeURIComponent(x[1]) : SITE + "/faculty-list/faculties";
-        return '<div class="pp-fac"><img loading="lazy" decoding="async" width="56" height="56" alt="" src="' + (x[7] ? esc(SITE + x[7]) : "") + '" onerror="this.style.visibility=\'hidden\'"><div class="pp-t"><b>' + esc(x[0]) + "</b><small>" + esc(title(x[4].toLowerCase())) + (x[5] ? " · " + esc(x[5]) : "") + "</small><small>" + esc(title(x[3].toLowerCase())) + (x[6] ? " · 📍 " + esc(x[6]) : "") + '</small><div class="pp-row">' + (x[1] ? '<a class="pp-btn sm" href="mailto:' + esc(x[1]) + '">' + ic("mail") + " Email</a>" : "") + '<a class="pp-btn sm" target="_blank" rel="noopener" href="' + esc(prof) + '">Profile</a></div></div></div>'; }).join("") + "</div>" +
+        return '<div class="pp-fac"><img loading="lazy" decoding="async" width="56" height="56" alt="" src="' + (x[7] ? esc(SITE + x[7]) : "") + '" onerror="this.style.visibility=\'hidden\'"><div class="pp-t"><b>' + esc(x[0]) + "</b><small>" + esc(title(x[4].toLowerCase())) + (x[5] ? " · " + esc(x[5]) : "") + "</small><small>" + esc(title(x[3].toLowerCase())) + (x[6] ? " · ◆ " + esc(x[6]) : "") + '</small><div class="pp-row">' + (x[1] ? '<a class="pp-btn sm" href="mailto:' + esc(x[1]) + '">' + ic("mail") + " Email</a>" : "") + '<a class="pp-btn sm" target="_blank" rel="noopener" href="' + esc(prof) + '">Profile</a></div></div></div>'; }).join("") + "</div>" +
         (list.length > facState.show ? '<div style="text-align:center;margin-top:14px"><button class="pp-btn" id="pp-fmore">Show more (' + (list.length - facState.show) + ")</button></div>" : "") + (list.length ? "" : '<div class="pp-card pp-empty">No faculty found</div>');
       var mb = $("#pp-fmore", app); if (mb) mb.onclick = function () { facState.show += 40; draw(); };
     }
@@ -739,7 +768,7 @@
   }
   function myId() {
     return D.profile().catch(function () { return null; }).then(function (p) {
-      var id = p && p.f && (p.f["Student ID"] || p.f["Student Id"]); if (id && /\d{2}-\d{5}-\d/.test(id)) return /\d{2}-\d{5}-\d/.exec(id)[0];
+      var f=p && p.f || {}, id = f["Student ID"] || f["Student Id"]; if(!id) Object.keys(f).some(function(k){if(/^(student\s*)?(id|id\s*number)$/i.test(k.trim())){id=f[k];return true;}return false;}); if (id && /\d{2}-\d{5}-\d/.test(id)) return /\d{2}-\d{5}-\d/.exec(id)[0];
       var h = peek("home"), u = h && h.teams && h.teams.user; var m = /\d{2}-\d{5}-\d/.exec(u || "") || /\d{2}-\d{5}-\d/.exec(document.body ? (document.querySelector("nav") || {}).textContent || "" : "");
       if (m) return m[0]; throw new Error("Couldn’t read your student ID from the portal");
     });
@@ -790,7 +819,11 @@
     var secCache = {}, oldSem = {}; (old && old.sems || []).forEach(function (s) { oldSem[s.t] = s; s.courses.forEach(function (c) { if (c.t && c.t.length) secCache[c.href] = c.t; }); });
     mfBusy = D.reg().then(function (reg) {
       var sems = (reg.semesters || []).map(function (s) { var q = (/[?&]q=([^&#]+)/.exec(s.u || "") || [])[1]; return q ? { t: s.t, q: q } : null; }).filter(Boolean).reverse();
-      if (!sems.length) throw new Error("Couldn’t find your semesters");
+      if (!sems.length) {
+        if (!reg.courses || !reg.courses.length) throw new Error("Couldn’t find your semesters or courses. Open Registration and refresh, then try again.");
+        var current = {v:2,t:Date.now(),sems:[{t:reg.semester || "Current semester",courses:reg.courses.map(function(c){return {name:c.name,sec:c.sec,href:c.href,res:"",t:[]};}),done:false}]};
+        return current.sems[0].courses.reduce(function(p,c){return p.then(function(){if(!c.href)return;return getDoc(c.href).then(function(doc){c.t=parseSection(doc);},function(e){if(e && e.message==="SESSION")throw e;});});},Promise.resolve()).then(function(){current.sems[0].done=current.sems[0].courses.every(function(c){return c.t.length;});return current;});
+      }
       var out = { v: 2, t: Date.now(), sems: [] }, i = 0, cur = reg.semester, fails = [];
       function retry() {   // section pages that failed (portal busy) get one more try, a bit slower
         if (!fails.length) return out; var f = fails.shift();
@@ -887,7 +920,7 @@
     if (!peek("faculty")) facEnsure().then(function () { if (current === "reviews") rvPics(); }, function () {});
     var srv = rvCfg();
     return '<div class="pp-view pp-rv">' +
-      (srv ? "" : '<div class="pp-card pp-rvwarn">⚠️ <b>Review server not connected.</b> Reviews can’t be shared yet. If you are the developer, add the server in <a href="#/settings">Settings → Faculty review server</a>.</div>') +
+      (srv ? "" : '<div class="pp-card pp-rvwarn">⚠ <b>Review server not connected.</b> Reviews can’t be shared yet. If you are the developer, add the server in <a href="#/settings">Settings → Faculty review server</a>.</div>') +
       '<div class="pp-tabs" id="pp-rvtabs"><button data-rt="give" class="' + (rvState.tab === "give" ? "on" : "") + '">' + ic("file") + ' Give review</button><button data-rt="all" class="' + (rvState.tab === "all" ? "on" : "") + '">' + ic("star") + ' All reviews <span class="pp-n" id="pp-rvn">' + (rvAll ? rvAll.length : "") + "</span></button></div>" +
       '<div id="pp-rvbody"></div></div>';
   };
@@ -924,7 +957,7 @@
   }
   VIEWS.reviews.after = function () {
     $$("[data-rt]", app).forEach(function (b) { b.onclick = function () { rvState.tab = b.getAttribute("data-rt"); $$("[data-rt]", app).forEach(function (x) { x.classList.toggle("on", x === b); }); rvPaint(true); }; });
-    var rl = $('[data-rv="reload"]', app); if (rl) rl.onclick = function () { rl.disabled = true; Promise.all([rvList(true).catch(function () {}), rvState.tab === "give" ? mfLoad(true, givePaintSoon).catch(function () {}) : null]).then(function () { rl.disabled = false; rvPaint(true); toast("Updated ✓"); }); };
+    var rl = $('[data-rv="reload"]', app); if (rl) rl.onclick = function () { rl.disabled = true; Promise.all([rvList(true), rvState.tab === "give" ? mfLoad(true, givePaintSoon) : Promise.resolve()]).then(function () { rl.disabled = false; rvPaint(true); toast("Updated ✓"); },function(e){rl.disabled=false;rvPaint(true);toast("Refresh failed: " + (e.message || "try again"));}); };
     rvPaint();
     rvList().then(rvPaint, function (e) { if (rvState.tab === "all") rvPaint(); });
     clearInterval(rvPoll);
@@ -988,12 +1021,12 @@
   }
   function semBody(g, mine) {
     return g.rows.map(function (x) { return giveCard(x, mine[x.k]); }).join("") +
-      (g.miss ? '<p class="pp-note pp-rvmiss">⚠️ Couldn’t load the faculty of ' + g.miss + (g.miss > 1 ? " courses" : " course") + ' in this semester. <button class="pp-btn sm" data-rv="retry">Try again</button></p>' : "");
+      (g.miss ? '<p class="pp-note pp-rvmiss">⚠ Couldn’t load the faculty of ' + g.miss + (g.miss > 1 ? " courses" : " course") + ' in this semester. <button class="pp-btn sm" data-rv="retry">Try again</button></p>' : "");
   }
   function giveDraw(box) {
     var d = mfGet();
     if (!d || mfBusy) {
-      var pm = mfBusy || mfLoad(false, givePaintSoon); if (!pm.__w) pm.__w = 1, pm.then(function () { rvPaint(); }, function (e) { var b = $("#pp-rvbody", app); if (b && rvState.tab === "give") b.innerHTML = '<div class="pp-card pp-empty"><span class="pp-em">😕</span>' + esc(e.message === "SESSION" ? "Session expired — please log in again" : e.message) + "</div>"; });
+      var pm = mfBusy || mfLoad(false, givePaintSoon); if (!pm.__w) pm.__w = 1, pm.then(function () { rvPaint(); }, function (e) { var b = $("#pp-rvbody", app); if (b && rvState.tab === "give") b.innerHTML = '<div class="pp-card pp-empty"><span class="pp-em">○</span>' + esc(e.message === "SESSION" ? "Session expired — please log in again" : e.message) + "</div>"; });
       if (!d) { box.innerHTML = '<div class="pp-card"><div class="pp-rvload"><span class="pp-spin"></span><div><b>Finding your faculty…</b><small id="pp-mfprog">' + esc(mfProg || "Reading your semesters from the portal") + "</small></div></div></div>" + '<div class="pp-sk" style="height:110px;margin-top:12px"></div><div class="pp-sk" style="height:110px;margin-top:12px"></div>'; return; }
     }
     if (!mfBusy && Date.now() - d.t > 12 * 3600e3) mfLoad(false, givePaintSoon).then(function () { rvPaint(); }, function () {});
@@ -1005,8 +1038,8 @@
       return '<details class="pp-rvsem" data-sem="' + esc(g.t) + '"' + (open ? " open" : "") + '><summary class="pp-sem-h">' + esc(g.t) + ' <span class="pp-chip' + (g.rows.length && g.done === g.rows.length ? " ok" : "") + '">' + g.done + "/" + g.rows.length + "</span></summary>" +
         '<div class="pp-rvsb">' + (open ? semBody(g, mine) : "") + "</div></details>";   // closed semesters are built when opened
     }).join("");
-    box.innerHTML = '<p class="pp-note" style="margin:0 2px 12px">🕶️ Reviews are <b>anonymous</b> — your name and ID are never shown or sent. Rate the faculty you took courses with (running and completed). You can edit any time.' + (tot ? "<br><b>" + dn + " of " + tot + "</b> reviewed." : "") + "</p>" +
-      (html || '<div class="pp-card pp-empty"><span class="pp-em">🧑‍🏫</span>No faculty found in your courses yet</div>') + (mfBusy ? '<p class="pp-note" style="text-align:center"><span class="pp-spin"></span> <span id="pp-mfprog">' + esc(mfProg) + "</span></p>" : "");
+    box.innerHTML = '<p class="pp-note" style="margin:0 2px 12px">◇ Reviews are <b>anonymous</b> — your name and ID are never shown or sent. Rate the faculty you took courses with (running and completed). You can edit any time.' + (tot ? "<br><b>" + dn + " of " + tot + "</b> reviewed." : "") + "</p>" +
+      (html || '<div class="pp-card pp-empty"><span class="pp-em">○‍◇</span>No faculty found in your courses yet</div>') + (mfBusy ? '<p class="pp-note" style="text-align:center"><span class="pp-spin"></span> <span id="pp-mfprog">' + esc(mfProg) + "</span></p>" : "");
     $$(".pp-rvsem", box).forEach(function (dt) { dt.addEventListener("toggle", function () {
       var t = dt.getAttribute("data-sem"); so[t] = dt.open;
       var sb = $(".pp-rvsb", dt); if (dt.open && sb && !sb.firstChild) { var g = groups.filter(function (x) { return x.t === t; })[0]; if (g) { sb.innerHTML = semBody(g, myMap()); rvRestore(sb); rvPics(); } }
@@ -1048,13 +1081,13 @@
   /* part 2: everybody's reviews */
   function allDraw(box) {
     if (!rvAll) {
-      if (!rvCfg()) { box.innerHTML = '<div class="pp-card pp-empty"><span class="pp-em">🔌</span>Review server not connected</div>'; return; }
+      if (!rvCfg()) { box.innerHTML = '<div class="pp-card pp-empty"><span class="pp-em">◇</span>Review server not connected</div>'; return; }
       box.innerHTML = '<div class="pp-sk" style="height:46px"></div><div class="pp-sk" style="height:96px;margin-top:12px"></div><div class="pp-sk" style="height:96px;margin-top:12px"></div>';
-      rvList().then(rvPaint, function (e) { var b = $("#pp-rvbody", app); if (b && rvState.tab === "all" && !rvAll) b.innerHTML = '<div class="pp-card pp-empty"><span class="pp-em">😕</span>' + esc(e.message) + '<br><br><button class="pp-btn" onclick="this.closest(\'#pp-rvbody\').innerHTML=\'\'">OK</button></div>'; });
+      rvList().then(rvPaint, function (e) { var b = $("#pp-rvbody", app); if (b && rvState.tab === "all" && !rvAll) b.innerHTML = '<div class="pp-card pp-empty"><span class="pp-em">○</span>' + esc(e.message) + '<br><br><button class="pp-btn" onclick="this.closest(\'#pp-rvbody\').innerHTML=\'\'">OK</button></div>'; });
       return;
     }
     var focused = document.activeElement && document.activeElement.id === "pp-rvq";
-    box.innerHTML = '<div class="pp-search" style="margin-bottom:10px">' + ic("search") + '<input class="pp-input" id="pp-rvq" placeholder="Search faculty, course or comment" value="' + esc(rvState.q) + '" autocomplete="off" enterkeyhint="search"></div>' +
+    box.innerHTML = '<div class="pp-search" style="margin-bottom:10px">' + ic("search") + '<input class="pp-input" id="pp-rvq" aria-label="Search faculty, course or comment" placeholder="Search faculty, course or comment" value="' + esc(rvState.q) + '" autocomplete="off" enterkeyhint="search"></div>' +
       '<div class="pp-tabs pp-fchips" style="margin-bottom:12px"><button data-so="faculty" class="' + (rvState.sort === "faculty" ? "on" : "") + '">By faculty</button><button data-so="top" class="' + (rvState.sort === "top" ? "on" : "") + '">Top rated</button></div>' +
       '<div id="pp-rvlist"></div>';
     var inp = $("#pp-rvq", box), tm;
@@ -1095,8 +1128,8 @@
       var nRv = 0; ag.forEach(function (a) { nRv += a.cnt; });
       html = (ag.length ? '<div class="pp-rvcount"><b>' + ag.length + "</b> " + "faculty" + (qs.length ? " found" : " reviewed") + " · " + nRv + (nRv > 1 ? " reviews" : " review") + "</div>" : "") +
         ag.slice(0, rvState.show).map(function (a) { var x = facBy(a.e), cms = (byF[a.e] || []).slice().sort(function (p, q) { return String(q.updated_at || q.created_at || "").localeCompare(String(p.updated_at || p.created_at || "")); }), op = !!rvState.fopen[a.e];
-        return '<div class="pp-card pp-rvfw' + (op ? " open" : "") + '"><div class="pp-rvfrow"><button class="pp-rvf" data-fq="' + esc(a.n) + '">' + facPic(a.e, "", a.n) + '<div class="pp-t"><b>' + esc(a.n) + "</b><small>" + esc(x ? title(x[4].toLowerCase()) + " · " + title(x[3].toLowerCase()) : Object.keys(a.courses).slice(0, 2).join(" · ")) + '</small><div class="pp-rvavg">' + starsHtml(a.avg) + "<b>" + a.avg.toFixed(1) + "</b><small>" + a.cnt + (a.cnt > 1 ? " reviews" : " review") + (a.cm ? " · " + a.cm + " 💬" : "") + "</small></div></div></button>" +
-          '<button class="pp-rvdd" data-dd="' + esc(a.e) + '" aria-expanded="' + op + '" title="' + (op ? "Hide comments" : "Show all comments") + '" aria-label="Comments">💬 ' + cms.length + ic("down") + "</button></div>" +
+        return '<div class="pp-card pp-rvfw' + (op ? " open" : "") + '"><div class="pp-rvfrow"><button class="pp-rvf" data-fq="' + esc(a.n) + '">' + facPic(a.e, "", a.n) + '<div class="pp-t"><b>' + esc(a.n) + "</b><small>" + esc(x ? title(x[4].toLowerCase()) + " · " + title(x[3].toLowerCase()) : Object.keys(a.courses).slice(0, 2).join(" · ")) + '</small><div class="pp-rvavg">' + starsHtml(a.avg) + "<b>" + a.avg.toFixed(1) + "</b><small>" + a.cnt + (a.cnt > 1 ? " reviews" : " review") + (a.cm ? " · " + a.cm + " ◇" : "") + "</small></div></div></button>" +
+          '<button class="pp-rvdd" data-dd="' + esc(a.e) + '" aria-expanded="' + op + '" title="' + (op ? "Hide comments" : "Show all comments") + '" aria-label="Comments">◇ ' + cms.length + ic("down") + "</button></div>" +
           ('<div class="pp-rvcms"'+(op?'':' hidden')+'> ' + (cms.length ? cms.map(function (r) { return '<div class="pp-rvci"><p class="pp-rvcm">' + esc(r.comment) + "</p><small>" + starsHtml(r.stars) + " " + esc(r.course) + " · " + esc(r.semester) + " · " + esc(agoIso(r.updated_at || r.created_at)) + "</small></div>"; }).join("") : '<div class="pp-rvci pp-rvc0">No written comments yet — only star ratings.</div>') + "</div>") + "</div>"; }).join("");
       var more = ag.length - rvState.show;
     } else {
@@ -1408,8 +1441,8 @@
     var n = core.length || 1, d = core.filter(function (c) { return c.status === "done"; }).length, r = core.filter(function (c) { return c.status === "running"; }).length, t = core.filter(function (c) { return c.status === "retake"; }).length, rem = n - d - r - t;
     function pc(x) { return (x / n * 100).toFixed(1) + "%"; }
     return '<div class="pp-row" style="justify-content:space-between;margin-bottom:10px"><b style="font-size:22px">' + Math.round(d / n * 100) + '% complete</b><span class="pp-chip mute">' + d + " / " + n + " core courses</span></div>" +
-      '<div class="pp-progress"><i style="width:' + pc(d) + ';background:linear-gradient(90deg,#10b981,#22d3ee)"></i><i style="width:' + pc(r) + ';background:var(--ap-accent)"></i><i style="width:' + pc(t) + ';background:#f43f5e"></i></div>' +
-      '<div class="pp-legend"><span><i style="background:#10b981"></i>Completed ' + d + '</span><span><i style="background:var(--ap-accent)"></i>Running ' + r + '</span><span><i style="background:#f43f5e"></i>Retake ' + t + '</span><span><i style="background:rgba(127,127,127,.3)"></i>Remaining ' + rem + "</span></div>";
+      '<div class="pp-progress"><i style="width:' + pc(d) + ';background:linear-gradient(90deg,#1457b5,#2978e7)"></i><i style="width:' + pc(r) + ';background:var(--ap-accent)"></i><i style="width:' + pc(t) + ';background:#488ceb"></i></div>' +
+      '<div class="pp-legend"><span><i style="background:#1457b5"></i>Completed ' + d + '</span><span><i style="background:var(--ap-accent)"></i>Running ' + r + '</span><span><i style="background:#488ceb"></i>Retake ' + t + '</span><span><i style="background:rgba(109,124,145,.3)"></i>Remaining ' + rem + "</span></div>";
   }
 
   /* ---------- schedule ---------- */
@@ -1423,31 +1456,34 @@
       var mins = slots.reduce(function (a, s) { return a + (s.end - s.start); }, 0);
       setHead("Class Routine", esc(reg.semester) + " · " + slots.length + " classes · " + dur(mins) + " per week",
         '<div class="pp-tabs" style="margin:0"><button data-sv="day" class="' + (schedState.view === "day" ? "on" : "") + '">Day</button><button data-sv="week" class="' + (schedState.view === "week" ? "on" : "") + '">Week</button><button data-sv="free" class="' + (schedState.view === "free" ? "on" : "") + '">Free time</button><button data-sv="exams" class="' + (schedState.view === "exams" ? "on" : "") + '">Exams' + (examUpcoming().length ? ' <span class="pp-n">' + examUpcoming().length + "</span>" : "") + "</button></div>");
-      var h = '<div class="pp-view">';
+      var h = '<div class="pp-view">' + (examReadError && schedState.view !== 'exams' ? '<p class="pp-note">Exam data could not refresh; class display may be incomplete. Check the official portal.</p>' : '');
       if (schedState.view === "week") h += weekGrid(slots, used);
       else if (schedState.view === "free") h += freeView(slots);
       else if (schedState.view === "exams") h += examView();
       else {
-        h += '<div class="pp-days">' + DAYS.map(function (d) { var n = slots.filter(function (s) { return s.day === d; }).length;
-          return '<button class="pp-day' + (d === schedState.day ? " on" : "") + (d === tk ? " today" : "") + '" data-day="' + d + '"><small>' + (d === tk ? "Today" : d) + "</small><b>" + d + '</b><div class="pp-pips">' + new Array(n + 1).join("<i></i>") + "</div></button>"; }).join("") + "</div>";
+        h += '<div class="pp-days">' + DAYS.map(function (d) { var target=campusNow();target.setDate(target.getDate()+(DAYS.indexOf(d)-target.getDay()+7)%7); var examDayOff=examPeriodOn(target), n = examDayOff ? 0 : slots.filter(function (s) { return s.day === d; }).length;
+          return '<button class="pp-day' + (d === schedState.day ? " on" : "") + (d === tk ? " today" : "") + '" data-day="' + d + '"><small>' + (d === tk ? "Today" : d) + "</small><b>" + d + '</b><div class="pp-pips">' + (examDayOff ? '<i title="Exam period"></i>' : new Array(n + 1).join("<i></i>")) + "</div></button>"; }).join("") + "</div>";
         h += '<div id="pp-dayview">' + dayView(slots, schedState.day) + "</div>";
       }
       return h + "</div>";
     });
   };
   VIEWS.schedule.after = function () {
-    if (schedState.view === "exams") examLoad().then(function () { if (current === "schedule" && schedState.view === "exams") { var c = $("#pp-scroll .pp-view", app); if (c) c.innerHTML = examView(); } }, function () {});
+    if(schedState.view !== "exams") { var before=JSON.stringify(peek("exams")||null);examLoad().then(function(d){var was=examReadError;examReadError=false;if(current === "schedule" && (JSON.stringify(d)!==before || was))softRefresh();},function(){var was=examReadError;examReadError=true;if(current === "schedule" && !was)softRefresh();}); }
+    if (schedState.view === "exams") examLoad().then(function () { if (current === "schedule" && schedState.view === "exams") { var c = $("#pp-scroll .pp-view", app); if (c) c.innerHTML = examView(); } }, function () { if (current === "schedule" && schedState.view === "exams") { var c = $("#pp-scroll .pp-view", app); if (c && !peek("exams")) c.innerHTML = '<div class="pp-card"><h3>Exam routine <a class="pp-more" href="' + classic(EXAM_PAGE) + '">Portal →</a></h3><p class="pp-exam-empty">Could not load the exam routine. Refresh or check the official portal.</p></div>'; } });
     $$("[data-sv]", app).forEach(function (b) { b.onclick = function () { schedState.view = b.getAttribute("data-sv"); route(); }; });
     $$(".pp-day", app).forEach(function (b) { b.onclick = function () { schedState.day = b.getAttribute("data-day"); $$(".pp-day", app).forEach(function (x) { x.classList.toggle("on", x === b); }); D.reg().then(function (reg) { var dv = $("#pp-dayview", app); dv.innerHTML = '<div class="pp-view">' + dayView(weekly(reg), schedState.day) + "</div>"; }); }; });
     var nl = $(".pp-nowline", app); if (nl) nl.scrollIntoView({ block: "center", behavior: "smooth" });
   };
   function dayView(slots, day) {
+    var target=campusNow();target.setDate(target.getDate()+(DAYS.indexOf(day)-target.getDay()+7)%7);
+    if(examPeriodOn(target)) return '<div class="pp-card pp-off"><span class="pp-em">≡</span><h3>Exam period · classes hidden</h3><p>Display rule for '+esc(target.toLocaleDateString("en-GB"))+'. Check the official portal for class cancellations.</p><a class="pp-btn sm" href="#/schedule?view=exams">See exams →</a></div>';
     var ds = daySlots(slots, day), isToday = day === todayKey(), n = nowMin();
-    if (!ds.length) return '<div class="pp-card pp-off"><span class="pp-em">🏖️</span><h3 style="justify-content:center;margin:10px 0 4px">' + DAYFULL[day] + " — Off day!</h3><p style=\"color:var(--ap-muted)\">No classes on this day. Rest, study, or go out 😎</p></div>";
+    if (!ds.length) return '<div class="pp-card pp-off"><span class="pp-em">○</span><h3 style="justify-content:center;margin:10px 0 4px">' + DAYFULL[day] + " — Off day!</h3><p style=\"color:var(--ap-muted)\">No classes on this day. Rest, study, or go out </p></div>";
     var classMin = 0, gapMin = 0, gaps = 0;
     var tl = ds.map(function (s, i) {
       classMin += s.end - s.start; var g = "";
-      if (i > 0) { var gm = s.start - ds[i - 1].end; if (gm > 0) { gapMin += gm; gaps++; g = '<div class="pp-slot" style="--cc:transparent"><div class="pp-gap' + (gm >= 60 ? " big" : "") + '">' + ic("coffee") + (gm >= 90 ? "Long break — lunch / library time" : gm >= 60 ? "Free time" : "Short break") + " · " + fmtShort(ds[i - 1].end) + "–" + fmtShort(s.start) + '<span class="pp-gl">' + dur(gm) + "</span></div></div>"; } else if (gm < 0) g = '<div class="pp-slot" style="--cc:#ef4444"><div class="pp-gap" style="border-color:#ef4444;color:#ef4444">' + ic("alert") + " Time clash!</div></div>"; }
+      if (i > 0) { var gm = s.start - ds[i - 1].end; if (gm > 0) { gapMin += gm; gaps++; g = '<div class="pp-slot" style="--cc:transparent"><div class="pp-gap' + (gm >= 60 ? " big" : "") + '">' + ic("coffee") + (gm >= 90 ? "Long break — lunch / library time" : gm >= 60 ? "Free time" : "Short break") + " · " + fmtShort(ds[i - 1].end) + "–" + fmtShort(s.start) + '<span class="pp-gl">' + dur(gm) + "</span></div></div>"; } else if (gm < 0) g = '<div class="pp-slot" style="--cc:#488ceb"><div class="pp-gap" style="border-color:#488ceb;color:#488ceb">' + ic("alert") + " Time clash!</div></div>"; }
       var live = isToday && s.start <= n && n < s.end;
       return g + '<div class="pp-slot" style="--cc:' + s.col + '"><div class="pp-time">' + fmtShort(s.start) + "<small>" + fmtShort(s.end) + '</small></div><a class="pp-class' + (live ? " now" : "") + '" href="' + classic(s.href) + '" style="display:block">' + (live ? '<span class="pp-live">LIVE</span>' : "") +
         "<b>" + esc(title(s.name)) + (newRoutineNames()[s.name] ? NEWDOT : "") + ' <span class="pp-chip" style="background:color-mix(in srgb,' + s.col + ' 18%,transparent);color:' + s.col + '">' + esc(s.sec) + "</span></b>" +
@@ -1457,32 +1493,32 @@
       '<div class="pp-card"><div class="pp-tl">' + tl + "</div></div>";
   }
   function weekGrid(slots, used) {
-    var days = DAYS.filter(function (d) { return used.indexOf(d) >= 0; }); if (!days.length) return '<div class="pp-card pp-empty"><span class="pp-em">📭</span>No classes found</div>';
+    var days = DAYS.filter(function (d) { return used.indexOf(d) >= 0; }); if (!days.length) return '<div class="pp-card pp-empty"><span class="pp-em">◇</span>No classes found</div>';
     var lo = Math.floor(Math.min.apply(null, slots.map(function (s) { return s.start; })) / 60) * 60, hi = Math.ceil(Math.max.apply(null, slots.map(function (s) { return s.end; })) / 60) * 60;
     var PX = 1.15, H = (hi - lo) * PX, tk = todayKey(), n = nowMin();
     var hours = ""; for (var t = lo; t <= hi; t += 60) hours += '<div style="top:' + ((t - lo) * PX) + 'px">' + fmtShort(t) + (t < 720 ? "a" : "p") + "</div>";
-    var cols = days.map(function (d) { var ds = daySlots(slots, d), b = "";
+    var cols = days.map(function (d) { var target=campusNow(); target.setDate(target.getDate()+(DAYS.indexOf(d)-target.getDay()+7)%7);var suppressed=examPeriodOn(target), ds = suppressed ? [] : daySlots(slots, d), b = suppressed ? '<div class="pp-exam-week-note">Exam period<br>Classes hidden</div>' : "";
       ds.forEach(function (s, i) { if (i > 0 && s.start - ds[i - 1].end >= 30) { var gs = ds[i - 1].end, ge = s.start; b += '<div class="pp-gblk" style="top:' + ((gs - lo) * PX + 3) + "px;height:" + ((ge - gs) * PX - 6) + 'px">☕ ' + dur(ge - gs) + " free</div>"; }
         b += '<a class="pp-blk" href="' + classic(s.href) + '" style="--cc:' + s.col + ";top:" + ((s.start - lo) * PX + 2) + "px;height:" + ((s.end - s.start) * PX - 4) + 'px"><b>' + esc(title(s.name)) + "</b><small>" + fmtShort(s.start) + "–" + fmtShort(s.end) + " · " + esc(s.room) + "<br>" + esc(s.type) + "</small></a>"; });
-      if (d === tk && n >= lo && n <= hi) b += '<div class="pp-nowline" style="top:' + ((n - lo) * PX) + 'px"></div>';
+      if (!suppressed && d === tk && n >= lo && n <= hi) b += '<div class="pp-nowline" style="top:' + ((n - lo) * PX) + 'px"></div>';
       return '<div class="pp-col' + (d === tk ? " today" : "") + '" style="height:' + H + 'px">' + b + "</div>"; }).join("");
     var off = DAYS.filter(function (d) { return days.indexOf(d) < 0; });
-    return '<div class="pp-card"><div class="pp-week-wrap"><div class="pp-week" style="--days:' + days.length + ";--hh:" + (60 * PX) + 'px"><div></div>' + days.map(function (d) { return '<div class="pp-wh' + (d === tk ? " today" : "") + '">' + d + "</div>"; }).join("") +
+    return '<div class="pp-card"><p class="pp-note">Next occurrence of each weekday. Exam-period hiding is a display rule; verify cancellations with AIUB.</p><div class="pp-week-wrap"><div class="pp-week" style="--days:' + days.length + ";--hh:" + (60 * PX) + 'px"><div></div>' + days.map(function (d) { return '<div class="pp-wh' + (d === tk ? " today" : "") + '">' + d + "</div>"; }).join("") +
       '<div class="pp-hours" style="height:' + H + 'px">' + hours + "</div>" + cols + "</div></div>" +
-      (off.length ? '<div class="pp-legend" style="margin-top:14px"><span>🏖️ Off days: <b style="color:var(--ap-text)">' + off.map(function (d) { return DAYFULL[d]; }).join(", ") + "</b></span></div>" : "") + "</div>";
+      (off.length ? '<div class="pp-legend" style="margin-top:14px"><span>○ Off days: <b style="color:var(--ap-text)">' + off.map(function (d) { return DAYFULL[d]; }).join(", ") + "</b></span></div>" : "") + "</div>";
   }
   function freeView(slots) {
     var S0 = 8 * 60, E0 = 17 * 60;
     return '<div class="pp-grid pp-g2">' + DAYS.map(function (d) {
-      var ds = daySlots(slots, d), free = [], cur = S0;
+      var target=campusNow();target.setDate(target.getDate()+(DAYS.indexOf(d)-target.getDay()+7)%7);if(examPeriodOn(target))return '<div class="pp-card"><h3>≡ ' + DAYFULL[d] + '</h3><p class="pp-note">Exam period · classes hidden. Confirm with AIUB.</p></div>';var ds = daySlots(slots, d), free = [], cur = S0;
       ds.forEach(function (s) { if (s.start > cur) free.push([cur, s.start]); cur = Math.max(cur, s.end); }); if (cur < E0) free.push([cur, E0]);
       var tot = free.reduce(function (a, f) { return a + f[1] - f[0]; }, 0);
-      return '<div class="pp-card"><h3>' + (ds.length ? "📚" : "🏖️") + " " + DAYFULL[d] + '<span class="pp-more" style="color:var(--ap-muted)">' + (ds.length ? ds.length + " class · " + dur(tot) + " free" : "Off day") + "</span></h3>" +
+      return '<div class="pp-card"><h3>' + (ds.length ? "◇" : "○") + " " + DAYFULL[d] + '<span class="pp-more" style="color:var(--ap-muted)">' + (ds.length ? ds.length + " class · " + dur(tot) + " free" : "Off day") + "</span></h3>" +
         '<div class="pp-progress" style="height:16px;margin-bottom:10px">' + timeline(ds, S0, E0) + "</div>" +
-        '<div class="pp-list">' + free.map(function (f) { return '<div class="pp-item" style="padding:9px 12px"><span class="pp-dot" style="background:#10b981"></span><div class="pp-t"><b style="font-size:13.5px">' + fmtT(f[0]) + " – " + fmtT(f[1]) + '</b></div><span class="pp-chip ok">' + dur(f[1] - f[0]) + "</span></div>"; }).join("") + "</div></div>";
+        '<div class="pp-list">' + free.map(function (f) { return '<div class="pp-item" style="padding:9px 12px"><span class="pp-dot" style="background:#1457b5"></span><div class="pp-t"><b style="font-size:13.5px">' + fmtT(f[0]) + " – " + fmtT(f[1]) + '</b></div><span class="pp-chip ok">' + dur(f[1] - f[0]) + "</span></div>"; }).join("") + "</div></div>";
     }).join("") + '</div><p class="pp-note">Free time is counted between 8:00 AM and 5:00 PM. Green = free, colored = class.</p>';
   }
-  function timeline(ds, a, b) { var h = "", cur = a; ds.forEach(function (s) { var st = Math.max(a, s.start), en = Math.min(b, s.end); if (st > cur) h += '<i style="width:' + ((st - cur) / (b - a) * 100) + '%;background:rgba(16,185,129,.35)"></i>'; if (en > st) h += '<i title="' + esc(s.name) + '" style="width:' + ((en - st) / (b - a) * 100) + "%;background:" + s.col + '"></i>'; cur = Math.max(cur, en); }); if (cur < b) h += '<i style="width:' + ((b - cur) / (b - a) * 100) + '%;background:rgba(16,185,129,.35)"></i>'; return h; }
+  function timeline(ds, a, b) { var h = "", cur = a; ds.forEach(function (s) { var st = Math.max(a, s.start), en = Math.min(b, s.end); if (st > cur) h += '<i style="width:' + ((st - cur) / (b - a) * 100) + '%;background:rgba(20,87,181,.35)"></i>'; if (en > st) h += '<i title="' + esc(s.name) + '" style="width:' + ((en - st) / (b - a) * 100) + "%;background:" + s.col + '"></i>'; cur = Math.max(cur, en); }); if (cur < b) h += '<i style="width:' + ((b - cur) / (b - a) * 100) + '%;background:rgba(20,87,181,.35)"></i>'; return h; }
 
   /* ---------- courses ---------- */
   var courseState = { tab: "done", q: "", mine: true, show: 40 };
@@ -1495,7 +1531,7 @@
   function secRows(secs, slots, limit) {
     return '<div class="pp-sec">' + secs.slice(0, limit || 8).map(function (o) { var left = o.cap - o.cnt, cl = slots ? clashes(o.times, slots) : [];
       return '<div class="pp-secrow"><span class="pp-chip">' + esc(o.sec) + '</span><div class="pp-times">' + o.times.map(function (t) { return "<b>" + t.day + "</b> " + fmtShort(t.start) + "–" + fmtShort(t.end) + " · " + esc(t.room) + (t.type === "Lab" ? " (Lab)" : ""); }).join("<br>") +
-        (cl.length ? '<br><span style="color:#ef4444;font-weight:600">⚠ Clash: ' + esc(title(cl[0].name)) + "</span>" : "") + '</div><span class="pp-seat" style="color:' + (left <= 0 ? "#ef4444" : left < 6 ? "#f59e0b" : "#10b981") + '">' + (left <= 0 ? "Full" : left + " seats") + "</span></div>"; }).join("") +
+        (cl.length ? '<br><span style="color:#488ceb;font-weight:600">⚠ Clash: ' + esc(title(cl[0].name)) + "</span>" : "") + '</div><span class="pp-seat" style="color:' + (left <= 0 ? "#488ceb" : left < 6 ? "#1a6fe6" : "#1457b5") + '">' + (left <= 0 ? "Full" : left + " seats") + "</span></div>"; }).join("") +
       (secs.length > (limit || 8) ? '<div style="font-size:12.5px;color:var(--ap-muted);padding:4px 8px">+ ' + (secs.length - (limit || 8)) + " more sections</div>" : "") + "</div>";
   }
   VIEWS.courses = function (p, f) {
@@ -1511,9 +1547,9 @@
         '<div class="pp-tabs">' + tabs.map(function (t) { return '<button data-ct="' + t[0] + '" class="' + (courseState.tab === t[0] ? "on" : "") + '">' + t[1] + (t[2] !== "" ? ' <span class="pp-n">' + t[2] + "</span>" : "") + "</button>"; }).join("") + "</div><div id=\"pp-ctab\">";
       var bySem = function (list, right) { var g = {}; list.forEach(function (c) { (g[c.sem || "-"] = g[c.sem || "-"] || []).push(c); });
         return Object.keys(g).map(function (s) { return '<div class="pp-sem-h">' + (s === "-" ? "Elective" : "Semester " + s) + '</div><div class="pp-list">' + g[s].map(function (c) { return '<div class="pp-course"><span class="pp-code">' + esc(c.code) + '</span><div class="pp-t"><b>' + esc(title(c.name)) + (c.status !== "remaining" && isNewSig("courses", c.code + "|" + c.status + "|" + c.grade) ? NEWDOT : "") + "</b><small>" + right(c) + "</small></div>" + (c.status === "done" || c.status === "retake" ? gchip(c.grade) : c.status === "running" ? '<span class="pp-chip">Running</span>' : '<span class="pp-chip mute">Not taken</span>') + "</div>"; }).join("") + "</div>"; }).join(""); };
-      if (courseState.tab === "done") h += done.length ? bySem(done, function (c) { return esc(c.when) + (c.tries.length > 1 ? " · " + c.tries.length + " attempts" : ""); }) : '<div class="pp-card pp-empty"><span class="pp-em">📘</span>No completed courses yet</div>';
+      if (courseState.tab === "done") h += done.length ? bySem(done, function (c) { return esc(c.when) + (c.tries.length > 1 ? " · " + c.tries.length + " attempts" : ""); }) : '<div class="pp-card pp-empty"><span class="pp-em">◇</span>No completed courses yet</div>';
       else if (courseState.tab === "running") h += bySem(run, function (c) { return esc(c.when) + " · result pending"; });
-      else if (courseState.tab === "remaining") h += '<p class="pp-note" style="margin-bottom:6px">🔴 Retake = courses with F/W. The rest haven\'t been taken yet. Check "Offered for me" to see which sections have seats.</p>' + bySem(rem, function (c) { return c.status === "retake" ? "Retake needed · last " + esc(c.when) + " [" + esc(c.grade) + "]" : "Curriculum semester " + esc(c.sem); });
+      else if (courseState.tab === "remaining") h += '<p class="pp-note" style="margin-bottom:6px">● Retake = courses with F/W. The rest haven\'t been taken yet. Check "Offered for me" to see which sections have seats.</p>' + bySem(rem, function (c) { return c.status === "retake" ? "Retake needed · last " + esc(c.when) + " [" + esc(c.grade) + "]" : "Curriculum semester " + esc(c.sem); });
       else if (courseState.tab === "elective") h += bySem(elec, function () { return "Elective option"; });
       else h += '<div class="pp-card"><div class="pp-sk" style="height:200px"></div><p class="pp-note" style="margin-top:10px">Loading offered sections (large list, this may take a moment)…</p></div>';
       return h + "</div></div>";
@@ -1528,10 +1564,10 @@
           var need = cur.core.filter(function (c) { return c.status === "remaining" || c.status === "retake"; }).concat(cur.elective.filter(function (c) { return c.status === "remaining"; }));
           var hits = need.map(function (c) { return { c: c, secs: matchOffered(c.name, off.list) }; }).filter(function (x) { return x.secs.length; });
           var miss = need.length - hits.length;
-          box.innerHTML = '<div class="pp-view"><p class="pp-note" style="margin-bottom:12px">📋 ' + esc(off.title) + " — <b>" + hits.length + "</b> of your remaining courses are offered" + (miss ? " (" + miss + " not offered this semester)" : "") + ". Seats and clashes with your routine are shown.</p>" +
+          box.innerHTML = '<div class="pp-view"><p class="pp-note" style="margin-bottom:12px">≡ ' + esc(off.title) + " — <b>" + hits.length + "</b> of your remaining courses are offered" + (miss ? " (" + miss + " not offered this semester)" : "") + ". Seats and clashes with your routine are shown.</p>" +
             '<div class="pp-grid pp-g2">' + hits.map(function (x) { var open = x.secs.filter(function (o) { return o.cap - o.cnt > 0; }).length;
               return '<div class="pp-card"><h3 style="margin-bottom:4px">' + esc(title(x.c.name)) + '</h3><div class="pp-row" style="margin-bottom:6px"><span class="pp-chip mute">' + esc(x.c.code) + "</span>" + (x.c.status === "retake" ? '<span class="pp-chip bad">Retake</span>' : x.c.sem ? '<span class="pp-chip">Sem ' + esc(x.c.sem) + "</span>" : '<span class="pp-chip warn">Elective</span>') + '<span class="pp-chip ' + (open ? "ok" : "bad") + '">' + open + "/" + x.secs.length + " open</span></div>" + secRows(x.secs.sort(function (a, b) { return (b.cap - b.cnt) - (a.cap - a.cnt); }), slots, 6) + "</div>"; }).join("") + "</div>" +
-            (hits.length ? "" : '<div class="pp-card pp-empty"><span class="pp-em">🔍</span>None of your remaining courses are in the offered list right now</div>') + "</div>";
+            (hits.length ? "" : '<div class="pp-card pp-empty"><span class="pp-em">⌕</span>None of your remaining courses are in the offered list right now</div>') + "</div>";
         } else {
           var render = function () {
             var q = norm(courseState.q), list = off.list.filter(function (o) { return !q || norm(o.name).indexOf(q) >= 0 || o.id.indexOf(courseState.q) >= 0; });
@@ -1557,7 +1593,7 @@
       var dist = {}; ["A+", "A", "B+", "B", "C+", "C", "D+", "D", "F", "W"].forEach(function (g) { dist[g] = 0; });
       sem.sems.forEach(function (s) { s.courses.forEach(function (c) { if (dist[c.g] != null) dist[c.g]++; }); });
       var mx = Math.max.apply(null, Object.keys(dist).map(function (k) { return dist[k]; }).concat([1]));
-      var colors = { "A+": "#10b981", "A": "#22c55e", "B+": "#3b82f6", "B": "#6366f1", "C+": "#f59e0b", "C": "#f97316", "D+": "#fb7185", "D": "#f43f5e", "F": "#dc2626", "W": "#94a3b8" };
+      var colors = { "A+": "#1457b5", "A": "#2266c5", "B+": "#478bea", "B": "#669fee", "C+": "#1a6fe6", "C": "#2878e7", "D+": "#7cacf0", "D": "#488ceb", "F": "#2672dc", "W": "#94a3b8" };
       var best = sems.slice().sort(function (a, b) { return b.gpa - a.gpa; })[0];
       var h = '<div class="pp-view"><div class="pp-grid pp-g4">' + stat("pp-c1", "award", "CGPA", cgB(cg), "Current · tap to show") + stat("pp-c2", "check", "Credits", info["Credit(s) Completed"] || "—", (info["Course(s) Completed"] || "") + " courses") +
         stat("pp-c3", "flash", "Best semester", best ? best.gpa.toFixed(2) : "—", best ? esc(best.name) : "") + stat("pp-c4", "cal", "Semesters", sems.length, "with results") + "</div>" +
@@ -1593,7 +1629,7 @@
     var opts = Object.keys(GP).map(function (g) { return '<option value="' + g + '">' + g + " (" + GP[g].toFixed(2) + ")</option>"; }).join("");
     function add(name, c) { var d = document.createElement("div"); d.className = "pp-calc-row"; d.innerHTML = '<input class="pp-input" value="' + esc(name || "") + '" placeholder="Course"><input class="pp-input" type="number" min="0" max="6" step="1" value="' + (c || 3) + '"><select class="pp-input">' + opts + '</select><button class="pp-iconbtn" title="Remove">' + ic("x") + "</button>"; rows.appendChild(d); $("select", d).value = "B"; $("button", d).onclick = function () { d.remove(); calc(); }; $$("input,select", d).forEach(function (x) { x.oninput = calc; }); }
     function calc() { var pts = cg * cr, c = cr; $$(".pp-calc-row", rows).forEach(function (r) { var k = $$("input", r)[1].value * 1 || 0, g = $("select", r).value; pts += k * GP[g]; c += k; });
-      var v = c ? pts / c : 0; $("#pp-calc-out", box).textContent = v.toFixed(2); var df = v - cg; $("#pp-calc-diff", box).innerHTML = '<span style="color:' + (df >= 0 ? "#10b981" : "#ef4444") + '">' + (df >= 0 ? "▲ +" : "▼ ") + df.toFixed(2) + "</span>"; }
+      var v = c ? pts / c : 0; $("#pp-calc-out", box).textContent = v.toFixed(2); var df = v - cg; $("#pp-calc-diff", box).innerHTML = '<span style="color:' + (df >= 0 ? "#1457b5" : "#488ceb") + '">' + (df >= 0 ? "▲ +" : "▼ ") + df.toFixed(2) + "</span>"; }
     $("#pp-calc-add", box).onclick = function () { add("", 3); calc(); };
     D.reg().then(function (reg) { reg.courses.forEach(function (c) { add(title(c.name), 3); }); calc(); }).catch(function () { add("", 3); calc(); });
   }
@@ -1609,7 +1645,7 @@
       var totPaid = acc.rows.reduce(function (a, x) { return a + x.cr; }, 0), totFee = acc.rows.reduce(function (a, x) { return a + x.dr; }, 0);
       setHead("Financials", esc(reg.semester) + " · " + (bal > 0 ? "৳" + money(bal) + " due" : "All clear ✅"));
       return '<div class="pp-view"><div class="pp-grid pp-g-21"><div class="pp-card"><h3>' + ic("wallet") + " " + esc(reg.semester) + ' assessment</h3><div class="pp-row" style="gap:24px;flex-wrap:nowrap"><div class="pp-ring" style="--p:' + pc + '"><span>' + pc + "%<small>paid</small></span></div>" +
-        '<div style="flex:1;display:grid;gap:10px"><div class="pp-item"><div class="pp-t"><small>Net total</small><b class="pp-money">৳' + money(net) + '</b></div></div><div class="pp-item"><div class="pp-t"><small>Paid</small><b class="pp-money" style="color:#10b981">৳' + money(paid) + '</b></div></div><div class="pp-item"><div class="pp-t"><small>Balance due</small><b class="pp-money" style="color:' + (bal > 0 ? "#f43f5e" : "#10b981") + '">৳' + money(bal) + "</b></div></div></div></div></div>" +
+        '<div style="flex:1;display:grid;gap:10px"><div class="pp-item"><div class="pp-t"><small>Net total</small><b class="pp-money">৳' + money(net) + '</b></div></div><div class="pp-item"><div class="pp-t"><small>Paid</small><b class="pp-money" style="color:#1457b5">৳' + money(paid) + '</b></div></div><div class="pp-item"><div class="pp-t"><small>Balance due</small><b class="pp-money" style="color:' + (bal > 0 ? "#488ceb" : "#1457b5") + '">৳' + money(bal) + "</b></div></div></div></div></div>" +
         '<div class="pp-card"><h3>' + ic("list") + ' Fee breakdown</h3><div class="pp-list">' + reg.fees.filter(function (x) { return x.v && !/total|balance|paid/i.test(x.k); }).map(function (x) { return '<div class="pp-item" style="padding:9px 12px"><div class="pp-t"><b style="font-size:13.5px">' + esc(x.k) + '</b></div><span class="pp-money">৳' + money(x.v) + "</span></div>"; }).join("") + "</div></div></div>" +
         '<div class="pp-grid pp-g3">' + stat("pp-c4", "wallet", "Total billed", "৳" + money(totFee), "All semesters") + stat("pp-c2", "check", "Total paid", "৳" + money(totPaid), acc.rows.filter(function (x) { return x.cr; }).length + " payments") + stat("pp-c1", "clock", "Ledger balance", rows.length ? "৳" + money(acc.rows[acc.rows.length - 1].bal) : "—", "As per accounts") + "</div>" +
         '<div class="pp-card"><h3>' + ic("list") + ' Transactions<a class="pp-more" href="' + classic(L("Financials") || "/Student") + '">Classic →</a></h3><div class="pp-list">' +
@@ -1624,13 +1660,13 @@
   VIEWS.mail = function (p, force) {
     if (p.tab) mailState.tab = p.tab;
     setHead("Mail", "AIUB portal mailbox and your Outlook student account");
-    var tabs = '<div class="pp-tabs"><button data-mt="portal" class="' + (mailState.tab === "portal" ? "on" : "") + '">' + ic("mail") + ' Portal Mail</button><button data-mt="outlook" class="' + (mailState.tab === "outlook" ? "on" : "") + '"><b style="color:#0078d4">O</b> Outlook</button></div>';
+    var tabs = '<div class="pp-tabs"><button data-mt="portal" class="' + (mailState.tab === "portal" ? "on" : "") + '">' + ic("mail") + ' Portal Mail</button><button data-mt="outlook" class="' + (mailState.tab === "outlook" ? "on" : "") + '"><b style="color:#155cbf">O</b> Outlook</button></div>';
     if (mailState.tab === "outlook") {
       return D.home().catch(function () { return {}; }).then(function (home) {
         var saved = localStorage.getItem("pp.olmail") || (home.teams && home.teams.user) || "";
         return '<div class="pp-view">' + tabs + '<div class="pp-grid pp-g2"><div class="pp-card pp-ol"><span class="pp-olg">O</span><h3 style="margin:6px 0 0">Outlook — AIUB student mail</h3><p style="color:var(--ap-muted);margin:0">Inbox of your @student.aiub.edu account</p>' +
           '<input class="pp-input" id="pp-olmail" placeholder="24-xxxxx-x@student.aiub.edu" value="' + esc(saved) + '" style="max-width:360px;text-align:center"><div class="pp-row" style="justify-content:center"><button class="pp-btn pri" id="pp-olopen">' + ic("ext") + ' Open Outlook inbox</button><button class="pp-btn" id="pp-olcal">' + ic("cal") + " Calendar</button></div>" +
-          '<div class="pp-note">🔒 You enter your password on Microsoft\'s own sign-in page — StudentDesk never sees or stores it. Microsoft doesn\'t allow Outlook inside other sites, so it opens in a new window. Choose "Stay signed in" once and next time your inbox opens directly.</div></div>' +
+          '<div class="pp-note">◆ You enter your password on Microsoft\'s own sign-in page — StudentDesk never sees or stores it. Microsoft doesn\'t allow Outlook inside other sites, so it opens in a new window. Choose "Stay signed in" once and next time your inbox opens directly.</div></div>' +
           '<div class="pp-card"><h3>' + ic("lock") + " Microsoft Teams / Office login</h3>" + (home.teams ? '<div class="pp-list"><div class="pp-item"><div class="pp-t"><small>User name</small><b>' + esc(home.teams.user) + '</b></div></div><div class="pp-item pp-click" title="Click to show"><div class="pp-t"><small>One-time password (click to show)</small><b class="pp-secret" id="pp-tpass">' + esc(home.teams.pass) + "</b></div></div></div>" : '<div class="pp-empty">Teams info not found</div>') +
           '<div class="pp-row" style="margin-top:14px"><a class="pp-btn" target="_blank" rel="noopener" href="https://teams.microsoft.com/">Teams</a><a class="pp-btn" target="_blank" rel="noopener" href="https://www.office.com/">Office 365</a><a class="pp-btn" target="_blank" rel="noopener" href="https://onedrive.live.com/">OneDrive</a></div></div></div></div>';
       });
@@ -1642,8 +1678,8 @@
       list = Array.isArray(list) ? list : [];
       return '<div class="pp-view">' + tabs + '<div class="pp-mail"><div class="pp-card" style="padding:12px"><div class="pp-tabs" style="width:100%;margin-bottom:10px">' + boxes.map(function (b, i) { return '<button data-mb="' + i + '" class="' + (mailState.box === i ? "on" : "") + '">' + b + "</button>"; }).join("") + '</div><div class="pp-list" id="pp-mlist">' +
         (list.length ? list.map(function (m, i) { var fr = m.From || {}; return '<div class="pp-item pp-click" data-mid="' + esc(m.ID) + '"><span class="pp-avatar" style="width:34px;height:34px;font-size:12px">' + esc(String(fr.Name || "?").trim().charAt(0)) + '</span><div class="pp-t"><b>' + esc(fr.Name || "Unknown") + (mailState.box === 0 && isNewSig("mail", String(m.ID)) ? NEWDOT : "") + "</b><small>" + esc(m.Subject || "(no subject)") + '</small></div><div class="pp-r" style="font-size:11.5px">' + esc(pickDate(m)) + "</div></div>"; }).join("")
-          : '<div class="pp-empty"><span class="pp-em">📭</span>' + boxes[mailState.box] + " is empty</div>") +
-        '</div></div><div class="pp-card" id="pp-mview"><div class="pp-empty"><span class="pp-em">✉️</span>Select a message</div><div style="text-align:center"><a class="pp-btn" href="' + classic("/Message/Email") + '">' + ic("layers") + " Open portal mailbox (compose)</a></div></div></div></div>";
+          : '<div class="pp-empty"><span class="pp-em">◇</span>' + boxes[mailState.box] + " is empty</div>") +
+        '</div></div><div class="pp-card" id="pp-mview"><div class="pp-empty"><span class="pp-em">✉</span>Select a message</div><div style="text-align:center"><a class="pp-btn" href="' + classic("/Message/Email") + '">' + ic("layers") + " Open portal mailbox (compose)</a></div></div></div></div>";
     }).catch(function(e){
       var session=e&&e.message==="SESSION";
       return '<div class="pp-view">'+tabs+'<div class="pp-card pp-mail-recovery"><span class="pp-qi">'+ic("mail")+'</span><h2>'+(session?'Sign in again to open mail':'Portal mailbox')+'</h2><p>'+esc(session?'Your portal session has expired.':e.message||'Mailbox data could not be read.')+'</p><div class="pp-row"><a class="pp-btn pri" href="'+(session?'/':classic('/Message/Email'))+'">'+(session?'Sign in':'Open original mailbox')+'</a><button type="button" class="pp-btn" data-act="refresh">Retry</button></div><p class="pp-note">Outlook is separate and remains available from the tab above.</p></div></div>';
@@ -1665,7 +1701,7 @@
       var v = $("#pp-mview", app); v.innerHTML = '<div class="pp-sk" style="height:300px"></div>';
       portalJSON("/Message/Email/GetMessageByID?messageID=" + encodeURIComponent(it.getAttribute("data-mid"))).then(function (m) {
         var fr = m.From || {}; v.innerHTML = "<h3>" + esc(m.Subject || "(no subject)") + '</h3><div class="pp-row" style="margin-bottom:12px"><span class="pp-chip">' + esc(fr.Name || "") + '</span><span style="color:var(--ap-muted);font-size:12.5px">' + esc(pickDate(m)) + '</span></div><iframe sandbox="allow-popups allow-popups-to-escape-sandbox" id="pp-mbody"></iframe>';
-        var fr2 = $("#pp-mbody", v); fr2.srcdoc = '<base target="_blank"><style>body{font:15px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:#1e293b;margin:16px;word-wrap:break-word}img{max-width:100%}</style>' + (m.Body || "");
+        var fr2 = $("#pp-mbody", v); fr2.srcdoc = '<base target="_blank"><style>body{font:15px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:#1c2a3d;margin:16px;word-wrap:break-word}img{max-width:100%}</style>' + (m.Body || "");
       }).catch(function () { v.innerHTML = '<div class="pp-empty">Couldn’t load message</div>'; });
     }; });
   };
@@ -1674,33 +1710,16 @@
   /* ---------- What's new + update check ----------
      Reads the public file update.json from the GitHub repo (nothing is sent) at most every 6 hours.
      When a newer version exists, More shows the new features and a GitHub update link. */
-  var PP_VER = "4.5.0";
+  var PP_VER = "4.6.0";
   var PP_NEW = [
-    "Refine the warm color palette and illustrated workspace with clean surfaces, subtle depth, consistent spacing and clear focus states.",
-    "Refine Home, navigation, cards, buttons, fields, segmented filters, dialogs and light/dark themes.",
-    "Apply Times New Roman consistently across pages, sidebar and login; retain monospace course identifiers where appropriate.",
-    "Improve phone, tablet and desktop layouts, touch targets, safe areas, compact-height views and tablet navigation.",
-    "Restore the smooth capsule phone footer: Home, Routine, Courses, Notices and More, with a sliding active pill and reduced-motion fallback.",
-    "Keep all existing pages, original illustrations, the two-part Home card and Course planner NEW badge.",
-    "Add accessible illustration/icon motion controls, respecting reduced motion, Performance mode, hidden tabs and offscreen content.",
-    "Redesign the native login form with a desktop identity panel and compact phone header, visible field labels, clean inputs and accessible password reveal.",
-    "Preserve native form actions, tokens, field names, captcha and authentication; no credential storage is added.",
-    "Replace heavy gradient calendar blocks with flat, readable event surfaces without changing meeting-time geometry.",
-    "Enable Add to plan only when confirmed curriculum rules are satisfied by passed results plus explicitly checked current-semester expected passes.",
-    "Keep blocked and unverified courses locked, including stale click-handler checks; display prerequisite names, codes, ALL/ONE-OF groups and pass conditions.",
-    "Adding a course for next semester never unlocks its successors within that same plan.",
-    "Revalidate saved plans as assumptions/catalogs change; keep invalid historical references outside active totals and exports.",
-    "Match department data from portal program details while keeping curriculum/batch confirmation separate.",
-    "Preserve saved plans, offering snapshots, conflict checks, PDF/JPG exports and optional JSON backup. Planning is not registration approval; future offerings/seats are not guaranteed.",
-    "Resolve declared same-origin attachment links when an HTML notes page wraps the actual file; bound file sizes and traversal, reject login/external/loop responses.",
-    "Offer explicit choices for ambiguous files and actionable Retry, Open notes and Original download recovery.",
-    "Preserve direct supported previews. DOCX/PPTX previews remain text-only: original layout, images and equations are not reproduced.",
-    "Preserve review drafts across navigation/refresh, guard duplicate submissions and refine comment transitions.",
-    "Improve search-dialog labels, focus trapping/restoration, keyboard interaction and live status announcements.",
-    "Passed 688 local Chromium fixture/UI/functional checks plus 333 footer checks, generated-userscript checks and planner/publishing/transport unit suites.",
-    "Tests use synthetic local data and mocked review traffic. Live authenticated portal, physical phones and native Safari/Firefox engines were not verified.",
-    "Existing v4.5.1-v4.5.3 development builds are consolidated into public v4.5.0. Users of those higher-numbered local builds must replace the existing entry manually; do not clear storage or run duplicate installations.",
-    "Firefox/Edge updates require each store's acceptance and normal update checks. Safari package is developer source, not a signed App Store application."
+    "Refresh the blue-and-white interface with translucent surfaces, visible reflections, soft highlights and backdrop blur in Light and Dark mode.",
+    "Smooth transitions and interactions, respecting reduced-motion settings and Performance mode; improve navigation hover contrast.",
+    "Choose Rounded serif (Fraunces) or Times New Roman in Settings, including on the login screen.",
+    "Center the AIUB identity on the refreshed login screen while retaining the native login form.",
+    "See the next available exam on Home, with details from the portal when available.",
+    "Temporarily hide classes between the first and last dated personal exam of the same named term; restore the usual routine afterwards. This is a display rule, not an official cancellation.",
+    "Refine phone layouts and exam and review controls; use current courses as a fallback when the semester list is unavailable.",
+    "Use lighter glass effects on mobile and in Performance mode to support smoother scrolling."
   ];
   var GH_REPO = "https://github.com/amitsami/studentdesk-aiub",
       UPD_URL = "https://raw.githubusercontent.com/amitsami/studentdesk-aiub/main/update.json",
@@ -1756,7 +1775,7 @@
       if (+jget(UPD_LATER + "." + d.version, 0) > Date.now() || storeName()) return "";   // store installs update by themselves
       return '<div class="pp-card pp-updbar new" id="pp-updbar"><span class="pp-qi">' + ic("spark") + '</span><div class="pp-t"><b>Update available \u00b7 v' + esc(d.version) + "</b><small>" + esc((d.notes || [])[0] || "New features and fixes") + '</small></div><a class="pp-btn pri sm" href="#/more" data-upd="more">What\u2019s new</a><button class="pp-iconbtn" data-upd="later" title="Later" aria-label="Later">' + ic("x") + "</button></div>";
     }
-    if (seen && seen !== PP_VER) return '<div class="pp-card pp-updbar" id="pp-updbar"><span class="pp-qi">' + ic("check") + '</span><div class="pp-t"><b>Updated to v' + PP_VER + " \ud83c\udf89</b><small>You are up to date. See what\u2019s new in this version.</small></div>" + '<a class="pp-btn sm" href="#/more" data-upd="more">What\u2019s new</a><button class="pp-iconbtn" data-upd="ok" title="Close" aria-label="Close">' + ic("x") + "</button></div>";
+    if (seen && seen !== PP_VER) return '<div class="pp-card pp-updbar" id="pp-updbar"><span class="pp-qi">' + ic("check") + '</span><div class="pp-t"><b>Updated to v' + PP_VER + " ✓</b><small>You are up to date. See what\u2019s new in this version.</small></div>" + '<a class="pp-btn sm" href="#/more" data-upd="more">What\u2019s new</a><button class="pp-iconbtn" data-upd="ok" title="Close" aria-label="Close">' + ic("x") + "</button></div>";
     if (!seen) jset(VER_SEEN, PP_VER);  // first install: nothing to announce
     return "";
   }
@@ -1785,7 +1804,7 @@
         '<a class="pp-card pp-facard" href="#/faculty"><span class="pp-qi">' + ic("user") + '</span><div class="pp-t"><b>Faculty list</b><small>Find any AIUB faculty — room, email, department, research interests</small></div>' + ic("back", "flip") + "</a>" +
         '<div class="pp-grid pp-g3">' + MENU.map(function (g) { var items = g.items.filter(function (it) { return norm(g.g) !== "ACADEMICS" || !isCoursesResult(it.t); }); if (!items.length) return ""; return '<div class="pp-card"><h3>' + ic(GROUP_IC[g.g] || "grid") + " " + esc(g.g) + '</h3><div class="pp-list">' + items.map(function (it) { return '<a class="pp-item" style="padding:10px 12px" href="' + classic(it.h) + '"><div class="pp-t"><b style="font-size:13.5px">' + esc(it.t) + "</b></div>" + ic("back", "flip") + "</a>"; }).join("") + "</div></div>"; }).join("") +
         '<div class="pp-card"><h3>' + ic("lock") + ' Account</h3><div class="pp-list"><a class="pp-item" href="#/settings"><div class="pp-t"><b>Settings & theme</b></div></a><a class="pp-item" href="' + classic(L("Change Password") || "/Student/Credential/ChangePassword") + '"><div class="pp-t"><b>Change password</b></div></a>' +
-        '<a class="pp-item" href="' + classic(location.pathname + location.search) + '"><div class="pp-t"><b>Classic portal view</b><small>Original portal layout</small></div></a><a class="pp-item" href="/Login/Logout" id="pp-logout" data-act="logout" style="color:#ef4444"><div class="pp-t"><b>Log out</b></div>' + ic("out") + "</a></div></div></div></div>" +
+        '<a class="pp-item" href="' + classic(location.pathname + location.search) + '"><div class="pp-t"><b>Classic portal view</b><small>Original portal layout</small></div></a><a class="pp-item" href="/Login/Logout" id="pp-logout" data-act="logout" style="color:#488ceb"><div class="pp-t"><b>Log out</b></div>' + ic("out") + "</a></div></div></div></div>" +
         '<div class="pp-card pp-dev"><h3>' + ic("user") + ' Developer info</h3><div class="pp-row" style="gap:14px;align-items:center"><span class="pp-avatar" style="width:52px;height:52px;font-size:18px">AS</span><div class="pp-t" style="flex:1;min-width:0"><b style="font-size:16px">Amit Hasan Sami</b><small>Developer of StudentDesk AIUB</small></div></div>' +
         '<div class="pp-list" style="margin-top:12px"><a class="pp-item" href="mailto:amitsami110@gmail.com">' + ic("mail") + '<div class="pp-t"><small>Email</small><b>amitsami110@gmail.com</b></div></a>' +
         '<a class="pp-item" href="https://www.facebook.com/amithsami110" target="_blank" rel="noopener noreferrer">' + ic("user") + '<div class="pp-t"><small>Facebook</small><b>facebook.com/amithsami110</b></div>' + ic("ext") + "</a>" +
@@ -1798,14 +1817,15 @@
   VIEWS.settings = function () {
     setHead("Settings", "Your portal, your style");
     var sp = API.get().startPage || "home";
-    return '<div class="pp-view"><div class="pp-grid pp-g2"><div class="pp-card sd-theme-card"><h3>' + ic("sun") + ' Theme</h3><p class="sd-muted">A quieter workspace, day or night.</p><div class="sd-theme-options">' + [["light","Light"],["dark","Dark"],["auto","System"]].map(function(t){return '<button type="button" class="pp-btn" data-sd-theme="'+t[0]+'" aria-pressed="'+(API.get().mode===t[0])+'">'+t[1]+'</button>';}).join("") + '</div></div><div class="pp-card"><h3>' + ic("grid") + ' App</h3><div class="pp-list">' +
+    return '<div class="pp-view"><div class="pp-grid pp-g2"><div class="pp-card sd-theme-card"><h3>' + ic("sun") + ' Theme</h3><p class="sd-muted">A quieter workspace, day or night.</p><div class="sd-theme-options">' + [["light","Light"],["dark","Dark"],["auto","System"]].map(function(t){return '<button type="button" class="pp-btn" data-sd-theme="'+t[0]+'" aria-pressed="'+(API.get().mode===t[0])+'">'+t[1]+'</button>';}).join("") + '</div><h3 class="sd-font-title">Font</h3><p class="sd-muted">Choose the look that feels right.</p><div class="sd-font-options" role="group" aria-label="Font">' + [["rounded","Rounded serif"],["times","Times New Roman"]].map(function(t){return '<button type="button" class="pp-btn" data-sd-font="'+t[0]+'" aria-pressed="'+((API.get().font||"rounded")===t[0])+'">'+t[1]+'</button>';}).join("") + '</div></div><div class="pp-card"><h3>' + ic("grid") + ' App</h3><div class="pp-list">' +
       '<div class="pp-item" style="display:flex;align-items:center;gap:12px"><div class="pp-t" style="flex:1;min-width:0"><b>Start page</b><small>Page shown when the portal opens</small></div><select class="pp-input" id="pp-start" style="width:auto">' + NAV.map(function (n) { return '<option value="' + n.r + '"' + (n.r === sp ? " selected" : "") + ">" + n.t + "</option>"; }).join("") + "</select></div>" +
       '<button class="pp-item pp-click" data-act="refresh" style="text-align:left"><div class="pp-t"><b>Refresh all data</b><small>Reload everything from the portal</small></div>' + ic("refresh") + "</button>" +
       '<a class="pp-item" href="' + classic(location.pathname + location.search) + '"><div class="pp-t"><b>Classic portal view</b><small>Use the original layout</small></div>' + ic("layers") + "</a></div>" +
-      '<p class="pp-note" style="margin-top:14px">🔒 StudentDesk runs only in your browser. All data comes directly from portal.aiub.edu and is never sent anywhere — except a faculty review you choose to submit (anonymous: no name, no ID). Settings are saved on this device only.<br><br>⌨️ Shortcuts: Alt+1…7 page change · Alt+D dark mode</p></div>' + rvSetCard() + '</div></div>';
+      '<p class="pp-note" style="margin-top:14px">◆ StudentDesk runs only in your browser. All data comes directly from portal.aiub.edu and is never sent anywhere — except a faculty review you choose to submit (anonymous: no name, no ID). Settings are saved on this device only.<br><br>⌨ Shortcuts: Alt+1…7 page change · Alt+D dark mode</p></div>' + rvSetCard() + '</div></div>';
   };
   VIEWS.settings.after = function () {
     $$("[data-sd-theme]",app).forEach(function(b){b.onclick=function(){API.set("mode",b.dataset.sdTheme);$$("[data-sd-theme]",app).forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});syncThemeIcon();};});
+    $$("[data-sd-font]",app).forEach(function(b){b.onclick=function(){API.set("font",b.dataset.sdFont);$$("[data-sd-font]",app).forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});};});
     var st = $("#pp-start", app); if (st) st.onchange = function () { API.set("startPage", st.value); toast("Saved ✓"); };
     rvSetWire();
   };
@@ -1938,12 +1958,12 @@
     var m = /(?:^|\s)(\d{1,2})[:.](\d{2})\s*(AM|PM)?/i.exec(e.time || ""); if (!m) return null;
     var h = +m[1], mi = +m[2]; if (mi > 59 || h > 23 || (m[3] && (h < 1 || h > 12))) return null;
     if (m[3]) h = h % 12 + (/PM/i.test(m[3]) ? 12 : 0);
-    var d = new Date(new Date(e.date).toLocaleString("en-US", { timeZone: "Asia/Dhaka" })); d.setHours(h, mi, 0, 0); return d;
+    var d = examDay(e); d.setHours(h, mi, 0, 0); return d;
   }
   function reminderTick() {
     var lead = +jget("pp.reminder.minutes", 0); if ([5, 10, 15, 30].indexOf(lead) < 0 || !app) return;
     var now = campusNow(), reg = peek("reg"), events = [];
-    if (reg) daySlots(weekly(reg), DAYS[now.getDay()]).forEach(function (s) { var d = new Date(now); d.setHours(Math.floor(s.start / 60), s.start % 60, 0, 0); events.push({ id: "class|" + d.toDateString() + "|" + s.name + "|" + s.start, at: d.getTime(), title: title(s.name), text: fmtT(s.start) + (s.room ? " · Room " + s.room : "") }); });
+    if (reg && !examPeriodOn(now)) daySlots(weekly(reg), DAYS[now.getDay()]).forEach(function (s) { var d = new Date(now); d.setHours(Math.floor(s.start / 60), s.start % 60, 0, 0); events.push({ id: "class|" + d.toDateString() + "|" + s.name + "|" + s.start, at: d.getTime(), title: title(s.name), text: fmtT(s.start) + (s.room ? " · Room " + s.room : "") }); });
     var exams = peek("exams"); if (exams && exams.list) exams.list.forEach(function (e) { var d = examStart(e); if (d) events.push({ id: "exam|" + examSig(e), at: d.getTime(), title: "Exam · " + title(e.course), text: e.time + (e.room ? " · Room " + e.room : "") }); });
     events.forEach(function (e) { var left = (e.at - now.getTime()) / 60000; if (left <= 0 || left > lead || jget("pp.reminded." + e.id, false)) return; jset("pp.reminded." + e.id, true); toast(e.title + " · in " + Math.ceil(left) + " min · " + e.text); if ("Notification" in window && Notification.permission === "granted") try { var n = new Notification("StudentDesk · " + e.title, { body: "In " + Math.ceil(left) + " min · " + e.text, tag: e.id }); setTimeout(function () { n.close(); }, 15000); } catch (x) {} });
   }
@@ -1953,17 +1973,17 @@
   function timeCode(d) { return dateCode(d) + "T" + ("0" + d.getHours()).slice(-2) + ("0" + d.getMinutes()).slice(-2) + "00"; }
   function calendarText(slots, exams, now) {
     var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//StudentDesk AIUB//Routine Preview//EN", "CALSCALE:GREGORIAN", "X-WR-CALNAME:StudentDesk AIUB - 8 weeks", "BEGIN:VTIMEZONE", "TZID:Asia/Dhaka", "BEGIN:STANDARD", "DTSTART:19700101T000000", "TZOFFSETFROM:+0600", "TZOFFSETTO:+0600", "TZNAME:+06", "END:STANDARD", "END:VTIMEZONE"], stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z/, "Z");
-    slots.forEach(function (s, i) { var day = DAYS.indexOf(s.day); if (day < 0) return; var d = new Date(now); d.setDate(d.getDate() + (day - d.getDay() + 7) % 7); d.setHours(Math.floor(s.start / 60), s.start % 60, 0, 0); if (d < now) d.setDate(d.getDate() + 7); var end = new Date(d); end.setMinutes(end.getMinutes() + s.end - s.start); lines.push("BEGIN:VEVENT", "UID:class-" + dateCode(d) + "-" + i + "@studentdesk.local", "DTSTAMP:" + stamp, "DTSTART;TZID=Asia/Dhaka:" + timeCode(d), "DTEND;TZID=Asia/Dhaka:" + timeCode(end), "RRULE:FREQ=WEEKLY;COUNT=8", "SUMMARY:" + icsEscape(s.name + (s.sec ? " [" + s.sec + "]" : "")), "LOCATION:" + icsEscape(s.room || ""), "DESCRIPTION:" + icsEscape("8-week copy of your current routine. Not an official semester calendar; verify changes in the portal."), "BEGIN:VALARM", "TRIGGER:-PT15M", "ACTION:DISPLAY", "DESCRIPTION:Class reminder", "END:VALARM", "END:VEVENT"); });
-    (exams || []).forEach(function (e, i) { if (!e.date) return; var d = examStart(e), day = new Date(new Date(e.date).toLocaleString("en-US", { timeZone: "Asia/Dhaka" })); if (day.getTime() < now.getTime() - 864e5) return; lines.push("BEGIN:VEVENT", "UID:exam-" + dateCode(day) + "-" + i + "@studentdesk.local", "DTSTAMP:" + stamp); if (d) lines.push("DTSTART;TZID=Asia/Dhaka:" + timeCode(d)); else { var end = new Date(day); end.setDate(end.getDate() + 1); lines.push("DTSTART;VALUE=DATE:" + dateCode(day), "DTEND;VALUE=DATE:" + dateCode(end)); } lines.push("SUMMARY:" + icsEscape("Exam: " + e.course), "LOCATION:" + icsEscape(e.room), "DESCRIPTION:" + icsEscape([e.term, e.time, "Confirm timing in the portal"].filter(Boolean).join(" · ")), "END:VEVENT"); });
+    slots.forEach(function (s, i) { var day = DAYS.indexOf(s.day); if (day < 0) return; var d = new Date(now); d.setDate(d.getDate() + (day - d.getDay() + 7) % 7); d.setHours(Math.floor(s.start / 60), s.start % 60, 0, 0); if (d < now) d.setDate(d.getDate() + 7); var end = new Date(d); end.setMinutes(end.getMinutes() + s.end - s.start); lines.push("BEGIN:VEVENT", "UID:class-" + dateCode(d) + "-" + i + "@studentdesk.local", "DTSTAMP:" + stamp, "DTSTART;TZID=Asia/Dhaka:" + timeCode(d), "DTEND;TZID=Asia/Dhaka:" + timeCode(end), "RRULE:FREQ=WEEKLY;COUNT=8", (function(){var skipped=[];for(var j=0;j<8;j++){var t=new Date(d);t.setDate(t.getDate()+7*j);if(examPeriodOn(t,exams))skipped.push(timeCode(t));}return skipped.length ? "EXDATE;TZID=Asia/Dhaka:"+skipped.join(",") : "";})(), "SUMMARY:" + icsEscape(s.name + (s.sec ? " [" + s.sec + "]" : "")), "LOCATION:" + icsEscape(s.room || ""), "DESCRIPTION:" + icsEscape("8-week copy of your current routine. Not an official semester calendar; verify changes in the portal."), "BEGIN:VALARM", "TRIGGER:-PT15M", "ACTION:DISPLAY", "DESCRIPTION:Class reminder", "END:VALARM", "END:VEVENT"); });
+    (exams || []).forEach(function (e, i) { if (!e.date) return; var d = examStart(e), day = examDay(e); if (day.getTime() < now.getTime() - 864e5) return; lines.push("BEGIN:VEVENT", "UID:exam-" + dateCode(day) + "-" + i + "@studentdesk.local", "DTSTAMP:" + stamp); if (d) lines.push("DTSTART;TZID=Asia/Dhaka:" + timeCode(d)); else { var end = new Date(day); end.setDate(end.getDate() + 1); lines.push("DTSTART;VALUE=DATE:" + dateCode(day), "DTEND;VALUE=DATE:" + dateCode(end)); } lines.push("SUMMARY:" + icsEscape("Exam: " + e.course), "LOCATION:" + icsEscape(e.room), "DESCRIPTION:" + icsEscape([e.term, e.time, "Confirm timing in the portal"].filter(Boolean).join(" · ")), "END:VEVENT"); });
     lines.push("END:VCALENDAR");
-    return lines.map(function (line) { var chunks = [], part = "", size = 0; Array.from(line).forEach(function (ch) { var n = new TextEncoder().encode(ch).length; if (size + n > 73) { chunks.push(part); part = " "; size = 1; } part += ch; size += n; }); chunks.push(part); return chunks.join("\r\n"); }).join("\r\n") + "\r\n";
+    return lines.filter(Boolean).map(function (line) { var chunks = [], part = "", size = 0; Array.from(line).forEach(function (ch) { var n = new TextEncoder().encode(ch).length; if (size + n > 73) { chunks.push(part); part = " "; size = 1; } part += ch; size += n; }); chunks.push(part); return chunks.join("\r\n"); }).join("\r\n") + "\r\n";
   }
   function routineRows(slots) { return DAYS.map(function (day) { var rows = daySlots(slots, day); return '<section><h2>' + DAYFULL[day] + '</h2>' + (rows.length ? rows.map(function (s) { return '<article><strong>' + esc(title(s.name)) + '</strong><span>' + esc(fmtT(s.start) + " – " + fmtT(s.end)) + '</span><small>' + esc([s.sec && "Section " + s.sec, s.type, s.room && "Room " + s.room].filter(Boolean).join(" · ")) + '</small></article>'; }).join("") : '<p>No classes</p>') + '</section>'; }).join(""); }
   function routineExport() {
     var reg = peek("reg"); if (!reg) { toast("Open Routine and wait for your classes to load"); return; } var slots = weekly(reg);
-    var box = featureDialog("Export your routine", '<p class="pp-note">' + esc(reg.semester || "Current semester") + ' · Campus time: Asia/Dhaka. Files are created locally.</p><div class="pp-export-options"><button class="pp-export" data-export="png">' + ic("grid") + '<b>Routine image</b><small>Save a clean PNG</small></button><button class="pp-export" data-export="print">' + ic("file") + '<b>Print / PDF</b><small>Choose Save as PDF in the print dialog</small></button><button class="pp-export" data-export="ics">' + ic("cal") + '<b>Add to calendar</b><small>Next 8 weekly occurrences + cached exams</small></button></div><p class="pp-note">Calendar files are snapshots, not a live sync. Re-import after changes. Class alerts: 15 minutes before. Exams without a readable start time become all-day events.</p>');
+    var box = featureDialog("Export your routine", '<p class="pp-note">' + esc(reg.semester || "Current semester") + ' · Campus time: Asia/Dhaka. Files are created locally.</p><div class="pp-export-options"><button class="pp-export" data-export="png">' + ic("grid") + '<b>Routine image</b><small>Save a clean PNG</small></button><button class="pp-export" data-export="print">' + ic("file") + '<b>Print / PDF</b><small>Choose Save as PDF in the print dialog</small></button><button class="pp-export" data-export="ics">' + ic("cal") + '<b>Add to calendar</b><small>Next 8 weekly occurrences + cached exams</small></button></div><p class="pp-note">Calendar files are snapshots, not a live sync. Re-import after changes. Class alerts: 15 minutes before. Exam-period class occurrences are omitted by your display rule, not an official cancellation. Exams without a readable start time become all-day events.</p>');
     box.addEventListener("click", function (e) { var b = e.target.closest("[data-export]"); if (!b) return; if (b.dataset.export === "ics") { fileSave("StudentDesk-routine-8-weeks.ics", new Blob([calendarText(slots, (peek("exams") || {}).list, campusNow())], { type: "text/calendar;charset=utf-8" })); toast("Calendar exported · check dates before importing"); }
-      if (b.dataset.export === "print") { var w = window.open("", "_blank"); if (!w) { toast("Allow pop-ups to open the print view"); return; } w.opener = null; w.document.write('<!doctype html><html><meta charset="utf-8"><title>StudentDesk Routine</title><style>body{font:15px system-ui;color:#202124;margin:32px}h1{margin:0}header p{color:#64748b}main{display:grid;grid-template-columns:1fr 1fr;gap:16px}section{border:1px solid #ddd;border-radius:12px;padding:16px;break-inside:avoid}h2{font-size:17px;margin:0 0 12px}article{margin:12px 0}article span,article small{display:block;color:#475569;margin-top:4px}@media print{button{display:none}body{margin:12mm}}</style><header><h1>Class routine</h1><p>' + esc(reg.semester || "StudentDesk AIUB") + ' · Asia/Dhaka · Current cached routine</p><button onclick="window.print()">Print / Save as PDF</button></header><main>' + routineRows(slots) + '</main></html>'); w.document.close(); }
+      if (b.dataset.export === "print") { var w = window.open("", "_blank"); if (!w) { toast("Allow pop-ups to open the print view"); return; } w.opener = null; w.document.write('<!doctype html><html><meta charset="utf-8"><title>StudentDesk Routine</title><style>body{font:15px system-ui;color:#15202f;margin:32px}h1{margin:0}header p{color:#64748b}main{display:grid;grid-template-columns:1fr 1fr;gap:16px}section{border:1px solid #d8dce2;border-radius:12px;padding:16px;break-inside:avoid}h2{font-size:17px;margin:0 0 12px}article{margin:12px 0}article span,article small{display:block;color:#475569;margin-top:4px}@media print{button{display:none}body{margin:12mm}}</style><header><h1>Class routine</h1><p>' + esc(reg.semester || "StudentDesk AIUB") + ' · Asia/Dhaka · Current cached routine</p><button onclick="window.print()">Print / Save as PDF</button></header><main>' + routineRows(slots) + '</main></html>'); w.document.close(); }
       if (b.dataset.export === "png") routinePng(slots, reg.semester);
     });
   }
@@ -1971,15 +1991,15 @@
     var canvas = document.createElement("canvas"), ctx = canvas.getContext("2d"), rowHeights = DAYS.map(function (d) { return Math.max(150, 70 + daySlots(slots, d).length * 110); });
     var rowH = []; for (var i = 0; i < 4; i++) rowH.push(Math.max(rowHeights[i * 2], rowHeights[i * 2 + 1] || 0));
     canvas.width = 1400; canvas.height = 150 + rowH.reduce(function (a, b) { return a + b + 20; }, 0) + 45;
-    ctx.fillStyle = "#f5f5f7"; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = "#1d1d1f"; ctx.font = "bold 38px Arial"; ctx.fillText("Class routine", 44, 65); ctx.font = "20px Arial"; ctx.fillStyle = "#667085"; ctx.fillText((semester || "StudentDesk AIUB") + " · Asia/Dhaka", 44, 108);
+    ctx.fillStyle = "#f5f6f7"; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = "#131c29"; ctx.font = "bold 38px Arial"; ctx.fillText("Class routine", 44, 65); ctx.font = "20px Arial"; ctx.fillStyle = "#657386"; ctx.fillText((semester || "StudentDesk AIUB") + " · Asia/Dhaka", 44, 108);
     function fit(s, width) { while (ctx.measureText(s).width > width && s.length > 1) s = s.slice(0, -2); return s; }
-    var y = 150; DAYS.forEach(function (day, i) { var x = 40 + (i % 2) * 670, height = rowH[Math.floor(i / 2)]; ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.roundRect(x, y, 650, height, 18); ctx.fill(); ctx.fillStyle = "#1d1d1f"; ctx.font = "bold 24px Arial"; ctx.fillText(DAYFULL[day], x + 22, y + 38); var rows = daySlots(slots, day); if (!rows.length) { ctx.fillStyle = "#667085"; ctx.font = "20px Arial"; ctx.fillText("No classes", x + 22, y + 85); } rows.forEach(function (s, j) { var yy = y + 78 + j * 110; ctx.fillStyle = "#1d1d1f"; ctx.font = "bold 21px Arial"; ctx.fillText(fit(title(s.name), 600), x + 22, yy); ctx.font = "19px Arial"; ctx.fillStyle = "#2563eb"; ctx.fillText(fmtT(s.start) + " – " + fmtT(s.end), x + 22, yy + 29); ctx.fillStyle = "#667085"; ctx.font = "18px Arial"; ctx.fillText(fit([s.sec && "Section " + s.sec, s.type, s.room && "Room " + s.room].filter(Boolean).join(" · "), 600), x + 22, yy + 56); }); if (i % 2 || i === 6) y += height + 20; });
-    ctx.font = "17px Arial"; ctx.fillStyle = "#667085"; ctx.fillText("StudentDesk AIUB · Cached snapshot. Verify updates in your portal.", 44, canvas.height - 20); canvas.toBlob(function (blob) { if (blob) fileSave("StudentDesk-class-routine.png", blob); }, "image/png");
+    var y = 150; DAYS.forEach(function (day, i) { var x = 40 + (i % 2) * 670, height = rowH[Math.floor(i / 2)]; ctx.fillStyle = "#ffffff"; ctx.beginPath(); ctx.roundRect(x, y, 650, height, 18); ctx.fill(); ctx.fillStyle = "#131c29"; ctx.font = "bold 24px Arial"; ctx.fillText(DAYFULL[day], x + 22, y + 38); var rows = daySlots(slots, day); if (!rows.length) { ctx.fillStyle = "#657386"; ctx.font = "20px Arial"; ctx.fillText("No classes", x + 22, y + 85); } rows.forEach(function (s, j) { var yy = y + 78 + j * 110; ctx.fillStyle = "#131c29"; ctx.font = "bold 21px Arial"; ctx.fillText(fit(title(s.name), 600), x + 22, yy); ctx.font = "19px Arial"; ctx.fillStyle = "#2978e7"; ctx.fillText(fmtT(s.start) + " – " + fmtT(s.end), x + 22, yy + 29); ctx.fillStyle = "#657386"; ctx.font = "18px Arial"; ctx.fillText(fit([s.sec && "Section " + s.sec, s.type, s.room && "Room " + s.room].filter(Boolean).join(" · "), 600), x + 22, yy + 56); }); if (i % 2 || i === 6) y += height + 20; });
+    ctx.font = "17px Arial"; ctx.fillStyle = "#657386"; ctx.fillText("StudentDesk AIUB · Cached snapshot. Verify updates in your portal.", 44, canvas.height - 20); canvas.toBlob(function (blob) { if (blob) fileSave("StudentDesk-class-routine.png", blob); }, "image/png");
   }
   function fileCandidate(a) { var h = a.getAttribute("href") || "", label = [a.textContent, a.getAttribute("title"), a.getAttribute("download")].filter(Boolean).join(" "); return h && !/^(#|javascript:|mailto:)/i.test(h) && (/\.(pdf|png|jpe?g|webp|gif|txt|csv|md|docx?|pptx?|xlsx?)(?:[?#\s]|$)/i.test(h + " " + label) || /download|attachment|\/files?\/|getfile|viewfile|coursenote/i.test(h) || a.hasAttribute("download")); }
   function attachNotePreviews(d) {
     if (!d || d.__ppPreviewObserver) return;
-    function scan() { $$("a[href]", d).forEach(function (a) { if (a.dataset.ppPreview || !fileCandidate(a)) return; var u; try { u = new URL(a.getAttribute("href"), d.location && d.location.href !== "about:blank" ? d.location.href : d.baseURI); } catch (e) { return; } if (u.origin !== location.origin || u.protocol !== location.protocol) return; a.dataset.ppPreview = "1"; var b = d.createElement("button"); b.type = "button"; b.className = "pp-note-preview"; b.textContent = "Preview"; b.setAttribute("aria-label", "Preview " + (a.textContent.trim() || "attachment")); b.style.cssText = "min-height:44px;margin:4px 8px;padding:6px 14px;border:1px solid #cbd5e1;border-radius:12px;background:var(--sd-surface,#fffefa);color:var(--sd-accent,#8d4d36);font:600 14px Times,serif;cursor:pointer"; b.onclick = function (e) { e.preventDefault(); e.stopPropagation(); previewNote(u.href, a.getAttribute("download") || a.getAttribute("title") || a.textContent.trim() || "Teacher note",d.location&&d.location.href); }; a.insertAdjacentElement("afterend", b); }); }
+    function scan() { $$("a[href]", d).forEach(function (a) { if (a.dataset.ppPreview || !fileCandidate(a)) return; var u; try { u = new URL(a.getAttribute("href"), d.location && d.location.href !== "about:blank" ? d.location.href : d.baseURI); } catch (e) { return; } if (u.origin !== location.origin || u.protocol !== location.protocol) return; a.dataset.ppPreview = "1"; var b = d.createElement("button"); b.type = "button"; b.className = "pp-note-preview"; b.textContent = "Preview"; b.setAttribute("aria-label", "Preview " + (a.textContent.trim() || "attachment")); b.style.cssText = "min-height:44px;margin:4px 8px;padding:6px 14px;border:1px solid #cbd4e1;border-radius:12px;background:var(--sd-surface,#fbfcfe);color:var(--sd-accent,#365a8d);font:600 14px Times,serif;cursor:pointer"; b.onclick = function (e) { e.preventDefault(); e.stopPropagation(); previewNote(u.href, a.getAttribute("download") || a.getAttribute("title") || a.textContent.trim() || "Teacher note",d.location&&d.location.href); }; a.insertAdjacentElement("afterend", b); }); }
     var pending = false, observer = new MutationObserver(function () { if (pending) return; pending = true; setTimeout(function () { pending = false; scan(); }, 160); });
     d.__ppPreviewObserver = observer; observer.observe(d.body, { childList: true, subtree: true }); scan();
     function frames() { $$("iframe", d).forEach(function (f) { if (f.__ppPreviewHook) return; f.__ppPreviewHook = true; function hook() { try { if (f.contentDocument && f.contentDocument.body) attachNotePreviews(f.contentDocument); } catch (e) {} } f.addEventListener("load", hook); hook(); }); }
@@ -2100,9 +2120,10 @@
     if (warning && view && !$(".pp-notice-unavailable",view) && !$(".pp-data-warning", view)) { var warn = document.createElement("div"); warn.className = "pp-data-warning"; warn.setAttribute("role", "status"); var text = document.createElement("span"); text.textContent = warning; var retry = document.createElement("button"); retry.className = "pp-btn sm"; retry.dataset.act = "refresh"; retry.textContent = "Retry"; warn.append(text, retry); view.insertBefore(warn, view.firstChild); }
     if (current === "home") { var quick = $(".pp-quick", app), h = quick && quick.parentNode.querySelector("h3"); if (h && !$("[data-custom-quick]", h)) { var b = document.createElement("button"); b.className = "pp-btn sm pp-custom-quick"; b.dataset.customQuick = "1"; b.textContent = "Customize"; b.onclick = editQuickActions; h.appendChild(b); } }
     if (current === "schedule") { var view = $("#pp-scroll > .pp-view", app); if (view && !$("#pp-export-bar", view)) { var bar = document.createElement("div"); bar.id = "pp-export-bar"; bar.className = "pp-toolstrip"; bar.innerHTML = '<div><b>Your week, anywhere</b><small>Save a routine image, PDF or calendar snapshot</small></div><button class="pp-btn sm" id="pp-export-routine">' + ic("ext") + ' Export</button>'; view.insertBefore(bar, view.firstChild); $("#pp-export-routine", bar).onclick = routineExport; } }
-    if (current === "settings") { var view = $("#pp-scroll > .pp-view", app); if (view && !$(".pp-workspace", view)) { var wrap = document.createElement("div"); wrap.innerHTML = workspaceSettingsHtml(); view.insertBefore(wrap.firstChild, view.firstChild); } workspaceSettingsWire(); }
+    if (current === "settings") { var view = $("#pp-scroll > .pp-view", app); if (view && !$(".pp-workspace", view)) { var wrap = document.createElement("div"); wrap.innerHTML = workspaceSettingsHtml(); view.appendChild(wrap.firstChild); } workspaceSettingsWire(); }
     if(current==="settings"){var list=$(".pp-workspace>.pp-list",app);if(list&&!$("[data-sd-motion-toggle]",list)){var motion=document.createElement("button");motion.type="button";motion.className="pp-item pp-click sd-motion-setting";motion.setAttribute("data-sd-motion-toggle","");motion.setAttribute("role","switch");motion.innerHTML='<span class="pp-t"><b>Animated illustrations & icons</b><small>Soft motion across pages. Reduced-motion and Performance mode take priority.</small></span><span class="pp-mode-switch" aria-hidden="true"><i></i></span><span class="sd-motion-label"></span>';list.insertBefore(motion,list.firstChild);}}
     studioArtPaint();
+    if (window.StudentDeskForest) window.StudentDeskForest.paint(app);
     if (current === "classic") { var fr = $("#pp-frame", app); if (fr && !fr.__ppNoteHook) { fr.__ppNoteHook = true; fr.addEventListener("load", function () { try { attachNotePreviews(fr.contentDocument); } catch (e) {} }); try { if (fr.contentDocument && fr.contentDocument.body) attachNotePreviews(fr.contentDocument); } catch (e) {} } }
   }
   function workspaceStart() {

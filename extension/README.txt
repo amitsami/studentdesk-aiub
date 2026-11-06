@@ -1,34 +1,8 @@
-StudentDesk AIUB v4.5.0 — REFINED WORKSPACE
-Based on your v4.5.3. Version intentionally labeled 4.5.0 at your request.
+StudentDesk AIUB 4.6.0 — Liquid Glass
 
-FOOTER PATCH
-Restores the rounded mobile capsule footer and soft sliding active pill from your reference. All five destinations, Times New Roman, keyboard behavior, reduced motion and Performance mode retained. No other UI or feature changes in this patch. Version remains 4.5.0.
+Unofficial release for the AIUB Student Portal. Layered translucent blue-and-white Liquid Glass styling with visible specular reflections and backdrop blur in Light and Dark mode, with smoother interactions and corrected navigation hover contrast. Select Rounded serif (Fraunces) or Times New Roman under Settings > Font; the login theme button offers the same choice. Settings are saved on this device. Performance mode reduces glass effects and motion respects reduced-motion settings. On mobile, blur is limited to key surfaces for smoother scrolling; Firefox uses a lighter fallback.
 
-CHANGES
-- Keep the original warm palette, all pages, illustrations, Home two-part card and planner NEW badge. No aqua/navy palette.
-- Consistent Times New Roman across sidebar, page typography and login. Codes retain monospace for readability.
-- Refined desktop sidebar, tablet rail, cards, lists, controls, segmented tabs, forms, dialogs and light/dark surfaces.
-- Phone: readable stacked Home actions, 44px touch targets, 16px inputs, safe-area dock, dock hidden while typing, clearer preview actions.
-- Login: two-panel desktop composition, compact phone form, original portal controls retained, visible labels, keyboard-accessible password reveal and captcha refresh. No credential storage added and no captcha bypass.
-- Routine: remove gold gradients, oversized rounding and heavy shadows from classic/native FullCalendar and app routine blocks. Exact event times/positions retained.
-- Notes preview: inspect HTML wrapper pages inertly and resolve declared same-origin attachment links. Ask you to choose if several files match; provide Retry / Open notes / Original download. Do not execute wrapper scripts, submit forms, guess download URLs or send documents to external viewers.
-- DOCX/PPTX preview is TEXT ONLY, not a full slide/document renderer. Images, equations and original layout may require Original download. Legacy DOC/PPT, encrypted/large files and absent direct links may remain unsupported.
-
-VERSION / UPDATE IMPORTANT
-4.5.0 is numerically LOWER than 4.5.3. This is a user-requested relabel, not a loss of features. Browser/store/userscript auto-updaters may reject a downgrade or not offer it automatically. Store distribution depends on approval.
-Back up the current extension files and important plan exports. Disable duplicates. Replace contents of your SAME existing unpacked extension folder, then Reload and reload portal.aiub.edu. Do not clear portal site storage.
-For a userscript, open the SAME installed script entry, replace its source with this .user.js, save, and reload the portal. Avoid importing a second active copy. If your loader refuses the lower version, keep the existing install and report the message; don't clear data to force it.
-
-PC — THREE PACKAGES INCLUDED
-Chromium/: Chrome, Edge, Brave. Use an unpacked developer install. For new local testing, enable Developer mode and Load unpacked > Chromium.
-Firefox/: unsigned TEMPORARY extension only: about:debugging > This Firefox > Load Temporary Add-on > manifest.json. Not an AMO-signed update; may disappear after restart.
-Safari/: Web Extension DEVELOPER SOURCE. Requires a suitable Safari Web Extension wrapper/developer loader. This ZIP is not a signed macOS/iOS app and cannot install directly into ordinary Safari. Keep using your existing compatible loader or use the userscript if your manager supports it.
-
-PHONE
-Use StudentDesk-AIUB.user.js with your existing compatible userscript manager. This is not a phone app. Do not run userscript and extension simultaneously. Mobile Safari needs a compatible userscript manager or a signed Safari wrapper; source alone cannot install.
-
-PLANNER GUARANTEES PRESERVED
-Only remaining courses whose prerequisites are met by actual passed results + checked CURRENT-semester expected passes can enter a NEXT-semester draft, after batch/catalog confirmation. Others remain locked with prerequisites shown. Adding B to next term never unlocks C for that same term. Old invalid references remain separately retained, excluded from active totals/exports. Passing prerequisites never guarantees future course offering, seats or registration approval.
-
-VALIDATION SCOPE
-Automated local Chromium fixtures at 320/390/768/1024/1190/1440 widths, light/dark; login control structure and validation, keyboard search, notes wrappers, Office text extraction, PDF/JPG/JSON exports, review drafts and strict planner locks. Review requests mocked; no real review submitted. Real university authentication, actual Safari/Firefox engines and physical phones are NOT verified. Validation is local; store submission and approval are separate from device testing.
+PC: Back up the old version, replace files in the SAME unpacked extension folder, reload the extension, then refresh the portal. This does not update a store-installed extension. Do not run duplicates or clear site storage.
+PHONE: Back up your existing userscript and replace its code in the SAME entry in a compatible userscript manager, save and refresh the portal. Do not run duplicates.
+Same-version builds may not auto-update each other; replace manually. Fraunces is licensed under the SIL Open Font License; see FRAUNCES-OFL.txt. University logos, photos, CAPTCHA and external content retain their original colours.
+Exam-period class hiding is a personal display rule, not an official cancellation. Confirm schedules with AIUB. Locally tested with simulated data, not an authenticated account. The reported Give Review error still needs its exact text or screenshot for diagnosis.

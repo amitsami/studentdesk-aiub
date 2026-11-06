@@ -1,0 +1,53 @@
+/* Liquid Glass-inspired 4.6 presentation layer. No data, routing, or authentication changes. */
+html.ap{--sd-paper:#e9f1fc;--sd-surface:#f9fcff;--sd-raised:#eaf2fc;--sd-ink:#142b4b;--sd-muted:#526b8c;--sd-line:#ccddf2;--sd-accent:#285f9f;--sd-tint:#d5e7fb;--sd-good:#285482;--sd-good-bg:#e7f2ff;--sd-risk:#285b9d;--sd-risk-bg:#e8f1fc;--sd-glass:rgba(255,255,255,.76)}
+html.ap[data-ap-mode="dark"]{--sd-paper:#0a172a;--sd-surface:#132842;--sd-raised:#203b5a;--sd-ink:#f3f8ff;--sd-muted:#b8cbe0;--sd-line:#365574;--sd-accent:#b6d5f7;--sd-tint:#294e73;--sd-good:#d1e6fa;--sd-good-bg:#1b3a5d;--sd-risk:#d4e7fb;--sd-risk-bg:#284b71;--sd-glass:rgba(16,35,59,.78)}
+html.ap #pp-app{background:radial-gradient(ellipse at 4% 3%,#cbdff8 0%,transparent 38%),radial-gradient(ellipse at 94% 90%,#cfdff6 0%,transparent 45%),linear-gradient(135deg,#eff6ff,#eaf2fc 60%,#e0edfd)!important;--ui-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 36px rgba(31,76,134,.10)}
+html.ap[data-ap-mode="dark"] #pp-app{background:radial-gradient(ellipse at 4% 0%,#1d3d5f 0%,transparent 40%),radial-gradient(ellipse at 95% 90%,#1a3559 0%,transparent 43%),linear-gradient(135deg,#0b192c,#091528 60%,#10233c)!important;--ui-shadow:inset 0 1px 0 rgba(225,242,255,.13),0 12px 36px rgba(1,9,25,.25)}
+html.ap #pp-app :is(.pp-side,.pp-card,.sd-course,.sd-plan,.sd-planner-banner){background:linear-gradient(140deg,rgba(255,255,255,.87),rgba(235,245,255,.76))!important;border:1px solid rgba(255,255,255,.92)!important;box-shadow:var(--ui-shadow)!important}
+html.ap[data-ap-mode="dark"] #pp-app :is(.pp-side,.pp-card,.sd-course,.sd-plan,.sd-planner-banner){background:linear-gradient(140deg,rgba(29,52,79,.91),rgba(14,31,52,.90))!important;border-color:rgba(192,221,251,.20)!important}
+html.ap #pp-app .pp-side,html.ap #pp-app .pp-main>header.pp-top,html.ap #pp-app .pp-tabbar{-webkit-backdrop-filter:blur(24px) saturate(155%);backdrop-filter:blur(24px) saturate(155%)}
+html.ap #pp-app .pp-side{background:linear-gradient(155deg,rgba(255,255,255,.81),rgba(237,246,255,.68))!important;border-color:rgba(255,255,255,.95)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-side{background:linear-gradient(155deg,rgba(29,52,79,.87),rgba(13,30,50,.84))!important;border-color:rgba(199,226,255,.22)!important}
+html.ap #pp-app .pp-main>header.pp-top{background:rgba(248,252,255,.76)!important;border:1px solid rgba(255,255,255,.72)!important;box-shadow:inset 0 1px 0 #fff,0 8px 24px rgba(46,82,130,.05)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-main>header.pp-top{background:rgba(17,35,57,.80)!important;border-color:rgba(199,226,255,.16)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.10)!important}
+/* Distinguish active, hovered, and focused navigation at all times. */
+html.ap #pp-app .pp-nav a.on,html.ap #pp-app .pp-nav a.on:hover,html.ap #pp-app .pp-nav a.on:focus-visible{background:linear-gradient(120deg,#225a9f,#2d70b5)!important;color:#fff!important;border:1px solid rgba(122,178,234,.9)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.26),0 6px 16px rgba(33,95,164,.20)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-nav a.on,html.ap[data-ap-mode="dark"] #pp-app .pp-nav a.on:hover,html.ap[data-ap-mode="dark"] #pp-app .pp-nav a.on:focus-visible{background:linear-gradient(120deg,#285684,#2c6ca8)!important;color:#fff!important}
+html.ap #pp-app .pp-nav a:not(.on):hover{background:#e4f1ff!important;color:#173d70!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-nav a:not(.on):hover{background:#294d73!important;color:#f3f8ff!important}
+html.ap #pp-app .pp-home .pp-overview-intro{background:linear-gradient(120deg,#173f78 0%,#2569ac 63%,#75afe0 100%)!important;border:1px solid rgba(185,219,255,.85)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.30),0 16px 35px rgba(37,96,165,.18)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-home .pp-overview-intro{background:linear-gradient(120deg,#132c4e,#1c4c7a 62%,#366b9d)!important;border-color:rgba(165,207,251,.35)!important}
+html.ap #pp-app .pp-home .pp-overview-intro:after{background:radial-gradient(circle at 30% 23%,rgba(255,255,255,.98),rgba(223,242,255,.95) 19%,rgba(165,211,247,.91) 45%,rgba(100,159,215,.88) 74%,rgba(63,120,184,.86));box-shadow:inset -18px -20px 30px rgba(23,70,128,.24),inset 9px 8px 22px rgba(255,255,255,.72),0 22px 38px rgba(6,32,72,.22)}
+html.ap #pp-app .pp-home .pp-overview-intro:before{border:1px solid rgba(225,244,255,.45);box-shadow:0 0 0 12px rgba(215,238,255,.035),0 0 0 24px rgba(215,238,255,.025)}
+html.ap #pp-app .pp-home .pp-overview-intro .pp-eyebrow{background:rgba(234,247,255,.12);border-color:rgba(239,249,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.16)}
+html.ap #pp-app .pp-home .pp-overview-intro :is(p,.sd-home-date,#font#font#font){color:#eaf5ff!important}
+html.ap #pp-app .pp-home .pp-overview-body{background:linear-gradient(145deg,rgba(255,255,255,.90),rgba(239,247,255,.78))!important;border-color:rgba(255,255,255,.95)!important;box-shadow:var(--ui-shadow)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-home .pp-overview-body{background:linear-gradient(145deg,rgba(28,54,82,.92),rgba(14,31,52,.90))!important;border-color:rgba(192,221,251,.20)!important}
+html.ap #pp-app .pp-home .pp-next{background:linear-gradient(135deg,rgba(231,244,255,.95),rgba(218,235,254,.88))!important;border-color:#c7ddf4!important;box-shadow:inset 0 1px 0 #fff!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-home .pp-next{background:linear-gradient(135deg,#244a70,#1b3d60)!important;border-color:#496b8d!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.10)!important}
+html.ap #pp-app .pp-home .pp-hero .pp-home-links>a{background:rgba(255,255,255,.56)!important;border-color:rgba(194,217,243,.90)!important;box-shadow:inset 0 1px 0 #fff!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-home .pp-hero .pp-home-links>a{background:rgba(23,47,73,.65)!important;border-color:#3b5c7e!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important}
+html.ap #pp-app .pp-quick a{background:rgba(235,245,255,.56)!important;border:1px solid rgba(203,223,245,.8)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.85)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-quick a{background:rgba(30,61,91,.58)!important;border-color:rgba(137,178,217,.25)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important}
+html.ap #pp-app .pp-quick a .pp-qi,html.ap #pp-app .pp-iconbtn{box-shadow:inset 0 1px 1px rgba(255,255,255,.95),0 4px 12px rgba(38,83,142,.12)!important}
+html.ap[data-ap-mode="dark"] #pp-app :is(.pp-quick a .pp-qi,.pp-iconbtn){box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 5px 14px rgba(0,10,27,.20)!important}
+html.ap #pp-app .pp-tabs{background:rgba(222,237,253,.8)!important;border-color:rgba(190,215,241,.8)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-tabs{background:rgba(28,54,83,.85)!important;border-color:#3c5e80!important}
+html.ap #pp-app .pp-tabs button.on{background:rgba(255,255,255,.95)!important;color:#164a8b!important;box-shadow:0 3px 10px rgba(39,91,150,.12),inset 0 1px 0 #fff!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-tabs button.on{background:#315c89!important;color:#fff!important}
+html.ap.ap-login,html.ap.ap-login body{background:radial-gradient(ellipse at 14% 10%,#cfe4fb,transparent 46%),linear-gradient(135deg,#eef6ff,#dceafc)!important}
+html.ap.ap-login[data-ap-mode="dark"],html.ap.ap-login[data-ap-mode="dark"] body{background:radial-gradient(ellipse at 15% 10%,#244669,transparent 45%),linear-gradient(135deg,#0b192c,#122b48)!important}
+html.ap.ap-login .login-form{background:rgba(252,254,255,.83)!important;border:1px solid rgba(255,255,255,.9)!important;box-shadow:0 28px 70px rgba(31,72,128,.17),inset 0 1px 0 #fff!important;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+html.ap.ap-login[data-ap-mode="dark"] .login-form{background:rgba(17,34,56,.88)!important;border-color:rgba(191,221,252,.25)!important;box-shadow:0 28px 70px rgba(0,8,22,.38),inset 0 1px 0 rgba(255,255,255,.1)!important}
+html.ap.ap-login .ap-login-identity{background:linear-gradient(145deg,rgba(237,248,255,.92),rgba(206,228,252,.85))!important}
+html.ap.ap-login[data-ap-mode="dark"] .ap-login-identity{background:linear-gradient(145deg,rgba(38,77,113,.94),rgba(19,46,74,.94))!important}
+html.ap #ap-panel{box-sizing:border-box;width:min(360px,calc(100vw - 28px));right:14px}
+html.ap #ap-panel .ap-seg button{min-width:0;min-height:44px;font-size:12px;line-height:1.2}
+html.ap #ap-panel .ap-seg button.on{background:#d0e5ff!important;color:#123c73!important}
+html.ap[data-ap-mode="dark"] #ap-panel .ap-seg button.on{background:#3569a3!important;color:#fff!important}
+@media(max-width:900px){html.ap #pp-app .pp-tabbar{background:rgba(245,251,255,.84)!important;border-color:rgba(255,255,255,.9)!important;box-shadow:inset 0 1px 0 #fff,0 12px 32px rgba(27,68,121,.2)!important}html.ap[data-ap-mode="dark"] #pp-app .pp-tabbar{background:rgba(17,37,61,.90)!important;border-color:rgba(188,220,253,.22)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 12px 32px rgba(0,8,21,.35)!important}html.ap:not([data-ap-mode="dark"]) #pp-app .pp-tabbar .pp-pill{background:rgba(190,219,250,.80)!important}html.ap[data-ap-mode="dark"] #pp-app .pp-tabbar .pp-pill{background:#305e8c!important}}
+@media(max-width:600px){html.ap #pp-app .pp-home .pp-overview-intro:after{width:104px;height:104px;right:4%;top:21%}html.ap #pp-app .pp-home .pp-overview-intro:before{width:124px;height:124px;right:1%;top:16%}html.ap.ap-login #ap-foot{padding-right:44px!important}}
+@media(max-width:380px){html.ap #pp-app .pp-home .pp-overview-intro:after{width:82px;height:82px;right:4%;top:22%}html.ap #pp-app .pp-home .pp-overview-intro:before{width:102px;height:102px;right:1%;top:17%}}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){html.ap[data-ap-performance="0"] #pp-app :is(.pp-card,.sd-course,.sd-plan,.sd-planner-banner,.pp-home .pp-overview-body){-webkit-backdrop-filter:blur(20px) saturate(140%);backdrop-filter:blur(20px) saturate(140%)}}
+html.ap[data-ap-performance="1"] #pp-app :is(.pp-side,.pp-tabbar,.pp-main>header.pp-top){backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--sd-surface)!important}
+html.ap.ap-login[data-ap-performance="1"] .login-form{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--sd-surface)!important}

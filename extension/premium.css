@@ -1,0 +1,68 @@
+/* StudentDesk cool pearl interface, local test. No behavioral changes here. */
+html.ap{--sd-paper:#e9eef4;--sd-surface:#fbfcfe;--sd-raised:#edf2f9;--sd-ink:#1d2b3f;--sd-muted:#63748b;--sd-line:#d8e0eb;--sd-accent:#4c6a95;--sd-tint:#dce6f3;--sd-good:#354b6a;--sd-good-bg:#e7ecf3;--sd-risk:#42689d;--sd-risk-bg:#e9f0f9;--sd-glass:rgba(249,251,254,.92)}
+html.ap[data-ap-mode="dark"]{--sd-paper:#101925;--sd-surface:#192639;--sd-raised:#293546;--sd-ink:#eff4fb;--sd-muted:#b4c1d4;--sd-line:#465467;--sd-accent:#b7cdec;--sd-tint:#33455e;--sd-good:#a8bedd;--sd-good-bg:#283444;--sd-risk:#c5dbf9;--sd-risk-bg:#344051;--sd-glass:rgba(25,38,56,.95)}
+html.ap #pp-app{--ui-edge:#ffffffed;--ui-shadow:inset 0 1px 1px #ffffff,0 12px 30px #56698315;--ui-ring:#6c8bb644;background:radial-gradient(ellipse at 5% 0%,#dce6f5,transparent 42%),radial-gradient(ellipse at 90% 100%,#dce1e7,transparent 46%),#edf0f5!important}
+html.ap[data-ap-mode="dark"] #pp-app{--ui-edge:#ffffff1d;--ui-shadow:inset 0 1px 1px #ffffff1b,0 12px 32px #06080c55;--ui-ring:#a4c1e944;background:radial-gradient(ellipse at 5% 0%,#26354a,transparent 45%),radial-gradient(ellipse at 90% 100%,#2f3640,transparent 45%),#121b28!important}
+html.ap #pp-app :is(.pp-side,.pp-card,.sd-course,.sd-plan,.sd-planner-banner){background:var(--sd-glass)!important;border:1px solid #ffffffd9!important;border-radius:22px!important;box-shadow:var(--ui-shadow)!important}
+html.ap[data-ap-mode="dark"] #pp-app :is(.pp-side,.pp-card,.sd-course,.sd-plan,.sd-planner-banner){border-color:#ffffff22!important}
+html.ap #pp-app .pp-side{margin:20px 0 20px 20px!important;border-radius:22px!important}
+html.ap #pp-app .pp-main>header.pp-top{background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html.ap #pp-app .pp-scroll{background:transparent!important}
+html.ap #pp-app .pp-nav a.on{background:var(--sd-tint)!important;border-color:transparent!important;color:var(--sd-ink)!important}
+html.ap #pp-app .pp-home .pp-overview{display:contents!important}
+html.ap #pp-app .pp-home .pp-overview-grid{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)!important;gap:16px!important}
+html.ap #pp-app .pp-home .pp-overview-intro{position:relative;overflow:hidden;min-height:245px!important;display:flex;align-items:center;padding:28px 30px!important;border-radius:22px!important;border:1px solid #ffffff!important;background:linear-gradient(120deg,#ffffff 0%,#f8fafe 55%,#e4ecf8 100%)!important;box-shadow:var(--ui-shadow)!important}
+html.ap #pp-app .pp-home .pp-overview-intro>div:first-child{position:relative;z-index:1;max-width:60%}
+html.ap #pp-app .pp-home .pp-overview-intro:after{display:block!important;content:"";position:absolute;right:6%;top:8%;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 30% 24%,#ffffff 0%,#eaf2fd 14%,#b3c7e4 43%,#bfcad9 64%,#dce0e6 84%,#f6f9fe 100%);box-shadow:inset -14px -18px 30px #71839c40,inset 8px 7px 22px #ffffff,0 22px 38px #7386a13a;pointer-events:none}
+html.ap[data-ap-mode="dark"] #pp-app .pp-home .pp-overview-intro{background:linear-gradient(120deg,#273447,#1c2a3e 65%,#36475f)!important;border-color:#ffffff22!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-home .pp-overview-intro:after{background:radial-gradient(circle at 30% 23%,#c8d7ec,#839bbd 35%,#566c8b 60%,#454f5d 85%,#73839a);box-shadow:inset -14px -18px 30px #1c2a3d88,0 20px 40px #06080c55}
+html.ap #pp-app .pp-home .pp-overview-intro h2{font-size:clamp(27px,2.6vw,38px)!important;color:var(--sd-ink)!important;letter-spacing:-.04em!important}
+html.ap #pp-app .pp-home .pp-overview-intro p,html.ap #pp-app .pp-home .pp-overview-intro .pp-eyebrow{color:var(--sd-muted)!important}
+html.ap #pp-app .pp-home .pp-date-tile{display:none!important}
+html.ap #pp-app .pp-home .pp-overview-body{min-height:245px!important;padding:23px!important;border:1px solid #ffffffd9!important;background:var(--sd-glass)!important;border-radius:22px!important;box-shadow:var(--ui-shadow)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-home .pp-overview-body{border-color:#ffffff22!important}
+html.ap #pp-app .pp-home .pp-overview-body:before{content:'Today at a glance';display:block;font-size:18px;font-weight:700;letter-spacing:-.03em;color:var(--sd-ink)}
+html.ap #pp-app .pp-home .pp-next{background:var(--sd-raised)!important;color:var(--sd-ink)!important;border-color:var(--sd-line)!important;margin:12px 0!important;box-shadow:none!important}
+html.ap #pp-app .pp-home .pp-home-links>a{background:var(--sd-surface)!important;color:var(--sd-ink)!important;border-color:var(--sd-line)!important}
+html.ap #pp-app .pp-home .pp-quick-card{grid-column:1/-1!important;padding:22px!important}
+html.ap #pp-app .pp-home .pp-quick{display:grid!important;grid-template-columns:repeat(8,minmax(0,1fr))!important;gap:12px!important}
+html.ap #pp-app .pp-quick a .pp-qi{background:var(--sd-raised)!important;color:var(--sd-accent)!important}
+html.ap #pp-app :is(.sd-live-mascot,.sd-banner-mark .sd-art,.sd-portion-art){display:none!important}
+html.ap #pp-app .sd-art-section>.sd-illustrated-title{padding-right:0!important;min-height:0!important}
+html.ap #pp-app .pp-exam .pp-ndate{width:62px!important;min-width:62px!important;overflow-wrap:normal!important;word-break:normal!important}
+html.ap #pp-app .pp-exam-details{display:flex;flex-wrap:wrap;gap:4px 13px;margin-top:6px;color:var(--sd-muted);font-size:12.5px;line-height:1.5}
+html.ap #pp-app .pp-exam-details span{white-space:normal;overflow-wrap:anywhere}
+html.ap #pp-app .pp-exam .pp-t b{overflow-wrap:anywhere}
+html.ap #pp-app .pp-exam-empty{font-size:12px;color:var(--sd-muted);margin-top:8px}
+html.ap[data-ap-performance="1"] #pp-app :is(.pp-side,.pp-tabbar){backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--sd-surface)!important}
+@media(max-width:900px){html.ap #pp-app .pp-home .pp-overview-grid{grid-template-columns:1fr!important}html.ap #pp-app .pp-home .pp-quick-card{grid-column:auto!important}html.ap #pp-app .pp-home .pp-quick{grid-template-columns:repeat(4,minmax(0,1fr))!important}html.ap #pp-app .pp-home .pp-overview-intro{min-height:205px!important;padding:24px!important}html.ap #pp-app .pp-home .pp-overview-intro:after{width:130px;height:130px;right:3%;top:15%}html.ap #pp-app .pp-home .pp-overview-body{min-height:0!important}html.ap #pp-app .pp-home .pp-overview-intro>div:first-child{max-width:68%}}
+@media(max-width:380px){html.ap #pp-app .pp-home .pp-overview-intro:after{width:100px;height:100px;right:2%;top:18%}}
+
+/* Small-screen controls are arranged for touch and readable exam details. */
+html.ap #pp-app .pp-exam-week-note{position:relative;margin:8px;padding:8px;border-radius:10px;background:var(--sd-tint);color:var(--sd-ink);font-size:12px;line-height:1.35}
+@media(max-width:600px){
+ html.ap #pp-app .pp-exam{display:grid!important;grid-template-columns:52px minmax(0,1fr)!important;gap:10px 12px!important;align-items:start!important;padding:14px 10px!important}
+ html.ap #pp-app .pp-exam .pp-ndate{width:52px!important;min-width:52px!important;height:54px!important}
+ html.ap #pp-app .pp-exam .pp-t{min-width:0!important}
+ html.ap #pp-app .pp-exam .pp-t>b{font-size:15px!important;line-height:1.4!important}
+ html.ap #pp-app .pp-exam-details{display:grid!important;grid-template-columns:1fr;gap:4px!important;font-size:13px!important}
+ html.ap #pp-app .pp-exam>.pp-chip{grid-column:2;justify-self:start;margin:0!important}
+ html.ap #pp-app .pp-next{align-items:flex-start!important;gap:9px!important;padding:14px!important}
+ html.ap #pp-app .pp-next .pp-nl{min-width:0;line-height:1.5;overflow-wrap:anywhere}
+ html.ap #pp-app .pp-next .pp-cd{white-space:normal;font-size:12px}
+ html.ap #pp-app .pp-rvc{padding:16px!important}
+ html.ap #pp-app .pp-starpick button{min-width:44px!important;min-height:44px!important;touch-action:manipulation}
+ html.ap #pp-app .pp-rvc textarea{font-size:16px!important;min-height:88px;line-height:1.4}
+ html.ap #pp-app .pp-rvact button{min-height:44px!important}
+ html.ap #pp-app .pp-tabs button{min-height:44px}
+}
+
+/* Center AIUB's original identity without touching the sign-in form. */
+html.ap.ap-login .ap-login-identity>a{width:100%;display:block}
+html.ap.ap-login .ap-login-identity .row{display:grid!important;grid-template-columns:minmax(0,1fr)!important;justify-items:center!important;gap:9px!important;text-align:center!important}
+html.ap.ap-login .ap-login-identity .row>div{width:100%!important;min-width:0!important;text-align:center!important;float:none!important}
+html.ap.ap-login .ap-login-identity .row img:not(#CaptchaImage){display:block!important;margin:0 auto!important;width:54px!important;height:54px!important}
+html.ap.ap-login .ap-login-identity blockquote{width:100%;margin:0 auto!important;text-align:center!important}
+html.ap.ap-login .ap-login-identity .aiub_title{max-width:100%;margin:0 auto!important;overflow-wrap:normal;line-height:1.45!important}
+html.ap.ap-login .ap-login-identity .aiub_slogan{margin:4px auto 0!important}
+@media(max-width:760px){html.ap.ap-login .ap-login-identity .row img:not(#CaptchaImage){width:46px!important;height:46px!important}html.ap.ap-login .ap-login-identity .row{gap:6px!important}}

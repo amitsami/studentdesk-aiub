@@ -1,7 +1,7 @@
 /* StudentDesk 4.5 Warm Studio. Presentation only; existing portal logic is retained. */
-html.ap #pp-app{--art-paper:#fff9ed;--art-tint:#efcfb7;--sage:#dbe5d6;--blush:#e9bfa7;--sun-fill:#f7de9c;--sun-stroke:#c99e58;--buddy-paper:#fffaf0;--buddy-blush:#edc8b6}
-html.ap[data-ap-mode=dark] #pp-app{--art-paper:#363c32;--art-tint:#6f5743;--sage:#405b49;--blush:#bd8a6b;--sun-fill:#95763c;--sun-stroke:#e5c082}
-html.ap #pp-app .pp-card{border-radius:25px!important;box-shadow:0 5px 18px -17px #352c2133!important}
+html.ap #pp-app{--art-paper:#eff5fd;--art-tint:#b7ceef;--sage:#d6dce5;--blush:#a7c2e9;--sun-fill:#9fc2f4;--sun-stroke:#5887c9;--buddy-paper:#f2f6fd;--buddy-blush:#b6cded}
+html.ap[data-ap-mode=dark] #pp-app{--art-paper:#2f363f;--art-tint:#43556f;--sage:#404b5b;--blush:#6b8dbd;--sun-fill:#3c6195;--sun-stroke:#82abe5}
+html.ap #pp-app .pp-card{border-radius:25px!important;box-shadow:0 5px 18px -17px #1b283b33!important}
 html.ap #pp-app .pp-side{background:var(--sd-glass)!important}.pp-side .pp-brand small{font-size:11px}
 html.ap #pp-app .pp-home .pp-overview-intro{background:transparent!important;align-items:center;gap:18px;padding:28px!important}
 html.ap #pp-app .pp-overview-intro>div:first-child{flex:1;min-width:0}
@@ -12,11 +12,11 @@ html.ap #pp-app .sd-live-mascot{width:135px;height:145px;flex:none;color:var(--s
 html.ap #pp-app .sd-live-mascot .sd-art{width:100%;height:100%;margin:0}
 html.ap #pp-app .pp-quick-card h3{font-size:20px!important}.pp-quick-card .pp-section-caption{font-size:12px;line-height:1.75}
 html.ap #pp-app .pp-quick a{min-height:95px!important;border-radius:15px!important;padding:9px 3px!important}
-html.ap #pp-app .pp-quick a .pp-qi{width:46px;height:46px;border:1px solid color-mix(in srgb,var(--sd-accent) 15%,var(--sd-line));border-radius:15px!important;background:color-mix(in srgb,var(--sd-tint) 35%,var(--sd-surface))!important;color:var(--sd-accent)!important;box-shadow:inset 0 1px 0 #fff8!important}
+html.ap #pp-app .pp-quick a .pp-qi{width:46px;height:46px;border:1px solid color-mix(in srgb,var(--sd-accent) 15%,var(--sd-line));border-radius:15px!important;background:color-mix(in srgb,var(--sd-tint) 35%,var(--sd-surface))!important;color:var(--sd-accent)!important;box-shadow:inset 0 1px 0 #ffffff88!important}
 html.ap #pp-app .pp-quick a .i{width:23px;height:23px;stroke-width:1.65}
 html.ap #pp-app .pp-quick .pp-ql{font-size:11px!important}
 html.ap #pp-app .pp-quick a:nth-child(3n+2) .pp-qi{color:var(--sd-good)!important;background:var(--sd-good-bg)!important}
-html.ap #pp-app .pp-quick a:nth-child(4n) .pp-qi{color:#9b773e!important;background:#fbf6e9!important}
+html.ap #pp-app .pp-quick a:nth-child(4n) .pp-qi{color:#3e659b!important;background:#e9f0fb!important}
 html.ap #pp-app .sd-planner-banner{padding:25px 27px;min-height:175px;gap:22px;border-radius:25px}
 html.ap #pp-app .sd-banner-mark{order:2;margin-left:auto;width:105px;height:118px;border:0;background:transparent;flex:none}
 html.ap #pp-app .sd-banner-mark .sd-art{width:100%;height:100%;margin:0}
@@ -67,17 +67,17 @@ html.ap #pp-app .sd-motion-art .notify-bell{transform-origin:80px 35px;animation
 html.ap #pp-app .sd-motion-art .compass-pointer{transform-origin:80px 80px;animation:sd45-compass-think 7s ease-in-out infinite}
 html.ap #pp-app .sd-motion-away,html.ap #pp-app .sd-motion-away *{animation-play-state:paused!important}
 html.ap[data-sd-motion=off] #pp-app .sd-motion-art,html.ap[data-sd-motion=off] #pp-app .sd-motion-art *{animation-play-state:paused!important}
-html.ap[data-ap-mode=dark] #pp-app .sd-art{color:#edbea0}
-html.ap[data-ap-mode=dark] #pp-app .pp-quick a .pp-qi{background:var(--sd-icon-tile,#323832)!important;color:var(--sd-icon-ink,#d5dfd0)!important;border-color:color-mix(in srgb,var(--sd-icon-ink,#d5dfd0) 18%,var(--sd-icon-tile,#323832));box-shadow:inset 0 1px 0 #ffffff09!important}
-html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(1){--sd-icon-tile:#332e3d;--sd-icon-ink:#cbbcff}
-html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(2){--sd-icon-tile:#2b3930;--sd-icon-ink:#b6d9c3}
-html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(3){--sd-icon-tile:#2a3542;--sd-icon-ink:#b3c9f2}
-html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(4){--sd-icon-tile:#3c3429;--sd-icon-ink:#e4c293}
-html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(5){--sd-icon-tile:#2b3a36;--sd-icon-ink:#b2d3ca}
-html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(6){--sd-icon-tile:#3c3037;--sd-icon-ink:#e2b4c5}
-html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(7){--sd-icon-tile:#343344;--sd-icon-ink:#c6c2e9}
-html.ap[data-ap-mode=dark] #pp-app .pp-top .pp-iconbtn{color:#e3e9df;background:#282e29!important;border-color:#3b433c}
-html.ap[data-ap-mode=dark] #pp-app .pp-top .pp-theme-toggle{color:#f1cc9b;background:#393126!important}
+html.ap[data-ap-mode=dark] #pp-app .sd-art{color:#a0c0ed}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a .pp-qi{background:var(--sd-icon-tile,#2e343c)!important;color:var(--sd-icon-ink,#d0d6df)!important;border-color:color-mix(in srgb,var(--sd-icon-ink,#d0d6df) 18%,var(--sd-icon-tile,#2e343c));box-shadow:inset 0 1px 0 #ffffff09!important}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(1){--sd-icon-tile:#2e343d;--sd-icon-ink:#c3d9f8}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(2){--sd-icon-tile:#2b3139;--sd-icon-ink:#b6c5d9}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(3){--sd-icon-tile:#2a3442;--sd-icon-ink:#b3cdf2}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(4){--sd-icon-tile:#29313c;--sd-icon-ink:#93b5e4}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(5){--sd-icon-tile:#2b313a;--sd-icon-ink:#b2c0d3}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(6){--sd-icon-tile:#2e353e;--sd-icon-ink:#b4c7e2}
+html.ap[data-ap-mode=dark] #pp-app .pp-quick a:nth-child(7){--sd-icon-tile:#333a44;--sd-icon-ink:#c2d2e9}
+html.ap[data-ap-mode=dark] #pp-app .pp-top .pp-iconbtn{color:#dfe3e9;background:#1b283b!important;border-color:#363e48}
+html.ap[data-ap-mode=dark] #pp-app .pp-top .pp-theme-toggle{color:#9bbff1;background:#1d2c42!important}
 @media(max-width:900px){
 html.ap #pp-app header.pp-top{display:flex!important;flex-wrap:wrap;padding:12px 15px!important;gap:8px!important;min-height:78px}
 html.ap #pp-app .pp-top>.pp-hlogo{width:31px;height:31px;flex:none}
@@ -166,7 +166,7 @@ html.ap #pp-app .pp-wx-hrs .i{width:24px;height:24px;color:var(--sd-accent)}
 html.ap #pp-app .sd-planner-banner{display:flex!important}
 html.ap #pp-app .sd-planner-banner>div{min-width:0}
 /* 4.5.1 bugfix layer. Preserve v4.5 components and artwork; no navigation/feature replacement. */
-html.ap[data-ap-mode="dark"]{color-scheme:dark;--sd-paper:#191a19;--sd-surface:#222422;--sd-raised:#2c2f2b;--sd-ink:#eeeeE7;--sd-muted:#b3b7ad;--sd-line:#3b3e37;--sd-tint:#3b2e27;--sd-accent:#e6b296;--sd-glass:rgba(34,36,33,.96);--sd-good:#b6ddc6;--sd-good-bg:#293d31;--sd-risk:#f2b9ac;--sd-risk-bg:#452e29;--ap-card:var(--sd-surface);--ap-glass:var(--sd-glass);--ap-hair:var(--sd-line);--ap-text:var(--sd-ink);--ap-muted:var(--sd-muted)}
+html.ap[data-ap-mode="dark"]{color-scheme:dark;--sd-paper:#101823;--sd-surface:#162130;--sd-raised:#1c2a3e;--sd-ink:#e7eaee;--sd-muted:#a7b0bd;--sd-line:#323943;--sd-tint:#272f3b;--sd-accent:#96b7e6;--sd-glass:rgba(21,32,48,.96);--sd-good:#b6c6dd;--sd-good-bg:#29313d;--sd-risk:#acc9f2;--sd-risk-bg:#293545;--ap-card:var(--sd-surface);--ap-glass:var(--sd-glass);--ap-hair:var(--sd-line);--ap-text:var(--sd-ink);--ap-muted:var(--sd-muted)}
 html.ap #pp-app .pp-nav a[data-r="planner"]{color:var(--sd-muted)!important}
 html.ap #pp-app .pp-nav a[data-r="planner"] span::after{content:none!important;display:none!important}
 html.ap #pp-app .pp-nav a{position:relative;flex-shrink:0;transform:none!important;transition:background-color 170ms ease-out,color 170ms ease-out!important;isolation:isolate}
@@ -197,7 +197,7 @@ html.ap #pp-app .pp-stat:hover .pp-ic{transform:none!important}
 html.ap[data-ap-mode="dark"] #pp-app :is(.pp-card,.pp-modal,.pp-sheet,.pp-dialog,.pp-rvform,.pp-rvmine,.pp-rvcms,.pp-top,.sd-course-availability,.sd-source,.sd-plan-total){color:var(--sd-ink);border-color:var(--sd-line)!important}
 html.ap[data-ap-mode="dark"] #pp-app :is(.pp-sheet,.pp-modal,.pp-dialog,.pp-search-box,.pp-select-list){background:var(--sd-surface)!important}
 html.ap[data-ap-mode="dark"] #pp-app :is(.pp-btn:not(.pri),.pp-iconbtn,.pp-starpick button){background:var(--sd-raised)!important;border-color:var(--sd-line)!important;color:var(--sd-ink)!important}
-html.ap[data-ap-mode="dark"] #pp-app .pp-starpick button.on{background:var(--sd-tint)!important;color:#f3cb87!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-starpick button.on{background:var(--sd-tint)!important;color:#88b4f2!important}
 html.ap[data-ap-mode="dark"] #pp-app .pp-quick a .pp-qi{background:var(--sd-raised)!important;color:var(--sd-accent)!important;border-color:var(--sd-line)!important}
 html.ap #pp-app .pp-input:focus-visible,html.ap #pp-app :is(button,a):focus-visible{outline:2px solid var(--sd-accent)!important;outline-offset:3px}
 html.ap #pp-app .pp-rvcms[hidden]{display:none!important}
@@ -225,18 +225,18 @@ html.ap #pp-app .sd-parked{margin-top:18px;padding:14px 0;border-top:1px solid v
 html.ap #pp-app .sd-parked>p{color:var(--sd-muted);font-size:11px}
 html.ap #pp-app .sd-parked>div{padding:13px 0;border-bottom:1px solid var(--sd-line)}
 html.ap #pp-app .sd-parked small{display:block;color:var(--sd-muted);margin:5px 0}
-/* Approved-demo candidate: only presentation; v4.5.2 planner/review logic unchanged. */
-html.ap #pp-app{--sd-demo-upper:#eee9e1;--sd-demo-lower:#fffefa;--sd-demo-shadow:0 3px 16px rgba(55,43,28,.035)}
-html.ap[data-ap-mode=dark] #pp-app{--sd-demo-upper:#2c2e2a;--sd-demo-lower:#222422;--sd-demo-shadow:0 3px 16px rgba(0,0,0,.1)}
+/* Approved-demo candidate:only presentation; v4.5.2 planner/review logic unchanged. */
+html.ap #pp-app{--sd-demo-upper:#e1e6ee;--sd-demo-lower:#fbfcfe;--sd-demo-shadow:0 3px 16px rgba(26,39,57,.035)}
+html.ap[data-ap-mode=dark] #pp-app{--sd-demo-upper:#1b293d;--sd-demo-lower:#162130;--sd-demo-shadow:0 3px 16px rgba(6,8,12,.1)}
 /* One outer card, two surfaces, no extra nested card. */
 html.ap #pp-app .pp-home .pp-overview{overflow:hidden!important;padding:0!important;border-radius:25px!important;border:1px solid var(--sd-line)!important;box-shadow:var(--sd-demo-shadow)!important;display:flex;flex-direction:column}
 html.ap #pp-app .pp-home .pp-overview-intro{background:var(--sd-demo-upper)!important;border-radius:0!important;padding:30px 28px 27px!important;min-height:238px;align-items:center!important;gap:24px!important;border-bottom:1px solid color-mix(in srgb,var(--sd-line) 75%,var(--sd-accent) 25%)}
 html.ap #pp-app .pp-home .pp-overview-intro h2{font-size:43px!important;line-height:1.08!important;letter-spacing:-.05em!important;font-weight:400!important;max-width:12ch!important;margin:17px 0 15px!important}
 html.ap #pp-app .pp-home .pp-overview-intro p{margin:0!important;line-height:1.7!important}
 html.ap #pp-app .pp-home .pp-overview-body{background:var(--sd-demo-lower)!important;padding:23px 24px 24px!important;flex:1;display:flex;flex-direction:column;gap:20px}
-html.ap #pp-app .pp-home .pp-overview-body .pp-next{margin:0!important;border-radius:16px!important;min-height:70px;box-shadow:inset 0 1px 1px #00000003!important}
+html.ap #pp-app .pp-home .pp-overview-body .pp-next{margin:0!important;border-radius:16px!important;min-height:70px;box-shadow:inset 0 1px 1px #06080c03!important}
 html.ap #pp-app .pp-home .pp-home-links{margin:0!important;gap:10px!important}
-html.ap #pp-app .pp-home .pp-home-links>a{border-radius:15px!important;background:var(--sd-demo-lower)!important;box-shadow:0 1px 2px #00000002!important;min-height:72px!important}
+html.ap #pp-app .pp-home .pp-home-links>a{border-radius:15px!important;background:var(--sd-demo-lower)!important;box-shadow:0 1px 2px #06080c02!important;min-height:72px!important}
 html.ap #pp-app .pp-home-links .pp-qi{border-radius:12px!important}
 html.ap #pp-app .sd-live-mascot{width:128px;height:140px;flex-shrink:0}
 /* Warm editorial surfaces with consistent alignment and subtle edge detail. */
@@ -258,16 +258,16 @@ html.ap #pp-app .pp-nav-label{letter-spacing:.16em!important;font-size:9px!impor
 @media(max-width:350px){html.ap #pp-app .pp-home .pp-overview-intro{padding:23px 17px!important;gap:8px!important}html.ap #pp-app .pp-home .pp-overview-intro h2{font-size:29px!important}html.ap #pp-app .sd-live-mascot{width:65px;height:90px}}
 @media(min-width:1201px){html.ap #pp-app .pp-me{gap:9px!important}html.ap #pp-app .pp-me>div{flex:1;min-width:0}html.ap #pp-app .pp-me b{font-size:12px!important;line-height:1.4;white-space:normal!important;overflow:visible!important;text-overflow:clip!important}html.ap #pp-app .pp-me>.pp-avatar{width:34px;height:34px;min-width:34px;font-size:12px}html.ap #pp-app .pp-me>.pp-signout{width:34px;height:36px;min-width:34px}}
 /* Subtle finish over the approved warm layout. No layout or academic logic changes. */
-html.ap #pp-app{--sd-control-highlight:rgba(255,255,255,.65);--sd-control-shadow:0 1px 2px rgba(32,28,21,.035)}
-html.ap[data-ap-mode=dark] #pp-app{--sd-control-highlight:rgba(255,255,255,.065);--sd-control-shadow:0 1px 2px rgba(0,0,0,.10)}
+html.ap #pp-app{--sd-control-highlight:rgba(255,255,255,.65);--sd-control-shadow:0 1px 2px rgba(16,25,37,.035)}
+html.ap[data-ap-mode=dark] #pp-app{--sd-control-highlight:rgba(255,255,255,.065);--sd-control-shadow:0 1px 2px rgba(6,8,12,.10)}
 html.ap #pp-app .pp-btn{border-radius:12px!important;font-weight:600;letter-spacing:-.012em;box-shadow:inset 0 1px 0 var(--sd-control-highlight),var(--sd-control-shadow)!important}
-html.ap #pp-app .pp-btn.pri{box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 1px 3px rgba(25,25,20,.10)!important}
+html.ap #pp-app .pp-btn.pri{box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 1px 3px rgba(14,21,31,.10)!important}
 html.ap #pp-app .pp-btn[disabled],html.ap #pp-app .sd-course [data-sd-add][disabled]{box-shadow:none!important}
 html.ap #pp-app .pp-iconbtn{box-shadow:inset 0 1px 0 var(--sd-control-highlight),var(--sd-control-shadow)!important}
 html.ap #pp-app .pp-tabs{padding:4px;border:1px solid var(--sd-line);border-radius:13px!important;background:var(--sd-raised)!important;gap:3px}
 html.ap #pp-app .pp-tabs button{border-radius:9px!important;letter-spacing:-.01em;box-shadow:none!important;background:transparent!important;color:var(--sd-muted)!important}
-html.ap #pp-app .pp-tabs button.on{background:var(--sd-surface)!important;color:var(--sd-ink)!important;box-shadow:0 1px 3px rgba(20,20,15,.08),inset 0 1px 0 var(--sd-control-highlight)!important}
-html.ap #pp-app .pp-input{box-shadow:inset 0 1px 2px rgba(25,25,20,.025)!important}
+html.ap #pp-app .pp-tabs button.on{background:var(--sd-surface)!important;color:var(--sd-ink)!important;box-shadow:0 1px 3px rgba(11,16,24,.08),inset 0 1px 0 var(--sd-control-highlight)!important}
+html.ap #pp-app .pp-input{box-shadow:inset 0 1px 2px rgba(14,21,31,.025)!important}
 html.ap #pp-app .pp-input:focus-visible{outline:2px solid color-mix(in srgb,var(--sd-accent) 55%,transparent)!important;outline-offset:2px;border-color:var(--sd-accent)!important}
 html.ap #pp-app .pp-home-links>a{border-color:var(--sd-line)!important}
 @media(hover:hover) and (prefers-reduced-motion:no-preference){html.ap[data-ap-anim="1"][data-ap-performance="0"] #pp-app .pp-btn{transition:background-color 160ms ease-out,border-color 160ms ease-out,box-shadow 160ms ease-out!important}html.ap #pp-app .pp-btn:not([disabled]):hover{border-color:color-mix(in srgb,var(--sd-accent) 35%,var(--sd-line))!important}}

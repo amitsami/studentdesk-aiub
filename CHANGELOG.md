@@ -1,5 +1,21 @@
 # Changelog
 
+## 4.6.0 - Liquid Glass
+
+### Liquid Glass design
+- Refresh the blue-and-white interface with translucent surfaces, visible reflections, soft highlights and backdrop blur in Light and Dark mode.
+- Smooth transitions and interactions, respecting reduced-motion settings and Performance mode; improve navigation hover contrast.
+- Choose Rounded serif (Fraunces) or Times New Roman in Settings, including on the login screen.
+- Center the AIUB identity on the refreshed login screen while retaining the native login form.
+
+### Exams and routine
+- See the next available exam on Home, with details from the portal when available.
+- Temporarily hide classes between the first and last dated personal exam of the same named term; restore the usual routine afterwards. This is a display rule, not an official cancellation.
+
+### Mobile and usability
+- Refine phone layouts and exam and review controls; use current courses as a fallback when the semester list is unavailable.
+- Use lighter glass effects on mobile and in Performance mode to support smoother scrolling.
+
 ## 4.5.0 - Refined Workspace
 
 ### Design and navigation

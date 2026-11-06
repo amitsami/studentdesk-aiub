@@ -4,10 +4,10 @@
   "use strict";
   if (window.__aiubPlus) return; window.__aiubPlus = true;
   var KEY = "aiubPlus.settings.v1";
-  var DEF = { app: true, startPage: "home", mode: "light", accent: "#3b82f6", bg: "aurora", v: 3, blur: 22, scale: 100, anim: true, trans: true, compact: false, radius: 18, grades: true, privacy: false, performance: false };
-  var PRESETS = ["#3b82f6", "#8b5cf6", "#ec4899", "#f43f5e", "#f97316", "#eab308", "#10b981", "#06b6d4", "#64748b"];
+  var DEF = { app: true, startPage: "home", mode: "light", font: "rounded", accent: "#478bea", bg: "aurora", v: 3, blur: 22, scale: 100, anim: true, trans: true, compact: false, radius: 18, grades: true, privacy: false, performance: false };
+  var PRESETS = ["#478bea", "#649eee", "#498deb", "#488ceb", "#2878e7", "#1869da", "#1457b5", "#165ec4", "#64748b"];
   var S = load();
-  if(!S.studio4){S.scale=100;S.bg="solid";S.blur=12;S.radius=20;S.accent="#8d4d36";S.compact=false;S.studio4=true;save();}
+  if(!S.studio4){S.scale=100;S.bg="solid";S.blur=12;S.radius=20;S.accent="#365a8d";S.compact=false;S.studio4=true;save();}
   var root = document.documentElement;
 
   function load() { try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); if (o.v !== 3) { o.mode = "light"; o.v = 3; } return Object.assign({}, DEF, o); } catch (e) { return Object.assign({}, DEF); } }
@@ -27,19 +27,20 @@
     root.classList.add("ap");
     var dark = S.mode === "dark" || (S.mode === "auto" && mq && mq.matches);
     root.setAttribute("data-ap-mode", dark ? "dark" : "light");
+    root.setAttribute("data-ap-font", S.font === "times" ? "times" : "rounded");
     root.setAttribute("data-ap-bg", S.bg);
     root.setAttribute("data-ap-anim", S.anim ? "1" : "0");
     root.setAttribute("data-ap-performance", S.performance ? "1" : "0");
     root.setAttribute("data-ap-compact", S.compact ? "1" : "0");
     root.setAttribute("data-ap-privacy", S.privacy ? "1" : "0");
-    var rgb = hexToRgb(S.accent), hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
-    var rgb2 = hslToRgb(hsl[0] + 38, Math.min(1, hsl[1] * 1.05), Math.min(.65, Math.max(.45, hsl[2])));
+    var savedRgb = hexToRgb(S.accent), savedHsl = rgbToHsl(savedRgb[0], savedRgb[1], savedRgb[2]); var rgb = hslToRgb(215, Math.max(.35,savedHsl[1]), Math.min(.55,Math.max(.35,savedHsl[2]))), hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+    var rgb2 = hslToRgb(hsl[0], Math.min(1, hsl[1] * 1.05), Math.min(.65, Math.max(.45, hsl[2])));
     var st = root.style;
     var actionRgb = rgb.slice();
     function actionLuma(v) { var c = v.map(function (n) { n /= 255; return n <= .04045 ? n / 12.92 : Math.pow((n + .055) / 1.055, 2.4); }); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; }
     while (actionLuma(actionRgb) > .175) actionRgb = actionRgb.map(function (n) { return Math.floor(n * .92); });
     st.setProperty("--ap-action", "rgb(" + actionRgb.join(",") + ")");
-    st.setProperty("--ap-accent", S.accent);
+    st.setProperty("--ap-accent", "rgb(" + rgb.join(",") + ")");
     st.setProperty("--ap-accent-rgb", rgb.join(","));
     st.setProperty("--ap-accent2", "rgb(" + rgb2.join(",") + ")");
     st.setProperty("--ap-accent2-rgb", rgb2.join(","));
@@ -49,7 +50,7 @@
     st.setProperty("--ap-radius-sm", Math.max(4, S.radius - 6) + "px");
     var meta = document.querySelector('meta[name="theme-color"]');
     if (!meta && document.head) { meta = document.createElement("meta"); meta.name = "theme-color"; document.head.appendChild(meta); }
-    if (meta) meta.content = dark ? "#171b19" : "#f5f4ef";
+    if (meta) meta.content = dark ? "#101722" : "#eff2f5";
   }
   try { if (window.top !== window) root.classList.add("pp-embed"); } catch (e) { root.classList.add("pp-embed"); }
   apply(); // runs at document_start → no flash of old design
@@ -93,8 +94,8 @@
   function preview() { return '<div class="ap-pv" aria-hidden="true"><i></i><i></i><i></i><span class="ap-pv-bgt">StudentDesk AIUB</span><div class="ap-pv-glass"><b>Live preview</b><small>Glass blur · Roundness · Text size</small><span class="ap-pv-chip">A</span></div></div>'; }
 
   function renderPanel(p) {
-    p.innerHTML = "<h3>StudentDesk · Theme</h3><div class='ap-sub'>Choose a comfortable workspace.</div>" + seg("mode", [["light","Light"],["dark","Dark"],["auto","System"]]) + (!S.app?"<button type='button' class='ap-reset' id='ap-enable-studio'>Open StudentDesk workspace</button>":"");
-    p.querySelectorAll(".ap-seg").forEach(function(g){g.onclick=function(e){var b=e.target.closest("button");if(!b)return;S.mode=b.dataset.v;save();apply();renderPanel(p);};});
+    p.innerHTML = "<h3>StudentDesk · Theme</h3><div class='ap-sub'>Choose a comfortable workspace.</div>" + seg("mode", [["light","Light"],["dark","Dark"],["auto","System"]]) + "<div class='ap-sub' style='margin-top:14px'>Font</div>" + seg("font", [["rounded","Rounded"],["times","Times New Roman"]]) + (!S.app?"<button type='button' class='ap-reset' id='ap-enable-studio'>Open StudentDesk workspace</button>":"");
+    p.querySelectorAll(".ap-seg").forEach(function(g){g.onclick=function(e){var b=e.target.closest("button");if(!b)return;var k=g.dataset.k;if(k!=="mode"&&k!=="font")return;S[k]=b.dataset.v;save();apply();renderPanel(p);};});
     var enable=p.querySelector('#ap-enable-studio');if(enable)enable.onclick=function(){S.app=true;save();location.reload();};
   }
 

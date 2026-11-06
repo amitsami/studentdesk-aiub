@@ -1,0 +1,107 @@
+/* StudentDesk 4.6 — layered glass and motion. Presentation only. */
+html.ap #pp-app{background:radial-gradient(ellipse at 2% 3%,rgba(116,171,239,.48),transparent 41%),radial-gradient(ellipse at 96% 87%,rgba(133,180,239,.38),transparent 47%),radial-gradient(ellipse at 54% 48%,rgba(239,249,255,.88),transparent 43%),linear-gradient(140deg,#e5f2ff,#d6e8fc 52%,#e4f1ff)!important;--ui-shadow:inset 0 1px 0 rgba(255,255,255,.98),inset 0 -1px 1px rgba(92,146,207,.09),0 14px 38px rgba(39,80,135,.12)}
+html.ap[data-ap-mode="dark"] #pp-app{background:radial-gradient(ellipse at 0% 2%,rgba(51,103,156,.55),transparent 40%),radial-gradient(ellipse at 95% 87%,rgba(45,83,141,.48),transparent 46%),radial-gradient(ellipse at 48% 40%,rgba(23,48,78,.6),transparent 46%),linear-gradient(135deg,#0a1b31,#091528 54%,#102a49)!important;--ui-shadow:inset 0 1px 0 rgba(231,246,255,.17),inset 0 -1px 0 rgba(158,206,255,.04),0 16px 40px rgba(1,9,24,.28)}
+html.ap #pp-app :is(.pp-card,.sd-course,.sd-plan,.sd-planner-banner){background:linear-gradient(135deg,rgba(255,255,255,.72),rgba(239,248,255,.54) 54%,rgba(219,235,252,.64))!important;border:1px solid rgba(255,255,255,.82)!important;box-shadow:var(--ui-shadow)!important}
+html.ap[data-ap-mode="dark"] #pp-app :is(.pp-card,.sd-course,.sd-plan,.sd-planner-banner){background:linear-gradient(135deg,rgba(39,69,99,.75),rgba(21,43,68,.80) 54%,rgba(15,33,56,.87))!important;border-color:rgba(186,221,253,.22)!important}
+html.ap #pp-app .pp-side{background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(226,241,255,.57))!important;border-color:rgba(255,255,255,.95)!important;box-shadow:inset 0 1px 1px #fff,inset 1px 0 0 rgba(255,255,255,.7),0 18px 45px rgba(44,86,142,.15)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-side{background:linear-gradient(145deg,rgba(38,68,98,.82),rgba(15,35,58,.81))!important;border-color:rgba(194,224,255,.25)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 18px 45px rgba(1,8,23,.26)!important}
+html.ap #pp-app .pp-main>header.pp-top{background:linear-gradient(120deg,rgba(255,255,255,.80),rgba(235,247,255,.58))!important;border-color:rgba(255,255,255,.85)!important;box-shadow:inset 0 1px 1px #fff,0 8px 28px rgba(47,92,148,.08)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-main>header.pp-top{background:linear-gradient(120deg,rgba(35,63,92,.79),rgba(15,33,56,.75))!important;border-color:rgba(196,227,255,.18)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 8px 28px rgba(0,9,23,.16)!important}
+html.ap #pp-app .pp-home .pp-overview-intro{background:radial-gradient(ellipse at 98% 0%,rgba(216,242,255,.20),transparent 45%),linear-gradient(115deg,#1a447b 0%,#327db8 70%,#94c7e9 100%)!important;border-color:rgba(230,248,255,.78)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.48),inset 1px 0 0 rgba(255,255,255,.2),0 16px 38px rgba(39,99,163,.24)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-home .pp-overview-intro{background:radial-gradient(ellipse at 100% 0%,rgba(185,225,255,.13),transparent 46%),linear-gradient(115deg,#102a4e,#245783 68%,#3978aa)!important;border-color:rgba(182,223,255,.35)!important}
+html.ap #pp-app .pp-home .pp-overview-intro:after{background:radial-gradient(circle at 28% 21%,rgba(255,255,255,.99) 0%,rgba(239,250,255,.92) 18%,rgba(183,222,252,.79) 46%,rgba(103,166,222,.70) 73%,rgba(68,125,186,.84));border:1px solid rgba(238,250,255,.48);box-shadow:inset 10px 10px 22px rgba(255,255,255,.62),inset -18px -20px 30px rgba(23,70,128,.22),0 22px 40px rgba(8,38,80,.24)}
+html.ap #pp-app .pp-home .pp-overview-intro:before{border-color:rgba(232,248,255,.45);box-shadow:0 0 0 10px rgba(224,244,255,.06),0 0 0 22px rgba(224,244,255,.045),0 0 0 35px rgba(224,244,255,.025)}
+html.ap #pp-app .pp-home .pp-overview-body{background:linear-gradient(130deg,rgba(255,255,255,.80),rgba(234,246,255,.59))!important;border-color:rgba(255,255,255,.9)!important;box-shadow:var(--ui-shadow)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-home .pp-overview-body{background:linear-gradient(130deg,rgba(41,71,102,.76),rgba(17,37,61,.86))!important;border-color:rgba(190,224,255,.22)!important}
+html.ap #pp-app .pp-home .pp-next{background:linear-gradient(135deg,rgba(235,248,255,.92),rgba(209,232,254,.75))!important;border-color:rgba(181,214,245,.9)!important;box-shadow:inset 0 1px 1px rgba(255,255,255,.95),0 5px 14px rgba(45,104,164,.08)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-home .pp-next{background:linear-gradient(135deg,rgba(44,89,128,.88),rgba(27,62,96,.88))!important;border-color:rgba(150,202,247,.3)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 5px 14px rgba(0,10,28,.16)!important}
+html.ap #pp-app .pp-home .pp-hero .pp-home-links>a,html.ap #pp-app .pp-quick a{background:linear-gradient(140deg,rgba(255,255,255,.67),rgba(224,241,255,.47))!important;border-color:rgba(194,220,247,.82)!important;box-shadow:inset 0 1px 1px rgba(255,255,255,.95),0 4px 13px rgba(59,106,158,.06)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-home .pp-hero .pp-home-links>a,html.ap[data-ap-mode="dark"] #pp-app .pp-quick a{background:linear-gradient(140deg,rgba(49,84,116,.60),rgba(20,44,69,.68))!important;border-color:rgba(163,206,245,.22)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 5px 14px rgba(0,10,28,.12)!important}
+html.ap #pp-app .pp-quick a .pp-qi,html.ap #pp-app .pp-iconbtn{background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(220,238,255,.77))!important;border:1px solid rgba(188,216,245,.90)!important;box-shadow:inset 0 1px 1px #fff,0 5px 14px rgba(40,91,153,.13)!important}
+html.ap[data-ap-mode="dark"] #pp-app :is(.pp-quick a:nth-child(n) .pp-qi,.pp-iconbtn){background:linear-gradient(145deg,rgba(65,105,145,.90),rgba(31,68,106,.88))!important;border-color:rgba(164,209,250,.25)!important;box-shadow:inset 0 1px 1px rgba(255,255,255,.18),0 5px 14px rgba(0,9,25,.22)!important}
+html.ap #pp-app .pp-nav a.on,html.ap #pp-app .pp-nav a.on:hover,html.ap #pp-app .pp-nav a.on:focus-visible{background:linear-gradient(130deg,#23538e,#2a6ead)!important;color:#fff!important;box-shadow:inset 0 1px 1px rgba(255,255,255,.36),0 7px 20px rgba(36,95,155,.22)!important}
+html.ap[data-ap-mode="dark"] #pp-app .pp-nav a.on,html.ap[data-ap-mode="dark"] #pp-app .pp-nav a.on:hover,html.ap[data-ap-mode="dark"] #pp-app .pp-nav a.on:focus-visible{background:linear-gradient(130deg,#275481,#2a69a5)!important;color:#fff!important}
+@media(max-width:900px){
+ html.ap #pp-app .pp-tabbar{background:linear-gradient(145deg,rgba(255,255,255,.80),rgba(220,239,255,.71))!important;border-color:rgba(255,255,255,.90)!important;box-shadow:inset 0 1px 1px #fff,0 13px 35px rgba(28,78,133,.22)!important}
+ html.ap[data-ap-mode="dark"] #pp-app .pp-tabbar{background:linear-gradient(145deg,rgba(37,70,101,.88),rgba(14,34,59,.91))!important;border-color:rgba(200,228,255,.24)!important;box-shadow:inset 0 1px 1px rgba(255,255,255,.16),0 13px 35px rgba(0,10,30,.38)!important}
+ html.ap:not([data-ap-mode="dark"]) #pp-app .pp-tabbar .pp-pill{background:linear-gradient(145deg,rgba(203,230,255,.98),rgba(169,207,247,.9))!important;box-shadow:inset 0 1px 1px #fff,0 2px 8px rgba(34,94,156,.12)!important}
+ html.ap[data-ap-mode="dark"] #pp-app .pp-tabbar .pp-pill{background:linear-gradient(145deg,#3f79ad,#2a5888)!important;box-shadow:inset 0 1px 1px rgba(255,255,255,.3),0 2px 8px rgba(0,10,26,.24)!important}
+}
+@media(prefers-reduced-motion:no-preference){
+ html.ap[data-ap-anim="1"][data-ap-performance="0"] #pp-app :is(.pp-quick a,.pp-home-links>a,.pp-iconbtn,.pp-btn){transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s ease,border-color .22s ease,background .22s ease!important}
+ html.ap[data-ap-anim="1"][data-ap-performance="0"] #pp-app .pp-tabbar .pp-pill{transition:left .38s cubic-bezier(.22,1,.36,1),width .38s cubic-bezier(.22,1,.36,1)!important}
+ html.ap[data-ap-anim="1"][data-ap-performance="0"] #pp-app .pp-home .pp-overview-intro:after{animation:sd-glass-float 9s ease-in-out infinite}
+}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){html.ap[data-ap-anim="1"][data-ap-performance="0"] #pp-app :is(.pp-quick a,.pp-home-links>a,.pp-iconbtn,.pp-btn):hover{transform:translateY(-2px);box-shadow:inset 0 1px 1px rgba(255,255,255,.8),0 9px 20px rgba(39,85,142,.16)!important}}
+@keyframes sd-glass-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@media(max-width:900px){html.ap[data-ap-performance="0"] #pp-app :is(.pp-card,.sd-course,.sd-plan,.sd-planner-banner,.pp-home .pp-overview-body){-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%)}}
+html.ap[data-ap-performance="1"] #pp-app :is(.pp-card,.sd-course,.sd-plan,.sd-planner-banner,.pp-home .pp-overview-body,.pp-side,.pp-tabbar,.pp-main>header.pp-top){-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:var(--sd-surface)!important}
+
+/* 4.6 final — specular reflections are part of each glass surface, not overlays:
+   no extra layer can block controls, text selection or scrolling. */
+html.ap[data-ap-performance="0"] #pp-app :is(.pp-card,.sd-course,.sd-plan,.sd-planner-banner,.pp-home .pp-overview-body){
+ background:
+  linear-gradient(130deg,rgba(255,255,255,.61) 0%,rgba(255,255,255,.24) 22%,transparent 22.2%,transparent 47%,rgba(255,255,255,.16) 47.2%,rgba(255,255,255,.05) 61%,transparent 61.2%),
+  radial-gradient(ellipse at 8% 0%,rgba(255,255,255,.68),transparent 50%),
+  linear-gradient(145deg,rgba(234,247,255,.60),rgba(198,225,250,.45))!important;
+ border:1px solid rgba(255,255,255,.94)!important;
+ box-shadow:inset 0 1px 1px rgba(255,255,255,1),inset 1px 0 0 rgba(255,255,255,.75),inset 0 -1px 0 rgba(130,181,228,.24),0 12px 34px rgba(35,86,145,.14)!important;
+ -webkit-backdrop-filter:blur(22px) saturate(165%);backdrop-filter:blur(22px) saturate(165%);
+}
+html.ap[data-ap-performance="0"][data-ap-mode="dark"] #pp-app :is(.pp-card,.sd-course,.sd-plan,.sd-planner-banner,.pp-home .pp-overview-body){
+ background:
+  linear-gradient(130deg,rgba(220,243,255,.19) 0%,rgba(207,234,255,.07) 22%,transparent 22.2%,transparent 47%,rgba(192,224,255,.08) 47.2%,transparent 61%),
+  radial-gradient(ellipse at 8% 0%,rgba(154,208,255,.18),transparent 50%),
+  linear-gradient(145deg,rgba(45,79,112,.72),rgba(12,33,59,.79))!important;
+ border-color:rgba(206,234,255,.30)!important;
+ box-shadow:inset 0 1px 1px rgba(232,248,255,.27),inset 1px 0 0 rgba(218,242,255,.10),inset 0 -1px 0 rgba(126,184,238,.08),0 12px 34px rgba(0,9,25,.30)!important;
+}
+html.ap[data-ap-performance="0"] #pp-app :is(.pp-side,.pp-main>header.pp-top,.pp-tabbar){
+ background:
+  linear-gradient(125deg,rgba(255,255,255,.64) 0%,rgba(255,255,255,.20) 33%,transparent 33.3%,transparent 59%,rgba(255,255,255,.17) 59.3%,transparent 76%),
+  linear-gradient(155deg,rgba(233,247,255,.58),rgba(196,224,251,.49))!important;
+ border-color:rgba(255,255,255,.94)!important;
+ box-shadow:inset 0 1px 1px #fff,inset 1px 0 0 rgba(255,255,255,.70),0 14px 36px rgba(36,83,139,.17)!important;
+}
+html.ap[data-ap-performance="0"][data-ap-mode="dark"] #pp-app :is(.pp-side,.pp-main>header.pp-top,.pp-tabbar){
+ background:
+  linear-gradient(125deg,rgba(223,244,255,.22) 0%,rgba(213,239,255,.07) 33%,transparent 33.3%,transparent 59%,rgba(210,236,255,.08) 59.3%,transparent 76%),
+  linear-gradient(155deg,rgba(40,75,109,.85),rgba(12,32,57,.84))!important;
+ border-color:rgba(204,233,255,.29)!important;
+ box-shadow:inset 0 1px 1px rgba(255,255,255,.24),inset 1px 0 0 rgba(255,255,255,.09),0 14px 36px rgba(0,9,25,.30)!important;
+}
+html.ap #pp-app .pp-home .pp-overview-intro{
+ background:
+  linear-gradient(130deg,rgba(255,255,255,.23) 0%,rgba(255,255,255,.08) 28%,transparent 28.3%,transparent 60%,rgba(231,248,255,.14) 60.3%,transparent 78%),
+  radial-gradient(ellipse at 95% 0%,rgba(230,248,255,.23),transparent 48%),
+  linear-gradient(115deg,#1a447b 0%,#327db8 70%,#94c7e9 100%)!important;
+}
+html.ap[data-ap-mode="dark"] #pp-app .pp-home .pp-overview-intro{
+ background:
+  linear-gradient(130deg,rgba(234,248,255,.17) 0%,rgba(225,244,255,.06) 28%,transparent 28.3%,transparent 60%,rgba(225,245,255,.10) 60.3%,transparent 78%),
+  linear-gradient(115deg,#102a4e,#245783 68%,#3978aa)!important;
+}
+html.ap[data-ap-performance="0"] #pp-app :is(.pp-home-links>a,.pp-quick a,.pp-iconbtn){
+ background-image:linear-gradient(135deg,rgba(255,255,255,.66),rgba(255,255,255,.18) 39%,transparent 40%),linear-gradient(145deg,rgba(238,249,255,.64),rgba(198,225,251,.48))!important;
+ box-shadow:inset 0 1px 1px rgba(255,255,255,.96),inset 1px 0 0 rgba(255,255,255,.62),0 5px 15px rgba(45,95,155,.11)!important;
+}
+html.ap[data-ap-performance="0"][data-ap-mode="dark"] #pp-app :is(.pp-home-links>a,.pp-quick a,.pp-iconbtn){
+ background-image:linear-gradient(135deg,rgba(227,246,255,.20),rgba(220,240,255,.05) 39%,transparent 40%),linear-gradient(145deg,rgba(52,91,127,.72),rgba(17,43,69,.75))!important;
+ box-shadow:inset 0 1px 1px rgba(255,255,255,.24),0 5px 15px rgba(0,10,28,.19)!important;
+}
+html.ap.ap-login[data-ap-performance="0"] .login-form{
+ background:linear-gradient(135deg,rgba(255,255,255,.70),rgba(255,255,255,.20) 30%,transparent 30.3%,transparent 58%,rgba(255,255,255,.15) 58.3%,transparent 75%),linear-gradient(145deg,rgba(243,251,255,.78),rgba(210,233,254,.66))!important;
+ box-shadow:inset 0 1px 1px #fff,inset 1px 0 0 rgba(255,255,255,.7),0 28px 70px rgba(31,72,128,.20)!important;
+}
+html.ap.ap-login[data-ap-performance="0"][data-ap-mode="dark"] .login-form{
+ background:linear-gradient(135deg,rgba(224,245,255,.19),rgba(218,240,255,.06) 30%,transparent 30.3%,transparent 58%,rgba(220,241,255,.09) 58.3%,transparent 75%),linear-gradient(145deg,rgba(37,72,105,.84),rgba(13,33,56,.87))!important;
+ box-shadow:inset 0 1px 1px rgba(255,255,255,.25),0 28px 70px rgba(0,10,28,.35)!important;
+}
+@media(max-width:900px){html.ap[data-ap-performance="0"] #pp-app :is(.pp-card,.sd-course,.sd-plan,.sd-planner-banner,.pp-home .pp-overview-body){-webkit-backdrop-filter:blur(14px) saturate(155%);backdrop-filter:blur(14px) saturate(155%)}}
+@media(prefers-contrast:more){html.ap #pp-app :is(.pp-card,.pp-side,.pp-tabbar,.pp-home .pp-overview-body){border-color:var(--sd-muted)!important}}
+/* Explicitly override earlier no-blur rules only for normal-performance mode. */
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+ @media(min-width:901px){html.ap:not(.pp-ff)[data-ap-performance="0"] #pp-app :is(.pp-card,.sd-course,.sd-plan,.sd-planner-banner,.pp-home .pp-overview-body,.pp-side,.pp-main>header.pp-top){-webkit-backdrop-filter:blur(20px) saturate(150%)!important;backdrop-filter:blur(20px) saturate(150%)!important}}
+ @media(max-width:900px){html.ap:not(.pp-ff)[data-ap-performance="0"] #pp-app :is(.pp-home .pp-overview-body,.pp-tabbar,.pp-main>header.pp-top){-webkit-backdrop-filter:blur(14px) saturate(145%)!important;backdrop-filter:blur(14px) saturate(145%)!important}}
+ html.ap.ap-login:not(.pp-ff)[data-ap-performance="0"] .login-form{-webkit-backdrop-filter:blur(20px) saturate(145%)!important;backdrop-filter:blur(20px) saturate(145%)!important}
+}
